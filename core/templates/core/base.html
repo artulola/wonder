@@ -2,14 +2,19 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}WONDER{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Gruppo&family=Poppins:wght@600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Gruppo&family=Poppins:wght@600&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="{% static '/css/base.css' %}">
+    {% block extra_css %}{% endblock extra_css %}
 </head>
+
 <body>
     <header class="app-header">
         <div class="header-logo">
@@ -21,35 +26,42 @@
             <img src="{% static 'img/seta-pra-baixo.svg' %}" alt="" class="location-icon-wrapper">
         </div>
     </header>
-    
+
     <main class="main-content">
         {% block content %}
-            <p style="text-align: center; padding-top: 2rem;">Conteúdo da página será inserido aqui.</p>
+        <p style="text-align: center; padding-top: 2rem;">Conteúdo da página será inserido aqui.</p>
         {% endblock content %}
-        
+
     </main>
-    
+
     <footer class="app-navbar">
         <nav>
             <ul class="nav-list">
                 <li class="nav-item nav-item--active">
-                    <img src="{% static 'img/footer-icon/home-ativo.svg' %}" alt="" class="nav-icon">
-                    <span class="nav-text">Início</span>
+                    <a href="{% url 'home'%}">
+                        <img src="{% static 'img/footer-icon/home-ativo.svg' %}" alt="" class="nav-icon">
+                        <span class="nav-text">Início</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <img src="{% static 'img/footer-icon/search.svg' %}" alt="" class="nav-icon">
-                    <span class="nav-text">Busca</span>
+                    <a href="{% url 'resultado-busca'%}">
+                        <img src="{% static 'img/footer-icon/search.svg' %}" alt="" class="nav-icon">
+                        <span class="nav-text">Busca</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <img src="{% static 'img/footer-icon/calendar.svg' %}" alt="" class="nav-icon">
-                    <span class="nav-text">Agendamentos</span>
+                    <a href="#"> <img src="{% static 'img/footer-icon/calendar.svg' %}" alt="" class="nav-icon">
+                        <span class="nav-text">Agendamentos</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <img src="{% static 'img/footer-icon/user.svg' %}" alt="" class="nav-icon">
-                    <span class="nav-text">Perfil</span>
+                    <a href="#"> <img src="{% static 'img/footer-icon/user.svg' %}" alt="" class="nav-icon">
+                        <span class="nav-text">Perfil</span>
+                    </a>
                 </li>
             </ul>
         </nav>
     </footer>
 </body>
+
 </html>

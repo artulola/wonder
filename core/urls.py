@@ -23,6 +23,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_view, name='home'),
-    path('busca/', views.search, name= 'search')
+    path('busca/', views.search, name= 'search'),
+    path('busca/resultado-busca/', views.search_results_view, name='resultado-busca'),
 
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

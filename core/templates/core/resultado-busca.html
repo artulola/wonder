@@ -1,0 +1,67 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Resultado da Busca{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/resultado-busca.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<section class="search-page-content">
+    <div class="search-bar-wrapper">
+        <div class="search-input-group"> 
+            <img class="search" src="{% static 'img/search-barra.svg' %}" alt="Pesquisa">
+            <input type="text" class="search-input" placeholder="Procurar por serviços ou estabelecimentos">
+        </div>
+    </div>
+    
+    <p class="filters-line">
+        <span class="filter-label">Filtros &gt; </span> 
+        <span class="filter-current">Barbearia</span>
+    </p>
+
+    <div class="results-list">
+        
+        <article class="result-card">
+            <div class="card-details">
+                <img src="{% static 'img/Diego-BarberShop.svg' %}" alt="">
+                <div class="card-info">
+                    <h2 class="card-title">Diego BarberShop</h2>
+                    <div class="card-meta">
+                        <div class="rating-info">
+                            <span class="star-icon">★</span>
+                            <span class="rating-value">4,7</span>
+                        </div>
+                        <span class="separator">·</span>
+                        <span class="schedule">8 - 18h</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-status status-available">
+                <p class="status-text">Disponível Hoje</p>
+            </div>
+        </article>
+        
+        <article class="result-card">
+            <div class="card-details">
+                <img src="{% static 'img/RD-Cabelos.svg' %}" alt="">
+                <div class="card-info">
+                    <h2 class="card-title">RD Cabelos</h2>
+                    <div class="card-meta">
+                        <div class="rating-info">
+                            <span class="star-icon">★</span>
+                            <span class="rating-value">100</span>
+                        </div>
+                        <span class="separator">·</span>
+                        <span class="schedule">8 - 18h</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-status status-available">
+                <p class="status-text">Disponível Hoje</p>
+            </div>
+        </article>
+
+    </div>
+</section>
+{% endblock content %}
