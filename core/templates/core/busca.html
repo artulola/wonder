@@ -1,55 +1,26 @@
+{% extends 'core/base.html' %}
 {% load static %}
+{% block title %}Busca{% endblock title %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}WONDER{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Gruppo&family=Poppins:wght@600&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="{% static '/css/base.css' %}">
-</head>
-<body>
-    <header class="app-header">
-        <div class="header-logo">
-            <img class="logo-icon" src="{% static 'img/lotus.svg' %}" alt="Logo Wonder">
-            <span class="logo-name">WONDER</span>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/busca.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<section class="search-page-content">
+    <div class="search-bar-wrapper">
+        <div class="search-input-group"> 
+            <img class="search" src="{% static 'img/search-barra.svg' %}" alt="Pesquisa">
+            <input type="text" class="search-input" placeholder="Procurar por serviços ou estabelecimentos">
         </div>
-        <div class="header-location">
-            <span class="location-text">Pau dos Ferros/RN</span>
-            <img src="{% static 'img/seta-pra-baixo.svg' %}" alt="" class="location-icon-wrapper">
+    </div>
+    
+    <div class="categories">
+        <div class="categories-wrapper">
+            
         </div>
-    </header>
-    
-    <main class="main-content">
-        {% block content %}
-            <p style="text-align: center; padding-top: 2rem;">Conteúdo da página será inserido aqui.</p>
-        {% endblock content %}
-        
-    </main>
-    
-    <footer class="app-navbar">
-        <nav>
-            <ul class="nav-list">
-                <li class="nav-item nav-item--active">
-                    <img src="{% static 'img/footer-icon/home-ativo.svg' %}" alt="" class="nav-icon">
-                    <span class="nav-text">Início</span>
-                </li>
-                <li class="nav-item">
-                    <img src="{% static 'img/footer-icon/search.svg' %}" alt="" class="nav-icon">
-                    <span class="nav-text">Busca</span>
-                </li>
-                <li class="nav-item">
-                    <img src="{% static 'img/footer-icon/calendar.svg' %}" alt="" class="nav-icon">
-                    <span class="nav-text">Agendamentos</span>
-                </li>
-                <li class="nav-item">
-                    <img src="{% static 'img/footer-icon/user.svg' %}" alt="" class="nav-icon">
-                    <span class="nav-text">Perfil</span>
-                </li>
-            </ul>
-        </nav>
-    </footer>
-</body>
-</html>
+    </div>
+
+
+</section>
+{% endblock content %}
