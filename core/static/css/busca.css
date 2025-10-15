@@ -57,3 +57,37 @@
 .search-input::placeholder {
     color: #505050;
 }
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Mínimo 2 por linha */
+    gap: 12px;
+    justify-items: center;
+    margin: 32px 0;
+    padding-bottom: 8px;
+}
+
+@media (min-width: 600px) {
+    .categories-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 900px) {
+    .categories-grid {
+        grid-template-columns: repeat(4, 1fr); 
+    }
+}
+
+.category-img {
+    width: 95%;           /* Ocupa quase toda a coluna */
+    max-width: 500px;     /* Ajuste conforme o tamanho desejado */
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.2s;
+    border-radius: 12px;
+}
+
+.category-img:hover {
+    transform: scale(1.04);
+}
