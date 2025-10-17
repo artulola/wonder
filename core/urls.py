@@ -22,7 +22,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home_view, name='home'),
+    path('', views.home_cliente_view, name='home-cliente'),
     path('busca/', views.search, name= 'search'),
     path('busca/resultado-busca/', views.search_results_view, name='resultado-busca'),
     path('opcoes-cadastro/', views.register_options_view, name='opcoes-cadastro'),
