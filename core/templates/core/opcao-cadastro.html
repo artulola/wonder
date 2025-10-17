@@ -1,24 +1,43 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Opção de Cadastro</title>
-    <link rel="stylesheet" href="{% static 'css/opcao-cadastro.css' %}">
-</head>
-<body>
-    <section class="opcao-cadastro-content">
-        <div class="opcao-cadastro-wrapper">
-            <h1 class="opcao-cadastro-title">Olá, você deseja se cadastrar como...</h1>
 
-            <div class="opcao-cadastro-buttons">
-                <a href="" class="opcao-cadastro-button">Cliente</a>
-                <a href="" class="opcao-cadastro-button">Prestador de serviço</a>
-            </div>
+    <!-- Fonte Poppins (Google Fonts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-            <img src="{% static 'img/logo-wonder-white.svg' %}" alt="Logo Wonder em branco">
+    <!-- CSS principal -->
+    <link rel="stylesheet" href="{% static 'css/opcao-cadastro.css' %}?v=3" />
+  </head>
+  <body>
+    <a href="#" class="back-button" aria-label="Voltar">
+      <img src="{% static 'img/arrow-left.svg' %}" alt="Voltar">
+    </a>
+
+    <main class="page-wrap">
+      <div class="card">
+        <h1 class="card-title">Olá, você deseja<br/>se cadastrar como...</h1>
+
+        <div class="options-wrapper">
+          <a href="#" class="option-button">
+            <!--<img src="{% static 'img/account_circle.svg' %}" alt="Cliente">-->
+            <span>Cliente</span>
+          </a>
+
+          <a href="#" class="option-button">
+            <!--<img src="{% static 'img/self_care.svg' %}" alt="Prestador">-->
+            <span>Prestador de serviço</span>
+          </a>
         </div>
-    </section>
-</body>
+
+        <img class="brand-logo" src="{% static 'img/logo-wonder-white.svg' %}" alt="Logo Wonder">
+      </div>
+    </main>
+  </body>
 </html>
