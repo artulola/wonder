@@ -1,0 +1,38 @@
+{% extends 'core/base_auth.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<main class="container-login">
+
+    <div class="logo">
+        <img class="logo-icon" src="{% static 'img/lotus.svg' %}" alt="Logo Wonder">
+        <h1 class="logo-name">WONDER</h1>
+    </div>
+
+    <form class="formulario-login" method="POST">
+        {% csrf_token %}
+        <div class="grupo-input">
+            <input type="email" name="email" class="input-campo" placeholder="Email" required>
+        </div>
+        <div class="grupo-input">
+            <input type="password" name="password" class="input-campo" placeholder="Senha" required>
+        </div>
+        <button type="submit" class="botao-entrar">
+            <img src="{% static 'img/carbon_login.svg' %}" alt="Ícone de login" class="botao-entrar__icone">
+            <span>Entrar</span>
+        </button>
+    </form>
+
+    <hr class="divisor">
+
+    <p class="link-cadastro">
+        Não tem uma conta? <a href="#">Cadastre-se</a>
+    </p>
+
+</main>
+{% endblock content %}
+

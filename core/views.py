@@ -10,5 +10,10 @@ def search(request: HttpRequest) -> HttpResponse:
 def search_results_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/resultado-busca.html')
 
+def login_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/login.html')
+
+def cadastro_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/cadastro.html')
 def register_options_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/opcao-cadastro.html')
