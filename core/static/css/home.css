@@ -1,0 +1,177 @@
+/* LAYOUT DA PÁGINA INICIAL */
+
+.home-content {
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 2rem; 
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.section-title {
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #000000;
+    font-size: 0.875rem;
+}
+
+
+
+.category-section {
+    position: relative;
+}
+
+.category-list-scroll {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    gap: 1rem;
+    padding-bottom: 0.5rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    justify-content: space-between;
+}
+
+.category-list-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    width: 4.5rem;
+    height: 4.5rem;
+    min-width: 4.5rem;
+    border-radius: 0.45rem;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.category-card:active {
+    transform: scale(0.98);
+}
+
+.category-label {
+    position: absolute;
+    bottom: 0.3rem;
+    padding: 0.1875rem 0.25rem;
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #f2f2f2;
+    font-size: 0.6rem;
+    line-height: normal;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 0 0.15rem 0 0;
+}
+
+.more-categories-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.more-categories-link {
+    font-family: "Poppins", Helvetica;
+    font-size: 0.7rem;
+    color: #8000ff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* LISTA DE RECOMENDAÇÕES */
+
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.result-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: #f8f8f8;
+    border-radius: 0.3125rem;
+    min-height: 4rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.result-card:hover {
+    background-color: #efefef;
+}
+
+.card-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #000000;
+    font-size: 0.75rem;
+    margin-bottom: 0.1rem;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+}
+
+.star-icon {
+    color: #ffd95e;
+    font-size: 0.7rem;
+    margin-right: 0.1rem;
+}
+
+.rating-value, .schedule {
+    font-family: "Source Sans Pro", Helvetica;
+    font-size: 0.6rem;
+    white-space: nowrap;
+    color: #505050;
+}
+
+.separator {
+    margin: 0 0.25rem;
+    color: #505050;
+    font-size: 0.5rem;
+}
+
+.card-status {
+    padding: 0.25rem 0.5rem;
+    align-self: center;
+}
+
+.status-available .status-text {
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #158e19;
+    font-size: 0.6rem;
+    white-space: nowrap;
+}
+
+.status-closed .status-text {
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #c91818;
+    font-size: 0.6rem;
+    white-space: nowrap;
+}

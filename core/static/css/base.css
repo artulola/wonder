@@ -22,7 +22,7 @@ body {
   background-color: #fff;
 }
 
-/* ESTRUTURA GLOBAL (Header, Main, Footer) */
+
 
 .app-header {
   position: fixed;
@@ -149,7 +149,7 @@ body {
 
 /* MEDIA WEB */
 
-@media (min-width: 48rem) { /* 768px */
+@media (min-width: 48rem) { 
   .main-content {
     padding-left: var(--desktop-padding);
     padding-right: var(--desktop-padding);

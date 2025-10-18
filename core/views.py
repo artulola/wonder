@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 
-def home_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'core/base.html')
+def home_cliente_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/home.html')
 
 def search(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/busca.html')
@@ -15,3 +15,5 @@ def login_view(request: HttpRequest) -> HttpResponse:
 
 def cadastro_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cadastro.html')
+def register_options_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/opcao-cadastro.html')
