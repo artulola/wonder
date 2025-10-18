@@ -1,0 +1,195 @@
+/* --- Reset Básico e Configurações Globais --- */
+:root {
+    --cor-principal: #8000ff;
+    --cor-fundo-input: #f2f2f2;
+    --cor-texto-principal: #505050;
+    --cor-texto-branco: #ffffff;
+    font-size: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Estilo do Corpo da Página (Layout Principal) --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--cor-texto-branco);
+    color: var(--cor-texto-principal);
+    display: flex;
+    
+    /* CORREÇÃO:
+       Com o flex-direction: column do base.css,
+       'align-items' controla o alinhamento HORIZONTAL.
+       Ajustamos para 'center' para centralizar o formulário. */
+    align-items: center;
+    
+    /* E 'justify-content' controla o VERTICAL.
+       'flex-start' o mantém no topo da página. */
+    justify-content: flex-start;
+
+    min-height: 100vh;
+    padding: 1.25rem;
+}
+
+/* --- Container Principal do Cadastro --- */
+.container-cadastro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 21.875rem; /* 350px */
+    gap: 1.5rem; /* 24px */
+    margin-top: 1rem; /* Adiciona um respiro no topo */
+}
+
+/* --- Cabeçalho com Botão de Voltar --- */
+.cabecalho-cadastro {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.botao-voltar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    margin-left: -0.5rem; /* Compensa o padding para alinhar visualmente */
+}
+
+.botao-voltar img {
+    width: 1.5rem; /* 24px */
+    height: 1.5rem; /* 24px */
+}
+
+/* --- Seção do Logo --- */
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-icon {
+    width: 4.75rem; /* 76px */
+    height: auto;
+}
+
+.logo-name {
+    font-family: 'Gruppo', sans-serif;
+    font-weight: 400;
+    font-size: 2rem; /* 32px */
+    color: var(--cor-principal);
+    letter-spacing: 0.1em;
+}
+
+/* --- Formulário de Cadastro --- */
+.formulario-cadastro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* 16px */
+}
+
+.grupo-input {
+    width: 100%;
+    position: relative;
+}
+
+.input-campo {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--cor-fundo-input);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: var(--cor-texto-principal);
+}
+
+.input-campo::placeholder {
+    color: #888;
+}
+
+.input-campo:focus {
+    outline: 2px solid var(--cor-principal);
+}
+
+/* Estilo para campos de senha com ícone */
+.input-com-icone .input-campo {
+    padding-right: 3rem; /* Espaço para o ícone */
+}
+
+.icone-input {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    width: 1rem; /* 16px */
+    height: 1rem; /* 16px */
+    cursor: pointer;
+    opacity: 0.6;
+}
+
+/* --- Botão Principal --- */
+.botao-cadastrar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.875rem;
+    margin-top: 1rem; /* Espaço acima do botão */
+    background-color: var(--cor-principal);
+    color: var(--cor-texto-branco);
+    border: none;
+    border-radius: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.botao-cadastrar:hover {
+    background-color: #6a00d6;
+}
+
+.botao-cadastrar__icone {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* --- Divisor e Link de Login --- */
+.divisor {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 1.5rem; /* 24px */
+}
+
+.link-login {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: var(--cor-texto-principal);
+    text-align: center;
+}
+
+.link-login a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    color: var(--cor-texto-principal);
+    text-decoration: none;
+}
+
+.link-login a:hover {
+    text-decoration: underline;
+    color: var(--cor-principal);
+}
+

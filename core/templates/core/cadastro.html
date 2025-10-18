@@ -1,0 +1,57 @@
+{% extends 'core/base_auth.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<main class="container-cadastro">
+
+    <header class="cabecalho-cadastro">
+        <!-- Botão para voltar para a tela de login -->
+        <a href="{% url 'login' %}" class="botao-voltar">
+            <img src="{% static 'img/arrow-left.svg' %}" alt="Voltar">
+        </a>
+    </header>
+
+    <div class="logo">
+        <img class="logo-icon" src="{% static 'img/lotus.svg' %}" alt="Logo Wonder">
+        <h1 class="logo-name">WONDER</h1>
+    </div>
+
+    <form class="formulario-cadastro" method="POST">
+        {% csrf_token %}
+        <div class="grupo-input">
+            <input type="text" name="full_name" class="input-campo" placeholder="Nome completo" required>
+        </div>
+        <div class="grupo-input">
+            <input type="email" name="email" class="input-campo" placeholder="Email" required>
+        </div>
+        <div class="grupo-input">
+            <input type="tel" name="phone" class="input-campo" placeholder="Telefone" required>
+        </div>
+        <div class="grupo-input input-com-icone">
+            <input type="password" name="password" class="input-campo" placeholder="Senha" required>
+            <img src="{% static 'img/ant-design_eye-invisible-outlined.svg' %}" alt="Mostrar senha" class="icone-input">
+        </div>
+        <div class="grupo-input input-com-icone">
+            <input type="password" name="password_confirm" class="input-campo" placeholder="Confirmar senha" required>
+            <img src="{% static 'img/ant-design_eye-invisible-outlined.svg' %}" alt="Mostrar senha" class="icone-input">
+        </div>
+
+        <button type="submit" class="botao-cadastrar">
+            <img src="{% static 'img/akar-icons_check.svg' %}" alt="Ícone de confirmar" class="botao-cadastrar__icone">
+            <span>Cadastrar</span>
+        </button>
+    </form>
+
+    <hr class="divisor">
+
+    <p class="link-login">
+        Já tem uma conta? <a href="{% url 'login' %}">Faça login</a>
+    </p>
+
+</main>
+{% endblock content %}
+
