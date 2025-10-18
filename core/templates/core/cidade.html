@@ -1,0 +1,61 @@
+{% extends 'core/base_auth.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/cidade.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="container-cidade">
+    <header class="cabecalho-cidade">
+        <h1 class="cabecalho-cidade__titulo">Onde você está?</h1>
+    </header>
+
+    <main class="conteudo-principal">
+        <div class="busca-container">
+            <img src="{% static 'img/bx_search-alt-2.svg' %}" alt="Buscar" class="busca-icone">
+            <input type="text" class="busca-input" placeholder="Buscar cidade">
+        </div>
+
+        <ul class="lista-cidades">
+            <li>
+                <a href="#">
+                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" alt="Localização" class="cidade-icone">
+                    <span class="cidade-nome">Serrinha dos Pintos / RN</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" alt="Localização" class="cidade-icone">
+                    <span class="cidade-nome">Mossoró / RN</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" alt="Localização" class="cidade-icone">
+                    <span class="cidade-nome">Rodolfo Fernandes / RN</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" alt="Localização" class="cidade-icone">
+                    <span class="cidade-nome">Pau dos Ferros / RN</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" alt="Localização" class="cidade-icone">
+                    <span class="cidade-nome">Itaú / RN</span>
+                </a>
+            </li>
+             <li>
+                <a href="#">
+                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" alt="Localização" class="cidade-icone">
+                    <span class="cidade-nome">São Miguel / RN</span>
+                </a>
+            </li>
+        </ul>
+    </main>
+</div>
+{% endblock content %}
+

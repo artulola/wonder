@@ -1,12 +1,12 @@
-/* --- Reset Básico e Configurações Globais --- */
+
 :root {
-    /* Cores primárias para fácil manutenção */
+
     --cor-principal: #8000ff;
     --cor-fundo-input: #f2f2f2;
     --cor-texto-principal: #505050;
     --cor-texto-branco: #ffffff;
 
-    /* Definindo a base da fonte para o cálculo de REM */
+   
     font-size: 16px;
 }
 
@@ -14,58 +14,57 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-font-smoothing: antialiased; /* Melhora a renderização das fontes */
+    -webkit-font-smoothing: antialiased; 
 }
 
-/* --- Estilo do Corpo da Página (Layout Principal) --- */
 body {
-    font-family: 'Poppins', sans-serif; /* Fonte padrão */
+    font-family: 'Poppins', sans-serif; 
     background-color: var(--cor-texto-branco);
     color: var(--cor-texto-principal);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 1.25rem; /* 20px */
+    padding: 1.25rem; 
 }
 
-/* --- Container Principal do Login --- */
+
 .container-login {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 21.875rem; /* 350px */
-    gap: 2.5rem; /* 40px */
+    max-width: 21.875rem; 
+    gap: 2.5rem; 
 }
 
-/* --- Seção do Logo --- */
+
 .logo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem; /* 16px */
+    gap: 1rem; 
 }
 
 .logo-icon {
-    width: 5.5rem; /* 88px */
+    width: 5.5rem;
     height: auto;
 }
 
 .logo-name {
     font-family: 'Gruppo', sans-serif;
-    font-weight: 400; /* Regular */
-    font-size: 2.25rem; /* 36px */
+    font-weight: 400; 
+    font-size: 2.25rem; 
     color: var(--cor-principal);
     letter-spacing: 0.1em;
 }
 
-/* --- Formulário de Login --- */
+
 .formulario-login {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem; /* 20px */
+    gap: 1.25rem; 
 }
 
 .grupo-input {
@@ -74,13 +73,13 @@ body {
 
 .input-campo {
     width: 100%;
-    padding: 0.875rem 1rem; /* 14px 16px */
+    padding: 0.875rem 1rem; 
     border: none;
-    border-radius: 0.5rem; /* 8px */
+    border-radius: 0.5rem; 
     background-color: var(--cor-fundo-input);
     font-family: 'Poppins', sans-serif;
-    font-weight: 400; /* Regular */
-    font-size: 0.875rem; /* 14px */
+    font-weight: 400; 
+    font-size: 0.875rem; 
     color: var(--cor-texto-principal);
 }
 
@@ -96,16 +95,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.5rem; /* 8px */
+    gap: 0.5rem; 
     width: 100%;
-    padding: 0.875rem; /* 14px */
+    padding: 0.875rem; 
     background-color: var(--cor-principal);
     color: var(--cor-texto-branco);
     border: none;
-    border-radius: 0.5rem; /* 8px */
+    border-radius: 0.5rem; 
     font-family: 'Poppins', sans-serif;
-    font-size: 1rem; /* 16px */
-    font-weight: 600; /* Semibold */
+    font-size: 1rem; 
+    font-weight: 600; 
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -115,29 +114,29 @@ body {
 }
 
 .botao-entrar__icone {
-    width: 1.5rem; /* 24px */
-    height: 1.5rem; /* 24px */
+    width: 1.5rem; 
+    height: 1.5rem; 
 }
 
-/* --- Divisor e Link de Cadastro --- */
+
 .divisor {
     width: 100%;
     border: none;
     border-top: 1px solid #e0e0e0;
-    margin-top: 2.5rem; /* 40px */
+    margin-top: 2.5rem; 
 }
 
 .link-cadastro {
     font-family: 'Roboto', sans-serif;
-    font-weight: 400; /* Regular */
-    font-size: 0.875rem; /* 14px */
+    font-weight: 400; 
+    font-size: 0.875rem; 
     color: var(--cor-texto-principal);
     text-align: center;
 }
 
 .link-cadastro a {
     font-family: 'Roboto', sans-serif;
-    font-weight: 700; /* Bold */
+    font-weight: 700; 
     color: var(--cor-texto-principal);
     text-decoration: none;
 }
@@ -146,4 +145,5 @@ body {
     text-decoration: underline;
     color: var(--cor-principal);
 }
+
 

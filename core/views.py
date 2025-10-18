@@ -15,5 +15,9 @@ def login_view(request: HttpRequest) -> HttpResponse:
 
 def cadastro_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cadastro.html')
+
 def register_options_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/opcao-cadastro.html')
+
+def cidade_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/cidade.html')
