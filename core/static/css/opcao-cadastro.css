@@ -1,4 +1,4 @@
-/* --- Reset Básico e Estilos Globais --- */
+
 * {
     margin: 0;
     padding: 0;
@@ -15,10 +15,10 @@ body {
     min-height: 100vh;
 }
 
-/* --- Container Principal --- */
+
 .auth-container {
     width: 100%;
-    max-width: 450px; /* Limita a largura em telas maiores */
+    max-width: 450px; 
     padding: 20px;
     position: relative;
 }
@@ -43,11 +43,10 @@ body {
     display: block;
 }
 
-/* --- Card de Opções --- */
 .card {
     width: 100%;
-    max-width: 1100px; /* aumenta conforme a tela */
-    background: transparent; /* mantém o fundo da página */
+    max-width: 1100px;
+    background: transparent; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -62,12 +61,12 @@ body {
     font-weight: 600;
 }
 
-/* --- Wrapper das Opções de Cadastro --- */
+
 .options-wrapper {
     width: 100%;
     max-width: 720px;
     display: flex;
-    flex-direction: column; /* sempre um abaixo do outro */
+    flex-direction: column; 
     gap: 20px;
     align-items: center;
 }
@@ -90,7 +89,6 @@ body {
     font-size: 1rem;
 }
 
-/* alinhar texto e icone, mas manter centralização visual */
 .option-button img {
     width: 44px;
     height: 44px;
@@ -98,13 +96,11 @@ body {
     display: inline-block;
 }
 
-/* hover */
 .option-button:hover {
     transform: translateY(-3px);
     background: rgba(255,255,255,0.12);
 }
 
-/* logo no rodapé do card */
 .brand-logo {
     width: clamp(120px, 18vw, 220px);
     height: auto;
@@ -112,7 +108,7 @@ body {
     opacity: 0.95;
 }
 
-/* comportamento em telas muito largas: deixar o conteúdo mais espaçado */
+
 @media (min-width: 1200px) {
     .card {
         padding: 48px;

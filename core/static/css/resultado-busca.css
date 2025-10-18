@@ -1,4 +1,4 @@
-/* CONFIGURAÇÕES GERAIS E ÍCONES */
+
 
 .icon-sm {
     width: 1.25rem;
@@ -10,7 +10,7 @@
     color: #505050;
 }
 
-/* LAYOUT DA PÁGINA DE BUSCA */
+
 .search-page-content {
     padding: 0 1rem;
 }
@@ -62,7 +62,7 @@
     color: #505050;
 }
 
-/* LINHA DE FILTROS */
+/* FILTROS */
 
 .filters-line {
     font-family: "Source Sans Pro", Helvetica;
@@ -82,7 +82,7 @@
     font-weight: 600;
 }
 
-/* LISTA E CARDS DE RESULTADO */
+/* CARDS DE RESULTADO */
 
 .results-list {
     display: flex;
@@ -169,7 +169,7 @@
     white-space: nowrap;
 }
 
-/* RESPONSIVIDADE (DESKTOP) */
+
 
 @media (min-width: 48rem) {
     .search-page-content {

@@ -1,4 +1,4 @@
-/* LAYOUT E SEÇÕES GERAIS*/
+/* LAYOUT DA PÁGINA INICIAL */
 
 .home-content {
     padding: 0 1rem;
@@ -21,7 +21,7 @@
     font-size: 0.875rem;
 }
 
-/* 1. CATEGORIAS */
+
 
 .category-section {
     position: relative;
