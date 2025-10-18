@@ -1,0 +1,149 @@
+/* --- Reset Básico e Configurações Globais --- */
+:root {
+    /* Cores primárias para fácil manutenção */
+    --cor-principal: #8000ff;
+    --cor-fundo-input: #f2f2f2;
+    --cor-texto-principal: #505050;
+    --cor-texto-branco: #ffffff;
+
+    /* Definindo a base da fonte para o cálculo de REM */
+    font-size: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased; /* Melhora a renderização das fontes */
+}
+
+/* --- Estilo do Corpo da Página (Layout Principal) --- */
+body {
+    font-family: 'Poppins', sans-serif; /* Fonte padrão */
+    background-color: var(--cor-texto-branco);
+    color: var(--cor-texto-principal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1.25rem; /* 20px */
+}
+
+/* --- Container Principal do Login --- */
+.container-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 21.875rem; /* 350px */
+    gap: 2.5rem; /* 40px */
+}
+
+/* --- Seção do Logo --- */
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; /* 16px */
+}
+
+.logo-icon {
+    width: 5.5rem; /* 88px */
+    height: auto;
+}
+
+.logo-name {
+    font-family: 'Gruppo', sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 2.25rem; /* 36px */
+    color: var(--cor-principal);
+    letter-spacing: 0.1em;
+}
+
+/* --- Formulário de Login --- */
+.formulario-login {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem; /* 20px */
+}
+
+.grupo-input {
+    width: 100%;
+}
+
+.input-campo {
+    width: 100%;
+    padding: 0.875rem 1rem; /* 14px 16px */
+    border: none;
+    border-radius: 0.5rem; /* 8px */
+    background-color: var(--cor-fundo-input);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 0.875rem; /* 14px */
+    color: var(--cor-texto-principal);
+}
+
+.input-campo::placeholder {
+    color: #888;
+}
+
+.input-campo:focus {
+    outline: 2px solid var(--cor-principal);
+}
+
+.botao-entrar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem; /* 8px */
+    width: 100%;
+    padding: 0.875rem; /* 14px */
+    background-color: var(--cor-principal);
+    color: var(--cor-texto-branco);
+    border: none;
+    border-radius: 0.5rem; /* 8px */
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem; /* 16px */
+    font-weight: 600; /* Semibold */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.botao-entrar:hover {
+    background-color: #6a00d6;
+}
+
+.botao-entrar__icone {
+    width: 1.5rem; /* 24px */
+    height: 1.5rem; /* 24px */
+}
+
+/* --- Divisor e Link de Cadastro --- */
+.divisor {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin-top: 2.5rem; /* 40px */
+}
+
+.link-cadastro {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400; /* Regular */
+    font-size: 0.875rem; /* 14px */
+    color: var(--cor-texto-principal);
+    text-align: center;
+}
+
+.link-cadastro a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700; /* Bold */
+    color: var(--cor-texto-principal);
+    text-decoration: none;
+}
+
+.link-cadastro a:hover {
+    text-decoration: underline;
+    color: var(--cor-principal);
+}
+
