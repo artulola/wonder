@@ -1,0 +1,120 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: #6A00F4;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+
+.auth-container {
+    width: 100%;
+    max-width: 450px; 
+    padding: 20px;
+    position: relative;
+}
+
+.back-button {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 999;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+.back-button img {
+    width: 28px;
+    height: 28px;
+    display: block;
+}
+
+.card {
+    width: 100%;
+    max-width: 1100px;
+    background: transparent; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 32px;
+}
+
+.card-title {
+    font-size: clamp(20px, 3.2vw, 36px);
+    line-height: 1.1;
+    text-align: center;
+    font-weight: 600;
+}
+
+
+.options-wrapper {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column; 
+    gap: 20px;
+    align-items: center;
+}
+
+.option-button {
+    width: 100%;
+    max-width: 720px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 12px;
+    transition: transform 0.12s ease, background 0.12s;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.option-button img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    display: inline-block;
+}
+
+.option-button:hover {
+    transform: translateY(-3px);
+    background: rgba(255,255,255,0.12);
+}
+
+.brand-logo {
+    width: clamp(120px, 18vw, 220px);
+    height: auto;
+    margin-top: 12px;
+    opacity: 0.95;
+}
+
+
+@media (min-width: 1200px) {
+    .card {
+        padding: 48px;
+        gap: 40px;
+    }
+    .options-wrapper {
+        max-width: 900px;
+    }
+}
