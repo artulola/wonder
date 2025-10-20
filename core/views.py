@@ -21,3 +21,6 @@ def register_options_view(request: HttpRequest) -> HttpResponse:
 
 def cidade_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cidade.html')
+
+def perfil_usuario_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/perfil-usuario.html')

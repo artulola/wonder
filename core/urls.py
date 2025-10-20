@@ -29,5 +29,6 @@ urlpatterns = [
     path('cadastro/', views.cadastro_view, name='cadastro'),
     path('opcoes-cadastro/', views.register_options_view, name='opcoes-cadastro'),
     path('cidade/', views.cidade_view, name='cidade'),
+    path('perfil-usuario/', views.perfil_usuario_view, name='perfil-usuario'),
     
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
