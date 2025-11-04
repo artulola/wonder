@@ -82,18 +82,20 @@
         
         <div class="results-list">
             <article class="result-card available">
-                <div class="card-details">
-                    <img src="{% static 'img/Diego-BarberShop.svg' %}" alt="Logo Diego BarberShop">
-                    <div class="card-info">
-                        <h3 class="card-title">Diego BarberShop</h3>
-                        <div class="card-meta">
-                            <span class="star-icon">★</span>
-                            <span class="rating-value">4,7</span>
-                            <span class="separator">·</span>
-                            <span class="schedule">8 - 18h</span>
+                <a href="{% url 'detalhe-estabelecimento' %}" style="text-decoration: none; color: inherit;">
+                    <div class="card-details">
+                        <img src="{% static 'img/Diego-BarberShop.svg' %}" alt="Logo Diego BarberShop">
+                        <div class="card-info">
+                            <h3 class="card-title">Diego BarberShop</h3>
+                            <div class="card-meta">
+                                <span class="star-icon">★</span>
+                                <span class="rating-value">4,7</span>
+                                <span class="separator">·</span>
+                                <span class="schedule">8 - 18h</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
                 <div class="card-status status-available">
                     <p class="status-text">Disponível Hoje</p>
                 </div>
