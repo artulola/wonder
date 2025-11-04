@@ -24,3 +24,6 @@ def cidade_view(request: HttpRequest) -> HttpResponse:
 
 def perfil_usuario_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/perfil-usuario.html')
+
+def detalhe_estabelecimento_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/detalhe_estabelecimento.html')
