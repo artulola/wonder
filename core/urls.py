@@ -30,5 +30,6 @@ urlpatterns = [
     path('opcoes-cadastro/', views.register_options_view, name='opcoes-cadastro'),
     path('cidade/', views.cidade_view, name='cidade'),
     path('perfil-usuario/', views.perfil_usuario_view, name='perfil-usuario'),
+    path('detalhe-estabelecimento/', views.detalhe_estabelecimento_view, name='detalhe-estabelecimento'),
     
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
