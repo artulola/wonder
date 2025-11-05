@@ -33,5 +33,6 @@ urlpatterns = [
     path('detalhe-estabelecimento/', views.detalhe_estabelecimento_view, name='detalhe-estabelecimento'),
     path('agendamentos/', views.agendamento_view, name='agendamento'),
     path('agendamentos/finalizados/', views.agendamentos_finalizados_view, name='agendamentos-finalizados'),
+    path('solicitacoes/', views.solicitacoes_view, name='solicitacoes'),
     
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
