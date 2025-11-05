@@ -7,10 +7,17 @@
     font-size: 16px;
 }
 
-.container-cidade {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+.main-container-cidade {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100vh; 
     background-color: var(--cor-texto-branco);
 }
 
@@ -22,6 +29,27 @@
     position: sticky;
     top: 0;
     z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.botao-voltar {
+    position: absolute; 
+    left: 1rem; 
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0; 
+}
+
+.botao-voltar img {
+    width: 1.5rem; 
+    height: 1.5rem; 
+    filter: brightness(0) invert(1); /* Seta branca */
 }
 
 .cabecalho-cidade__titulo {
@@ -44,7 +72,7 @@
 
 .busca-input {
     width: 100%;
-    padding: 0.875rem 1rem 0.875rem 3rem;
+    padding: 0.875rem 1rem 0.875rem 3rem; 
     border: none;
     border-radius: 0.5rem;
     background-color: var(--cor-fundo-input);
@@ -107,3 +135,33 @@
     font-weight: 400;
 }
 
+/* --- AJUSTE PARA TELAS BAIXAS --- */
+@media (max-height: 600px) {
+    .conteudo-principal {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .busca-container {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* --- AJUSTE PARA TELAS LARGAS (DESKTOP) --- */
+@media (min-width: 768px) {
+    .main-container-cidade {
+        align-items: center;
+    }
+    .conteudo-principal {
+        max-width: 25rem; 
+        width: 100%;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--cor-borda-suave);
+    }
+    
+    /* Esta é a regra que esconde a seta no desktop */
+    .botao-voltar {
+        display: none;
+    }
+}
