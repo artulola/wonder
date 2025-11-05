@@ -16,6 +16,10 @@
     align-items: center;
 }
 
+.nav-tabs-container a {
+    text-decoration: none;
+}
+
 .option-tab {
     display: flex;
     width: 150px;
@@ -30,12 +34,12 @@
     cursor: pointer;
     transition: background-color 0.2s;
     box-shadow: 0 4px 8px rgba(128, 0, 255, 0.2);
+    border-radius: 0.3rem;
 }
 
 .option-tab.active {
     background-color: #8000ff;
     color: #ffffff;
-    border-radius: 0.3rem 0 0 0.3rem;
     border: 1px solid #b4b4b433;
 }
 
@@ -44,7 +48,6 @@
     color: #8000ff;
     border: 1px solid #00000033;
     border-left: none;
-    border-radius: 0 0.3rem 0.3rem 0;
 }
 
 /* CARDS DE RESULTADO */
@@ -143,6 +146,28 @@
 
 .botao-cancelar:active {
     background-color: #bd2130;
+    transform: translateY(1px);
+}
+
+.botao-avaliar {
+    background-color: #46c20d;
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.botao-avaliar:hover {
+    background-color: #3ca10d;
+}
+
+.botao-avaliar:active {
+    background-color: #5fda26;
     transform: translateY(1px);
 }
 

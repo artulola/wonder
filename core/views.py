@@ -30,3 +30,6 @@ def detalhe_estabelecimento_view(request: HttpRequest) -> HttpResponse:
 
 def agendamento_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/agendamento/agendados.html')
+
+def agendamentos_finalizados_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/agendamento/finalizados.html')
