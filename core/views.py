@@ -27,3 +27,6 @@ def perfil_usuario_view(request: HttpRequest) -> HttpResponse:
 
 def detalhe_estabelecimento_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/detalhe_estabelecimento.html')
+
+def agendamento_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/agendamento/agendados.html')
