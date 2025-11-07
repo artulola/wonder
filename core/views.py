@@ -44,3 +44,5 @@ def solicitacoes_view(request: HttpRequest) -> HttpResponse:
 
 def home_prestador_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/home_prestador.html')
+def detalhes_solicitacoes_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/admin/detalhes-solicitacoes.html')
