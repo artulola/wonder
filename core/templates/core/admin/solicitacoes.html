@@ -10,7 +10,7 @@
 
 <header class="app-header">
     <div class="header-logo">
-        <span class="logo-name">Admin</span>
+        <a href="{% url 'solicitacoes' %}"><span class="logo-name">Admin</span></a>
     </div>
     <a href="{% url 'login' %}" class="logout-button">
       <img src="{% static 'img/profile/logout.svg' %}" alt="">
@@ -24,6 +24,8 @@
         <a href="#"><button class="option-tab inactive">Categorias</button></a>
     </div>
 
+    <span class="text-tag">Solicitações Pendentes</span>
+
     <div class="results-list">
         <article class="result-card">
             <div class="card-details">
@@ -33,7 +35,7 @@
                 </div>
             </div>
             <div class="block-day-btn">
-                <button class="botao-visualizar">Visualizar</button>
+                <a href="{% url 'detalhes-solicitacoes' %}"><button class="botao-visualizar">Visualizar</button></a>
                 <button class="botao-vermelho">Recusar</button>
             </div>
         </article>
