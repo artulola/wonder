@@ -1,0 +1,94 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block title %}Detalhe | WONDER{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<header class="app-header">
+    <div class="header-logo">
+        <a href="{% url 'solicitacoes' %}"><span class="logo-name">Admin</span></a>
+    </div>
+    <a href="{% url 'login' %}" class="logout-button">
+        <img src="{% static 'img/profile/logout.svg' %}" alt="">
+        <span>Sair</span>
+    </a>
+</header>
+
+<section class="home-content">
+    <div class="profile-card">
+
+        <header class="profile-header">
+            <img class="profile-avatar" src="{% static 'img/Diego-BarberShop.svg' %}" alt="Foto de perfil">
+        </header>
+
+        <section class="user-info-list">
+
+            <div class="info-item">
+                <div class="info-label-group">
+                    <img class="info-icon" src="{% static 'img/profile/user-circle.svg' %}" alt="">
+                    <span class="info-label">Nome</span>
+                </div>
+                <span class="info-value">Diego Silva Costa</span>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label-group">
+                    <img class="info-icon" src="{% static 'img/profile/user-circle.svg' %}" alt="">
+                    <span class="info-label">Nome Estabelecimento</span>
+                </div>
+                <span class="info-value">Diego Barber Shop</span>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label-group">
+                    <img class="info-icon" src="{% static 'img/profile/mail.svg' %}" alt="">
+                    <span class="info-label">Email</span>
+                </div>
+                <span class="info-value">Diegobarber@gmail.com</span>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label-group">
+                    <img class="info-icon" src="{% static 'img/local.svg' %}" alt="">
+                    <span class="info-label">Cidade de Atendimento</span>
+                </div>
+                <span class="info-value">Pau dos Ferros - RN</span>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label-group">
+                    <img class="info-icon" src="{% static 'img/profile/phone.svg' %}" alt="">
+                    <span class="info-label">Telefone</span>
+                </div>
+                <span class="info-value">(84) 99485-9785</span>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label-group">
+                    <img class="info-icon" src="{% static 'img/User.svg' %}" alt="">
+                    <span class="info-label">CPF/CNPJ</span>
+                </div>
+                <span class="info-value">62.173.620/0001-80</span>
+            </div>
+
+            <div class="info-item">
+                <div class="info-label-group">
+                    <img class="info-icon" src="{% static 'img/time.svg' %}" alt="">
+                    <span class="info-label">Horário de Funcionamento</span>
+                </div>
+                <span class="info-value">SEG - SÁB / 8h - 12h</span>
+            </div>
+        </section>
+
+        <div class="block-btn">
+            <button class="botao-recusar">Recusar</button>
+            <button class="botao-aceitar">Aceitar</button>
+        </div>
+
+</section>
+
+{% endblock content %}

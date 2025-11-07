@@ -36,3 +36,6 @@ def agendamentos_finalizados_view(request: HttpRequest) -> HttpResponse:
 
 def solicitacoes_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/admin/solicitacoes.html')
+
+def detalhes_solicitacoes_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/admin/detalhes-solicitacoes.html')
