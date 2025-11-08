@@ -69,14 +69,14 @@
 }
 
 .option-tab.active {
-    background-color: #8000ff;
+    background-color: #430b7a;
     color: #ffffff;
     border: 1px solid #b4b4b433;
 }
 
 .option-tab.inactive {
     background-color: #ffffff;
-    color: #8000ff;
+    color: #430b7a;
     border: 1px solid #00000033;
     border-left: none;
 }
@@ -110,6 +110,10 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+.card-details img {
+    width: 3.125rem;
 }
 
 .card-info {
@@ -333,6 +337,41 @@
     transform: translateY(1px);
 }
 
+/* Tela Categorias */
+
+.block-text-tag {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.text-tag-category {
+    color: #fff;
+}
+
+.nova-categoria-button {
+    display: flex;
+    background-color: #5D14A6;
+    padding: 0.6rem 0.8rem;
+    text-decoration: none;
+    gap: 0.5rem;
+    border-radius: 0.8rem;
+    font-size: 0.8rem;
+}
+
+.nova-categoria-button:hover {
+    background-color: #430b7a;
+}
+
+.nova-categoria-button:active {
+    background-color: #5D14A6;
+    transform: translateY(1px);
+}
+
+.nova-categoria-button img {
+    width: 0.8rem;
+}
 
 /* RESPONSIVIDADE (WEB / DESKTOP) */
 
