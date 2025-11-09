@@ -1,7 +1,7 @@
 {% extends 'core/base_auth.html' %}
 {% load static %}
 
-{% block title %}Agendamentos Finalizados | WONDER{% endblock title %}
+{% block title %}Agendamentos Cancelados | WONDER{% endblock title %}
 
 {% block extra_css %}
 
@@ -23,20 +23,16 @@
         
         <div class="nav-tabs-container">
             <a href="{% url 'home_prestador' %}"><button class="option-tab inactive">EM ABERTO</button></a>
-            <button class="option-tab active">FINALIZADOS</button>
+            <a href="{% url 'home_finalizados' %}"><button class="option-tab active">FINALIZADOS</button></a>
         </div>
 
         <div class="filtros-container">
-            <div class="filtro-data">
+            <div class="filtro-data inactive">
                 <img src="{% static 'img/calendario_roxo.svg' %}" alt="Calendário">
                 <span>08/10/2025</span>
             </div>
-            <a href="{% url 'home_cancelados' %}" class="filtro-cancelados">
+            <a href="#" class="filtro-cancelados active">
                 <span>Ver Cancelados</span>
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.5 4.5L4.5 13.5" stroke="#5D14A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M4.5 4.5L13.5 13.5" stroke="#5D14A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
             </a>
         </div>
 
@@ -44,16 +40,16 @@
             
             <article class="result-card">
                 <div class="card-details">
-                    <img src="{% static 'img/thiago_cliente.svg' %}" alt="Foto do cliente">
+                    <img src="{% static 'img/gustavo_cliente.svg' %}" alt="Foto do cliente">
                     <div class="card-info">
                         <h2 class="card-title">Corte de Cabelo Mas.</h2>
                         <div class="card-meta">
-                            <span class="cliente-nome">Thiago Henrique</span>
+                            <span class="cliente-nome">Gustavo Emanuel</span>
                         </div>
                     </div>
                 </div>
                 <div class="block-day-btn">
-                    <button class="botao-concluido">Concluído</button> 
+                    <button class="btn-status-cancelado">Cancelado</button> 
                 </div>
             </article>
 
