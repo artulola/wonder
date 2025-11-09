@@ -35,5 +35,6 @@ urlpatterns = [
     path('agendamentos/finalizados/', views.agendamentos_finalizados_view, name='agendamentos-finalizados'),
     path('cadastro-prestador/', views.cadastro_prestador_view, name='cadastro-prestador'),
     path('solicitacoes/', views.solicitacoes_view, name='solicitacoes'),
+    path('home_prestador/', views.home_prestador_view, name='home_prestador'),
     
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
