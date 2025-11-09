@@ -38,5 +38,6 @@ urlpatterns = [
     path('home_prestador/', views.home_prestador_view, name='home_prestador'),
     path('solicitacoes/detalhes-solicitacoes/', views.detalhes_solicitacoes_view, name='detalhes-solicitacoes'),
     path('categorias/', views.categorias_view, name='categorias'),
+    path('home_finalizados/', views.home_finalizados_view, name='home_finalizados'),
     
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

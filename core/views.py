@@ -53,3 +53,7 @@ def detalhes_solicitacoes_view(request: HttpRequest) -> HttpResponse:
 
 def categorias_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/admin/categorias.html')
+
+
+def home_finalizados_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/home_finalizados.html')
