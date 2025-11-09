@@ -57,3 +57,6 @@ def categorias_view(request: HttpRequest) -> HttpResponse:
 
 def home_finalizados_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/home_finalizados.html')
+
+def home_cancelados_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/home_cancelados.html')

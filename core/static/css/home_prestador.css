@@ -8,18 +8,19 @@
     --cor-azul: #2a6ccf;
     --cor-vermelho-texto: #FF5A5A; 
     --cor-texto-principal: #505050; 
+    --cor-texto-branco: #ffffff;
     
     --header-height: 52px;
     --navbar-height: 56px;
     --desktop-padding: 5rem;
 }
 
+/* --- Layout Principal --- */
 .prestador-layout-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
-
 .app-header {
     position: fixed;
     top: 0;
@@ -34,7 +35,6 @@
     box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.05); 
     z-index: 100;
 }
-
 .main-content {
     flex-grow: 1;
     overflow-y: auto;
@@ -45,7 +45,6 @@
     flex-direction: column;
     gap: 0.75rem;
 }
-
 .app-navbar {
     position: fixed;
     bottom: 0;
@@ -57,13 +56,14 @@
     z-index: 100;
 }
 
+/* --- Cabeçalho --- */
+.prestador-header { }
 .header-saudacao {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--cor-principal);
 }
-
 .header-logout-button {
     display: flex;
     align-items: center;
@@ -93,6 +93,7 @@
     filter: brightness(0) invert(1);
 }
 
+/* --- Abas (JUNTAS) --- */
 .nav-tabs-container {
     display: flex;
     justify-content: center;
@@ -116,7 +117,7 @@
     cursor: pointer;
     transition: background-color 0.2s;
     box-shadow: 0 4px 8px rgba(128, 0, 255, 0.2);
-    border-radius: 0.3rem;
+    border-radius: 0.3rem; 
 }
 .option-tab.active {
     background-color: var(--cor-principal);
@@ -127,9 +128,10 @@
     background-color: #ffffff;
     color: var(--cor-principal);
     border: 1px solid #00000033;
-    border-left: none;
+    border-left: none; /* Linha que "gruda" */
 }
 
+/* --- Link "Agendado Hoje" --- */
 .link-hoje {
     display: flex;
     justify-content: flex-end;
@@ -150,13 +152,13 @@
     height: 20px;
 }
 
+/* --- Lista de Cards --- */
 .results-list {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     padding-bottom: 1rem;
 }
-
 .result-card {
     display: flex;
     align-items: center;
@@ -171,7 +173,6 @@
 .result-card:hover {
     background-color: #efefef;
 }
-
 .card-details {
     display: flex;
     align-items: center;
@@ -183,12 +184,10 @@
     border-radius: 5px;
     object-fit: cover;
 }
-
 .card-info {
     display: flex;
     flex-direction: column;
 }
-
 .card-title {
     font-family: 'Roboto', sans-serif;
     font-weight: 600;
@@ -196,14 +195,12 @@
     font-size: 0.8rem;
     margin-bottom: 0.25rem;
 }
-
 .card-meta {
     display: flex;
     font-size: 0.75rem;
     color: #8000ff9a;
     flex-direction: column;
 }
-
 .cliente-nome {
     font-family: 'Roboto', sans-serif;
     font-weight: 600;
@@ -211,6 +208,7 @@
     font-size: 0.75rem;
 }
 
+/* --- Botões de Ação (Finalizar/Cancelar) --- */
 .block-day-btn {
     display: flex;
     flex-direction: column;
@@ -218,7 +216,6 @@
     gap: 0.3rem;
     width: 110px; 
 }
-
 .botao-cancelar {
     background-color: #ffffff;
     color: var(--cor-vermelho);
@@ -241,7 +238,6 @@
     background-color: #ececec;
     transform: translateY(1px);
 }
-
 .botao-finalizar {
     background-color: #ffffff;
     color: var(--cor-azul);
@@ -265,6 +261,7 @@
     transform: translateY(1px);
 }
 
+/* --- Rodapé do Prestador --- */
 .prestador-navbar {
     display: flex;
     justify-content: space-around; 
@@ -272,7 +269,6 @@
     padding-top: 0.5rem; 
     padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
 }
-
 .nav-item {
     display: flex;
     flex-direction: column;
@@ -281,28 +277,130 @@
     text-decoration: none;
     color: var(--cor-texto-principal); 
 }
-
 .nav-item .nav-icon {
     width: 20px;
     height: 20px;
     filter: invert(30%) sepia(8%) saturate(944%) hue-rotate(203deg) brightness(97%) contrast(89%);
     transition: filter 0.2s ease;
 }
-
 .nav-item.active {
     color: var(--cor-principal); 
 }
-
 .nav-item.active .nav-icon {
     filter: invert(13%) sepia(99%) saturate(6237%) hue-rotate(276deg) brightness(99%) contrast(117%);
 }
-
 .nav-label {
     font-family: 'Roboto', sans-serif;
     font-weight: 600;
-    font-size: 0.625rem; 
+    font-size: 0.625rem;
 }
 
+/* =================================================== */
+/* === ESTILOS PARA 'FINALIZADOS' E 'CANCELADOS' === */
+/* =================================================== */
+
+.filtros-container {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 0 0.5rem;
+    margin: 1.5rem 0; 
+}
+.filtro-data {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.4rem;
+    background-color: var(--cor-principal-fundo);
+    border-radius: 2px;
+}
+.filtro-data img {
+    width: 18px;
+    height: 18px;
+    filter: brightness(0) invert(1); 
+}
+.filtro-data span {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    color: var(--cor-texto-branco); 
+}
+.filtro-cancelados {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    text-decoration: none;
+}
+.filtro-cancelados span {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    color: var(--cor-principal-fundo);
+}
+.filtro-cancelados svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--cor-principal-fundo);
+}
+
+/* Estilos de Ativo/Inativo para Filtros */
+.filtro-data.inactive {
+    background-color: #f0f0f0; 
+}
+.filtro-data.inactive img {
+    filter: brightness(0) invert(0.5); 
+}
+.filtro-data.inactive span {
+    color: var(--cor-principal-fundo); 
+}
+.filtro-cancelados.active {
+    background-color: var(--cor-principal-fundo);
+    padding: 0.25rem 0.4rem;
+    border-radius: 2px;
+}
+.filtro-cancelados.active span {
+    color: var(--cor-texto-branco);
+}
+
+
+/* Botão "Concluído" (Verde) */
+.botao-concluido {
+    background-color: var(--cor-verde);
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600; 
+    text-transform: uppercase;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+.botao-concluido:hover {
+    background-color: var(--cor-verde-hover);
+}
+
+/* Botão "Cancelado" (Vermelho) */
+.btn-status-cancelado {
+    background-color: var(--cor-vermelho);
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    cursor: default; 
+    font-size: 0.8rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    width: 100%;
+    text-align: center;
+}
+
+
+/* --- Responsividade do Desktop --- */
 @media (min-width: 48rem) { 
     .main-content {
         padding-left: var(--desktop-padding);
