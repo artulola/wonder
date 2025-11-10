@@ -1,0 +1,29 @@
+{% extends 'core/base_auth.html' %}
+
+{% load static %}
+
+
+{% block title %}Aguardando Aprovação | WONDER{% endblock title %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cadastro_prestador.css' %}">
+<link rel="stylesheet" href="{% static 'css/aguardando_aprovacao.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<main class="main-container-auth">
+
+    <div class="container-status">
+
+        <div class="logo">
+            <img class="logo-icon" src="{% static 'img/lotus.svg' %}" alt="Logo Wonder">
+            <h1 class="logo-name">WONDER</h1>
+        </div>
+
+        <div class="status-texto">
+            <h1 class="status-titulo">Aguardando aprovação</h1>
+            <p class="status-subtitulo">Sua solicitação será analisada dentro de 24h</p>
+        </div>
+    </div>
+</main>
+{% endblock %}

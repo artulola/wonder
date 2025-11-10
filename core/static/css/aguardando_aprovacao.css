@@ -1,0 +1,40 @@
+:root {
+    --cor-principal: #8000ff;
+    --cor-texto-secundario: #00000080;
+}
+.main-container-auth {
+    align-items: center; 
+}
+
+.container-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 21.875rem; 
+    gap: 2rem; 
+    text-align: center;
+}
+
+.status-texto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-titulo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem; 
+    color: var(--cor-principal);
+}
+
+.status-subtitulo {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem; 
+    color: var(--cor-texto-secundario);
+    line-height: 1.5;
+    max-width: 160px;
+}
