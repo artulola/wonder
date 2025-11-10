@@ -6,16 +6,13 @@
 {% block title %}Perfil do Prestador | WONDER{% endblock title %}
 
 {% block extra_css %}
-<!-- Carrega o CSS principal do layout do app -->
 <link rel="stylesheet" href="{% static 'css/home_prestador.css' %}">
-<!-- Carrega o CSS SÓ para esta página -->
 <link rel="stylesheet" href="{% static 'css/perfil_prestador.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
 <div class="prestador-layout-container">
 
-    <!-- 1. CABEÇALHO DO PRESTADOR (O mesmo de 'home') -->
     <header class="app-header prestador-header">
         <span class="header-saudacao">Olá, Diego</span>
         <a href="{% url 'login' %}" class="header-logout-button">
@@ -24,10 +21,8 @@
         </a>
     </header>
 
-    <!-- 2. CONTEÚDO PRINCIPAL (A nova página de perfil) -->
     <main class="main-content">
         
-        <!-- Seção do Perfil (Foto, Stats) -->
         <section class="profile-header">
             <img class="profile-pic" src="{% static 'img/perfil_prestador.svg' %}" alt="Foto do Perfil">
             <div class="stats-box">
@@ -45,7 +40,6 @@
             </div>
         </section>
 
-        <!-- Seção de Informações -->
         <section class="info-section">
             <ul class="info-list">
                 
@@ -92,7 +86,6 @@
             </a>
         </section>
 
-        <!-- Seção de Serviços -->
         <section class="service-section">
             <div class="service-header">
                 <span class="service-title">Serviços Cadastrados:</span>
@@ -103,7 +96,7 @@
             </div>
             
             <div class="service-list">
-                <!-- --- MUDANÇA AQUI --- -->
+
                 <article class="service-card">
                     <img class="service-img" src="{% static 'img/cabelo-servicos.svg' %}" alt="Imagem do Serviço">
                     <div class="service-info">
@@ -114,14 +107,12 @@
                         <img src="{% static 'img/editar_cinza.svg' %}" alt="Editar">
                     </a>
                 </article>
-                <!-- Os outros serviços foram removidos -->
-                <!-- --- FIM DAS MUDANÇAS --- -->
+
             </div>
         </section>
 
     </main>
 
-    <!-- 3. RODAPÉ DO PRESTADOR (COM "PERFIL" ATIVO) -->
     <nav class="app-navbar prestador-navbar">
         <a href="{% url 'home_prestador' %}" class="nav-item">
             <img src="{% static 'img/footer-icon/calendar.svg' %}" alt="Agendamentos" class="nav-icon">
