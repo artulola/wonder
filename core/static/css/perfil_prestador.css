@@ -53,8 +53,9 @@
     display: flex;
     align-items: center;
     gap: 2px;
-    color: var(--cor-principal); 
+    color: var(--cor-principal);
 }
+
 .star-empty {
     color: var(--cor-borda-suave);
 }
@@ -96,7 +97,7 @@
     align-items: center;
     gap: 0.5rem;
     font-family: 'Poppins', sans-serif;
-    font-weight: 600; 
+    font-weight: 600;
     font-size: 0.75rem;
     color: #000; 
 }
@@ -108,7 +109,7 @@
 
 .info-value {
     font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 600; 
+    font-weight: 600;
     font-size: 0.8rem;
     color: var(--cor-texto-secundario); 
     padding-left: 0;

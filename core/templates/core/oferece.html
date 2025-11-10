@@ -1,0 +1,90 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Serviços do estabelecimento{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/oferece.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+{% load static %}
+
+<main class="services-page-content">
+  
+  <h1 class="page-title">O Estabelecimento Oferece:</h1>
+
+  <form action="#" method="post">
+    {% csrf_token %}
+    
+    <div class="service-list">
+      
+      <div class="service-item">
+        <input type="checkbox" id="service-1" name="services" value="1">
+        <label for="service-1" class="service-card">
+          <img class="service-image" src="{% static 'img/corte-social.svg' %}" alt="">
+          <div class="service-details">
+            <span class="service-name">Corte de Cabelo Social</span>
+            <span class="service-duration">Tempo de duração: 1h</span>
+          </div>
+          <span class="service-price">R$ 25,00</span>
+        </label>
+      </div>
+
+      <div class="service-item">
+        <input type="checkbox" id="service-2" name="services" value="2">
+        <label for="service-2" class="service-card">
+          <img class="service-image" src="{% static 'img/barba.svg' %}" alt="">
+          <div class="service-details">
+            <span class="service-name">Barba</span>
+            <span class="service-duration">Tempo de duração: 30min</span>
+          </div>
+          <span class="service-price">R$ 20,00</span>
+        </label>
+      </div>
+
+      <div class="service-item">
+        <input type="checkbox" id="service-3" name="services" value="3">
+        <label for="service-3" class="service-card">
+          <img class="service-image" src="{% static 'img/sobrancelha.svg' %}" alt="">
+          <div class="service-details">
+            <span class="service-name">Sobrancelha</span>
+            <span class="service-duration">Tempo de duração: 30min</span>
+          </div>
+          <span class="service-price">R$ 15,00</span>
+        </label>
+      </div>
+      
+      <div class="service-item">
+        <input type="checkbox" id="service-4" name="services" value="4">
+        <label for="service-4" class="service-card">
+          <img class="service-image" src="{% static 'img/corte-barba.svg' %}" alt="">
+          <div class="service-details">
+            <span class="service-name">Corte de Cabelo e Barba</span>
+            <span class="service-duration">Tempo de duração: 1:30h</span>
+          </div>
+          <span class="service-price">R$ 40,00</span>
+        </label>
+      </div>
+
+      <div class="service-item">
+        <input type="checkbox" id="service-5" name="services" value="5">
+        <label for="service-5" class="service-card">
+          <img class="service-image" src="{% static 'img/completo.svg' %}" alt="">
+          <div class="service-details">
+            <span class="service-name">Corte de Cabelo, Barba e Sobrancelha</span>
+            <span class="service-duration">Tempo de duração: 2h</span>
+          </div>
+          <span class="service-price">R$ 50,00</span>
+        </label>
+      </div>
+
+    </div> <div class="page-footer">
+      <button type="submit" class="submit-button">Confirmar Agendamento</button>
+    </div>
+
+  </form>
+</main>
+
+{% endblock content %}
