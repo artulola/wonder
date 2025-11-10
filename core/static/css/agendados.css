@@ -1,0 +1,186 @@
+.home-content {
+    padding: 0 1rem;
+    padding-bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+/* TABS DE NAVEGAÇÃO (SOBRE / HORÁRIOS) */
+
+.nav-tabs-container {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 2rem 0;
+    align-items: center;
+}
+
+.nav-tabs-container a {
+    text-decoration: none;
+}
+
+.option-tab {
+    display: flex;
+    width: 150px;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    padding: 12px 35px;
+    height: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 8px rgba(128, 0, 255, 0.2);
+    border-radius: 0.3rem;
+}
+
+.option-tab.active {
+    background-color: #8000ff;
+    color: #ffffff;
+    border: 1px solid #b4b4b433;
+}
+
+.option-tab.inactive {
+    background-color: #ffffff;
+    color: #8000ff;
+    border: 1px solid #00000033;
+    border-left: none;
+}
+
+/* CARDS DE RESULTADO */
+
+.results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+}
+
+.result-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: #F9F9F9;
+    border-radius: 0.3125rem;
+    min-height: 4.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.result-card:hover {
+    background-color: #efefef;
+}
+
+.card-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-title {
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #000000;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.card-meta {
+    display: flex;
+    font-size: 0.75rem;
+    color: #8000ff9a;
+    flex-direction: column;
+}
+
+.time-value {
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #5f5a5a;
+    font-size: 0.75rem;
+}
+
+.card-status {
+    padding: 0.5rem 0.25rem;
+}
+
+.block-day-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.block-day-btn .day-text {
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #158e19;
+    font-size: 0.8rem;
+    white-space: nowrap;
+}
+
+.botao-cancelar {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.botao-cancelar:hover {
+    background-color: #c82333;
+}
+
+.botao-cancelar:active {
+    background-color: #bd2130;
+    transform: translateY(1px);
+}
+
+.botao-avaliar {
+    background-color: #46c20d;
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.botao-avaliar:hover {
+    background-color: #3ca10d;
+}
+
+.botao-avaliar:active {
+    background-color: #5fda26;
+    transform: translateY(1px);
+}
+
+/* RESPONSIVIDADE (WEB / DESKTOP) */
+
+@media (min-width: 48rem) {
+
+    .main-content {
+        padding-left: 5rem !important;
+        padding-right: 5rem !important;
+    }
+
+    .option-tab {
+        min-width: 300px;
+    }
+}

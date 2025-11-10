@@ -1,0 +1,73 @@
+{% extends 'core/base_auth.html' %}
+{% load static %}
+
+{% block title %}Agendamentos Cancelados | WONDER{% endblock title %}
+
+{% block extra_css %}
+
+<link rel="stylesheet" href="{% static 'css/home_prestador.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<div class="prestador-layout-container">
+
+    <header class="app-header prestador-header">
+        <span class="header-saudacao">Olá, Diego</span>
+        <a href="{% url 'login' %}" class="header-logout-button">
+            <img src="{% static 'img/profile/logout.svg' %}" alt="Sair">
+            <span>Sair</span>
+        </a>
+    </header>
+
+    <main class="main-content">
+        
+        <div class="nav-tabs-container">
+            <a href="{% url 'home_prestador' %}"><button class="option-tab inactive">EM ABERTO</button></a>
+            <a href="{% url 'home_finalizados' %}"><button class="option-tab active">FINALIZADOS</button></a>
+        </div>
+
+        <div class="filtros-container">
+            <div class="filtro-data inactive">
+                <img src="{% static 'img/calendario_roxo.svg' %}" alt="Calendário">
+                <span>08/10/2025</span>
+            </div>
+            <a href="#" class="filtro-cancelados active">
+                <span>Ver Cancelados</span>
+            </a>
+        </div>
+
+        <div class="results-list">
+            
+            <article class="result-card">
+                <div class="card-details">
+                    <img src="{% static 'img/gustavo_cliente.svg' %}" alt="Foto do cliente">
+                    <div class="card-info">
+                        <h2 class="card-title">Corte de Cabelo Mas.</h2>
+                        <div class="card-meta">
+                            <span class="cliente-nome">Gustavo Emanuel</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="block-day-btn">
+                    <button class="btn-status-cancelado">Cancelado</button> 
+                </div>
+            </article>
+
+        </div>
+    </section>
+    
+    </main>
+
+    <nav class="app-navbar prestador-navbar">
+        <a href="{% url 'home_prestador' %}" class="nav-item active">
+            <img src="{% static 'img/footer-icon/calendar.svg' %}" alt="Agendamentos" class="nav-icon">
+            <span class="nav-label">Agendamentos</span>
+        </a>
+        <a href="{% url 'perfil_prestador' %}" class="nav-item">
+            <img src="{% static 'img/footer-icon/user.svg' %}" alt="Perfil" class="nav-icon">
+            <span class="nav-label">Perfil</span>
+        </a>
+    </nav>
+    
+</div>
+{% endblock %}

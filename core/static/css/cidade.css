@@ -1,0 +1,167 @@
+:root {
+    --cor-principal: #8000ff;
+    --cor-fundo-input: #f2f2f2;
+    --cor-texto-principal: #505050;
+    --cor-texto-branco: #ffffff;
+    --cor-borda-suave: #e0e0e0;
+    font-size: 16px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+.main-container-cidade {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    background-color: var(--cor-texto-branco);
+}
+
+.cabecalho-cidade {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--cor-principal);
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.botao-voltar {
+    position: absolute; 
+    left: 1rem; 
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0; 
+}
+
+.botao-voltar img {
+    width: 1.5rem; 
+    height: 1.5rem; 
+    filter: brightness(0) invert(1); /* Seta branca */
+}
+
+.cabecalho-cidade__titulo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.125rem;
+    color: var(--cor-texto-branco);
+}
+
+.conteudo-principal {
+    padding: 1.5rem;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.busca-container {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.busca-input {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 3rem; 
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--cor-fundo-input);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--cor-texto-principal);
+}
+
+.busca-input::placeholder {
+    color: #888;
+}
+
+.busca-input:focus {
+    outline: 2px solid var(--cor-principal);
+}
+
+.busca-icone {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.25rem;
+    height: 1.25rem;
+    opacity: 0.6;
+}
+
+.lista-cidades {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.lista-cidades li a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 0.5rem;
+    text-decoration: none;
+    color: var(--cor-texto-principal);
+    border-bottom: 1px solid var(--cor-borda-suave);
+    transition: background-color 0.2s ease-in-out;
+}
+
+.lista-cidades li:last-child a {
+    border-bottom: none;
+}
+
+.lista-cidades li a:hover {
+    background-color: #f9f9f9;
+}
+
+.cidade-icone {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.cidade-nome {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+/* --- AJUSTE PARA TELAS BAIXAS --- */
+@media (max-height: 600px) {
+    .conteudo-principal {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .busca-container {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* --- AJUSTE PARA TELAS LARGAS (DESKTOP) --- */
+@media (min-width: 768px) {
+    .main-container-cidade {
+        align-items: center;
+    }
+    .conteudo-principal {
+        max-width: 25rem; 
+        width: 100%;
+        padding: 2rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--cor-borda-suave);
+    }
+    
+    /* Esta é a regra que esconde a seta no desktop */
+    .botao-voltar {
+        display: none;
+    }
+}

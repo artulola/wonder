@@ -1,0 +1,339 @@
+/* BASE STYLES & LAYOUT */
+
+.main-content {
+    padding-bottom: 5.5rem !important;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/* HEADER & BACK BUTTON */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    background-color: #ffffff;
+    z-index: 20;
+}
+
+.back-btn img {
+    width: 1rem;
+    height: 1rem;
+    fill: #000000;
+}
+
+/* ESTABLISHMENT INFO CARD */
+
+.estab-info-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.6rem;
+    margin-bottom: 1rem;
+    background-color: #f8f8f8;
+    border-radius: 0.3rem;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    min-height: 4rem;
+    transition: background-color 0.2s;
+}
+
+.estab-info-card:hover {
+    background-color: #efefef;
+}
+
+.card-details-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-text-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-name {
+    font-weight: 600;
+    color: #000000;
+    font-size: 0.75rem;
+    margin-bottom: 0.1rem;
+}
+
+.card-meta-info {
+    display: flex;
+    align-items: center;
+}
+
+.star-icon {
+    color: #ffd95e;
+    font-size: 0.7rem;
+    margin-right: 0.1rem;
+}
+
+.rating-value,
+.schedule-time {
+    font-size: 0.6rem;
+    white-space: nowrap;
+    color: #505050;
+}
+
+.separator {
+    margin: 0 0.25rem;
+    color: #505050;
+    font-size: 0.5rem;
+}
+
+.status-tag {
+    font-weight: 600;
+    font-size: 0.6rem;
+    white-space: nowrap;
+    color: #158e19;
+    padding: 0.25rem 0.5rem;
+    align-self: center;
+}
+
+/* TABS DE NAVEGAÇÃO (SOBRE / HORÁRIOS) */
+
+.nav-tabs-container {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 2rem 0;
+    align-items: center;
+}
+
+.option-tab {
+    display: flex;
+    width: 150px;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    padding: 12px 35px;
+    height: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 8px rgba(128, 0, 255, 0.2);
+}
+
+.option-tab.active {
+    background-color: #8000ff;
+    color: #ffffff;
+    border-radius: 0.3rem 0 0 0.3rem;
+    border: 1px solid #b4b4b433;
+}
+
+.option-tab.inactive {
+    background-color: #ffffff;
+    color: #8000ff;
+    border: 1px solid #00000033;
+    border-left: none;
+    border-radius: 0 0.3rem 0.3rem 0;
+}
+
+/* DETALHES DE DADOS (LOCALIZAÇÃO/TELEFONE) */
+
+.data-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.data-item {
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0.5rem;
+    border-radius: 0.3125rem;
+    align-items: center;
+}
+
+.data-item:hover {
+    background-color: #efefef;
+}
+
+.data-label-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.data-icon {
+    width: 1rem;
+    height: 1rem;
+    aspect-ratio: 1;
+    fill: #8000ff;
+}
+
+.data-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #8000ff;
+}
+
+.data-value {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #00000080;
+}
+
+/* GALERIA DE FOTOS */
+
+.section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #8000ff;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.photo-gallery {
+    display: flex;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    justify-content: center;
+    margin: 2rem 0;
+    gap: 0.5rem;
+}
+
+.photo-gallery::-webkit-scrollbar {
+    display: none;
+}
+
+.photo-item {
+    border-radius: 0.3rem;
+    overflow: hidden;
+    position: relative;
+    width: auto;
+    height: 100px;
+}
+
+/* BOTÃO FIXO DE AÇÃO */
+
+.fixed-action-btn {
+    position: fixed;
+    bottom: 3.5rem;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    padding: 0.5rem 1.5rem;
+}
+
+.action-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.schedule-btn {
+    width: 300px;
+    height: 2.5rem;
+    background-color: #8000ff;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(128, 0, 255, 0.4);
+    transition: background-color 0.2s;
+}
+
+/* AVALIAÇÕES (Review Card) */
+
+.reviews-title {
+    color: #8000ff;
+    margin: 1rem 0;
+}
+
+.review-card {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: #f8f8f8;
+    border-radius: 0.3rem;
+}
+
+.reviewer-avatar {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.reviewer-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.reviewer-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.reviewer-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #000000;
+}
+
+.review-rating-stars {
+    color: #ffd95e;
+    text-shadow: 0 4px 8px rgba(163, 71, 224, 0.1);
+    font-size: 1rem;
+}
+
+/* RESPONSIVIDADE (WEB / DESKTOP) */
+
+@media (min-width: 48rem) {
+
+    .main-content {
+        padding-left: 5rem !important;
+        padding-right: 5rem !important;
+    }
+
+    .back-icon {
+        display: none;
+    }
+
+    .photo-gallery {
+        display: flex;
+        gap: 1rem;
+        overflow-x: hidden;
+        flex-wrap: wrap;
+        justify-content: center
+    }
+
+    .photo-item {
+        height: 12rem;
+    }
+
+    .fixed-action-btn {
+        position: static;
+        padding: 1.5rem 0;
+        margin-top: 2rem;
+    }
+
+    .option-tab {
+        min-width: 300px;
+    }
+
+    .schedule-btn {
+        width: 600px;
+    }
+}
