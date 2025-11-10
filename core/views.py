@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 
 def home_cliente_view(request: HttpRequest) -> HttpResponse:
@@ -63,3 +63,6 @@ def home_cancelados_view(request: HttpRequest) -> HttpResponse:
 
 def perfil_prestador_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/perfil_prestador.html')
+
+def aguardando_aprovacao_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/aguardando_aprovacao.html')
