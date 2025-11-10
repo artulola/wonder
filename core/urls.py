@@ -40,5 +40,6 @@ urlpatterns = [
     path('categorias/', views.categorias_view, name='categorias'),
     path('home_finalizados/', views.home_finalizados_view, name='home_finalizados'),
     path('home_cancelados/', views.home_cancelados_view, name='home_cancelados'),
+    path('oferece/', views.oferece_view, name='oferece'),
     
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

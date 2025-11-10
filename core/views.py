@@ -60,3 +60,6 @@ def home_finalizados_view(request: HttpRequest) -> HttpResponse:
 
 def home_cancelados_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/home_cancelados.html')
+
+def oferece_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/oferece.html')
