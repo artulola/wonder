@@ -1,4 +1,4 @@
-{% extends 'core/base_auth.html' %}
+{% extends 'core/base/base_auth.html' %}
 {% load static %}
 
 {% block title %}Agendamentos Cancelados | WONDER{% endblock title %}
@@ -22,14 +22,14 @@
     <main class="main-content">
         
         <div class="nav-tabs-container">
-            <a href="{% url 'home_prestador' %}"><button class="option-tab inactive">EM ABERTO</button></a>
-            <a href="{% url 'home_finalizados' %}"><button class="option-tab active">FINALIZADOS</button></a>
+            <a href="{% url 'prestador-home' %}"><button class="option-tab inactive">EM ABERTO</button></a>
+            <a href="{% url 'prestador-finalizados' %}"><button class="option-tab active">FINALIZADOS</button></a>
         </div>
 
         <div class="filtros-container">
             <div class="filtro-data inactive">
                 <img src="{% static 'img/calendario_roxo.svg' %}" alt="Calendário">
-                <span>08/10/2025</span>
+                <a href="{% url 'prestador-finalizados' %}"><span>08/10/2025</span></a>
             </div>
             <a href="#" class="filtro-cancelados active">
                 <span>Ver Cancelados</span>
@@ -59,11 +59,11 @@
     </main>
 
     <nav class="app-navbar prestador-navbar">
-        <a href="{% url 'home_prestador' %}" class="nav-item active">
+        <a href="{% url 'prestador-home' %}" class="nav-item active">
             <img src="{% static 'img/footer-icon/calendar.svg' %}" alt="Agendamentos" class="nav-icon">
             <span class="nav-label">Agendamentos</span>
         </a>
-        <a href="{% url 'perfil_prestador' %}" class="nav-item">
+        <a href="{% url 'prestador-perfil' %}" class="nav-item">
             <img src="{% static 'img/footer-icon/user.svg' %}" alt="Perfil" class="nav-icon">
             <span class="nav-label">Perfil</span>
         </a>

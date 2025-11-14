@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %}
+{% extends 'core/base/base.html' %}
 {% load static %}
 {% block title %}Início | WONDER{% endblock title %}
 
@@ -16,7 +16,7 @@
         
         <div class="category-list-scroll">
             
-            <a href="{% url 'resultado-busca' %}?category=barbearia" class="category-card">
+            <a href="{% url 'cliente-resultado--busca' %}" class="category-card">
                 <img src="{% static 'img/categorias/cat-barbearia.svg' %}" alt="Categoria Barbearia">
                 <p class="category-label">Barbearia</p>
             </a>
@@ -82,7 +82,7 @@
         
         <div class="results-list">
             <article class="result-card available">
-                <a href="{% url 'detalhe-estabelecimento' %}" style="text-decoration: none; color: inherit;">
+                <a href="{% url 'cliente-estabelecimento--detalhe' %}" style="text-decoration: none; color: inherit;">
                     <div class="card-details">
                         <img src="{% static 'img/Diego-BarberShop.svg' %}" alt="Logo Diego BarberShop">
                         <div class="card-info">

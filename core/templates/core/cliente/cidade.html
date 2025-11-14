@@ -1,4 +1,4 @@
-{% extends 'core/base_auth.html' %}
+{% extends 'core/base/base_auth.html' %}
 {% load static %}
 
 {% block title %}Selecionar Cidade{% endblock %}
@@ -43,7 +43,7 @@
                 </a>
             </li>
             <li>
-                <a href="{% url 'home-cliente' %}">
+                <a href="{% url 'cliente-home' %}">
                     <img src="{% static 'img/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
                     <span class="cidade-nome">Pau dos Ferros / RN</span>
                 </a>
