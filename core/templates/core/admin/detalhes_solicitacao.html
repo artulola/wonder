@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %}
+{% extends 'core/base/base.html' %}
 {% load static %}
 {% block title %}Detalhe | WONDER{% endblock title %}
 
@@ -10,7 +10,7 @@
 
 <header class="app-header">
     <div class="header-logo">
-        <a href="{% url 'solicitacoes' %}"><span class="logo-name">Admin</span></a>
+        <a href="{% url 'admin-solicitacoes' %}"><span class="logo-name">Admin</span></a>
     </div>
     <a href="{% url 'login' %}" class="logout-button">
         <img src="{% static 'img/profile/logout.svg' %}" alt="">

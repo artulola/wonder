@@ -1,4 +1,4 @@
-{% extends 'core/base.html' %}
+{% extends 'core/base/base.html' %}
 {% load static %}
 {% block title %}Detalhe | WONDER{% endblock title %}
 
@@ -11,42 +11,40 @@
 
 <section class="home-content">
     <div class="nav-tabs-container">
-        <button class="option-tab active">AGENDADOS</button>
-        <a href="{% url 'agendamentos-finalizados' %}"><button class="option-tab inactive">FINALIZADOS</button></a>
+        <a href="{% url 'cliente-agendamentos' %}"><button class="option-tab inactive">AGENDADOS</button></a>
+        <button class="option-tab active">FINALIZADOS</button>
     </div>
 
     <div class="results-list">
         <article class="result-card">
             <div class="card-details">
-                <img src="{% static 'img/Diego-BarberShop.svg' %}" alt="">
+                <img src="{% static 'img/SPA-da-gi.svg' %}" alt="">
                 <div class="card-info">
-                    <h2 class="card-title">Diego BarberShop</h2>
+                    <h2 class="card-title">SPA da Gi</h2>
                     <div class="card-meta">
-                        <span>Cabelo e Barba</span>
-                        <span class="time-value">Horário: 14:00</span>
+                        <span>Massagem</span>
+                        <span class="time-value">Horário: 07:00</span>
                     </div>
                 </div>
             </div>
             <div class="block-day-btn">
-                <p class="day-text">Segunda-Feira</p>
-                <button class="botao-cancelar">Cancelar</button>
+                <button class="botao-avaliar">Avaliar</button>
             </div>
         </article>
 
         <article class="result-card">
             <div class="card-details">
-                <img src="{% static 'img/RD-Cabelos.svg' %}" alt="">
+                <img src="{% static 'img/Diva-nails.svg' %}" alt="">
                 <div class="card-info">
-                    <h2 class="card-title">RD Cabelos</h2>
+                    <h2 class="card-title">Diva Nails</h2>
                     <div class="card-meta">
-                        <span>Sobrancelha</span>
-                        <span class="time-value">Horário: 16:00</span>
+                        <span>Unhas das Mãos</span>
+                        <span class="time-value">Horário: 09:00</span>
                     </div>
                 </div>
             </div>
             <div class="block-day-btn">
-                <p class="day-text">Terça-Feira</p>
-                <button class="botao-cancelar">Cancelar</button>
+                <button class="botao-avaliar">Avaliar</button>
             </div>
         </article>
 
