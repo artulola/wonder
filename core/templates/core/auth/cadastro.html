@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/cadastro.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth/cadastro.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -13,7 +13,7 @@
     </header>
 
     <div class="logo">
-        <img class="logo-icon" src="{% static 'img/lotus.svg' %}" alt="Logo Wonder">
+        <img class="logo-icon" src="{% static 'img/icones/icon_roxo/lotus.svg' %}" alt="Logo Wonder">
         <h1 class="logo-name">WONDER</h1>
     </div>
 
@@ -30,15 +30,15 @@
         </div>
         <div class="grupo-input input-com-icone">
             <input type="password" name="password" class="input-campo" placeholder="Senha" required>
-            <img src="{% static 'img/ant-design_eye-invisible-outlined.svg' %}" alt="Mostrar senha" class="icone-input">
+            <img src="{% static 'img/icones/icon_geral/ant-design_eye-invisible-outlined.svg' %}" alt="Mostrar senha" class="icone-input">
         </div>
         <div class="grupo-input input-com-icone">
             <input type="password" name="password_confirm" class="input-campo" placeholder="Confirmar senha" required>
-            <img src="{% static 'img/ant-design_eye-invisible-outlined.svg' %}" alt="Mostrar senha" class="icone-input">
+            <img src="{% static 'img/icones/icon_geral/ant-design_eye-invisible-outlined.svg' %}" alt="Mostrar senha" class="icone-input">
         </div>
 
         <button type="submit" class="botao-cadastrar">
-            <img src="{% static 'img/akar-icons_check.svg' %}" alt="Ícone de confirmar" class="botao-cadastrar__icone">
+            <img src="{% static 'img/icones/icon_geral/akar-icons_check.svg' %}" alt="Ícone de confirmar" class="botao-cadastrar__icone">
             <span>Cadastrar</span>
         </button>
     </form>

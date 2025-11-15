@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth/login.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
 <main class="container-login">
 
     <div class="logo">
-        <img class="logo-icon" src="{% static 'img/lotus.svg' %}" alt="Logo Wonder">
+        <img class="logo-icon" src="{% static 'img/icones/icon_roxo/lotus.svg' %}" alt="Logo Wonder">
         <h1 class="logo-name">WONDER</h1>
     </div>
 
@@ -22,7 +22,7 @@
             <input type="password" name="password" class="input-campo" placeholder="Senha" required>
         </div>
         <button type="submit" class="botao-entrar">
-            <img src="{% static 'img/carbon_login.svg' %}" alt="Ícone de login" class="botao-entrar__icone">
+            <img src="{% static 'img/icones/icon_geral/carbon_login.svg' %}" alt="Ícone de login" class="botao-entrar__icone">
             <span>Entrar</span>
         </button>
     </form>
