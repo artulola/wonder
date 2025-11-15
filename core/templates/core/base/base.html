@@ -11,19 +11,19 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Gruppo&family=Poppins:wght@600&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="{% static '/css/base.css' %}">
+    <link rel="stylesheet" href="{% static '/css/base/base.css' %}">
     {% block extra_css %}{% endblock extra_css %}
 </head>
 
 <body>
     <header class="app-header">
         <div class="header-logo">
-            <img class="logo-icon" src="{% static 'img/lotus.svg' %}" alt="Logo Wonder">
+            <img class="logo-icon" src="{% static 'img/icones/icon_roxo/lotus.svg' %}" alt="Logo Wonder">
             <span class="logo-name">WONDER</span>
         </div>
         <div class="header-location">
             <span class="location-text">Pau dos Ferros/RN</span>
-            <img src="{% static 'img/seta-pra-baixo.svg' %}" alt="" class="location-icon-wrapper">
+            <img src="{% static 'img/icones/icon_roxo/seta-pra-baixo.svg' %}" alt="" class="location-icon-wrapper">
         </div>
     </header>
 
@@ -39,23 +39,23 @@
             <ul class="nav-list">
                 <li class="nav-item nav-item--active">
                     <a href="{% url 'cliente-home'%}">
-                        <img src="{% static 'img/footer-icon/home-ativo.svg' %}" alt="" class="nav-icon">
+                        <img src="{% static 'img/icones/icon_footer/home-ativo.svg' %}" alt="" class="nav-icon">
                         <span class="nav-text">Início</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'cliente-busca'%}">
-                        <img src="{% static 'img/footer-icon/search.svg' %}" alt="" class="nav-icon">
+                        <img src="{% static 'img/icones/icon_footer/search.svg' %}" alt="" class="nav-icon">
                         <span class="nav-text">Busca</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'cliente-agendamentos' %}"> <img src="{% static 'img/footer-icon/calendar.svg' %}" alt="" class="nav-icon">
+                    <a href="{% url 'cliente-agendamentos' %}"> <img src="{% static 'img/icones/icon_footer/calendar.svg' %}" alt="" class="nav-icon">
                         <span class="nav-text">Agendamentos</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'cliente-perfil' %}"> <img src="{% static 'img/footer-icon/user.svg' %}" alt="" class="nav-icon">
+                    <a href="{% url 'cliente-perfil' %}"> <img src="{% static 'img/icones/icon_footer/user.svg' %}" alt="" class="nav-icon">
                         <span class="nav-text">Perfil</span>
                     </a>
                 </li>

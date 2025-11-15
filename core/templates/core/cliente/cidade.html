@@ -4,7 +4,7 @@
 {% block title %}Selecionar Cidade{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/cidade.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cliente/cidade.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -12,51 +12,51 @@
     <header class="cabecalho-cidade">
         <!-- BOTÃO DE VOLTAR ADICIONADO AQUI -->
         <a href="#" class="botao-voltar"> <!-- TODO: Adicionar URL de 'voltar' -->
-            <img src="{% static 'img/arrow-left.svg' %}" alt="Voltar">
+            <img src="{% static 'img/icones/icon_geral/arrow-left.svg' %}" alt="Voltar">
         </a>
         <h1 class="cabecalho-cidade__titulo">Onde você está?</h1>
     </header>
     
     <div class="conteudo-principal">
         <div class="busca-container">
-            <img src="{% static 'img/bx_search-alt-2.svg' %}" class="busca-icone" alt="">
+            <img src="{% static 'img/icones/icon_roxo/bx_search-alt-2.svg' %}" class="busca-icone" alt="">
             <input type="text" class="busca-input" placeholder="Buscar cidade">
         </div>
 
         <ul class="lista-cidades">
             <li>
                 <a href="#">
-                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
+                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
                     <span class="cidade-nome">Serrinha dos Pintos / RN</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
+                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
                     <span class="cidade-nome">Mossoró / RN</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
+                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
                     <span class="cidade-nome">Rodolfo Fernandes / RN</span>
                 </a>
             </li>
             <li>
                 <a href="{% url 'cliente-home' %}">
-                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
+                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
                     <span class="cidade-nome">Pau dos Ferros / RN</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
+                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
                     <span class="cidade-nome">Itaú / RN</span>
                 </a>
             </li>
             <li>
                 <a href="#">
-                    <img src="{% static 'img/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
+                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
                     <span class="cidade-nome">São Miguel / RN</span>
                 </a>
             </li>

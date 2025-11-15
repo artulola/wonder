@@ -57,7 +57,7 @@
 }
 
 /* --- Cabeçalho --- */
-.prestador-header { }
+
 .header-saudacao {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -280,15 +280,9 @@
 .nav-item .nav-icon {
     width: 20px;
     height: 20px;
-    filter: invert(30%) sepia(8%) saturate(944%) hue-rotate(203deg) brightness(97%) contrast(89%);
     transition: filter 0.2s ease;
 }
-.nav-item.active {
-    color: var(--cor-principal); 
-}
-.nav-item.active .nav-icon {
-    filter: invert(13%) sepia(99%) saturate(6237%) hue-rotate(276deg) brightness(99%) contrast(117%);
-}
+
 .nav-label {
     font-family: 'Roboto', sans-serif;
     font-weight: 600;

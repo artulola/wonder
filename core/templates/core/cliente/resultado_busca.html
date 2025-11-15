@@ -3,14 +3,14 @@
 {% block title %}Resultado da Busca{% endblock title %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/resultado-busca.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/resultado_busca.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
 <section class="search-page-content">
     <div class="search-bar-wrapper">
         <div class="search-input-group"> 
-            <img class="search" src="{% static 'img/search-barra.svg' %}" alt="Pesquisa">
+            <img class="search" src="{% static 'img/icones/icon_roxo/search-barra.svg' %}" alt="Pesquisa">
             <input type="text" class="search-input" placeholder="Procurar por serviços ou estabelecimentos">
         </div>
     </div>
@@ -24,7 +24,7 @@
         
         <article class="result-card">
             <div class="card-details">
-                <img src="{% static 'img/Diego-BarberShop.svg' %}" alt="">
+                <img src="{% static 'img/logo/Diego-BarberShop.svg' %}" alt="">
                 <div class="card-info">
                     <h2 class="card-title">Diego BarberShop</h2>
                     <div class="card-meta">
@@ -44,7 +44,7 @@
         
         <article class="result-card">
             <div class="card-details">
-                <img src="{% static 'img/RD-Cabelos.svg' %}" alt="">
+                <img src="{% static 'img/logo/RD-Cabelos.svg' %}" alt="">
                 <div class="card-info">
                     <h2 class="card-title">RD Cabelos</h2>
                     <div class="card-meta">

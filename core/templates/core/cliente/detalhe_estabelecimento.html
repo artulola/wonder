@@ -3,7 +3,7 @@
 {% block title %}Detalhe | WONDER{% endblock title %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/detalhe_estabelecimento.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/detalhe_estabelecimento.css' %}">
 {% endblock extra_css %}
 
 
@@ -18,7 +18,7 @@
     <div class="estab-info-section">
         <article class="estab-info-card">
             <div class="card-details-group">
-                <img src="{% static 'img/Diego-BarberShop.svg' %}" alt="Logo Diego BarberShop">
+                <img src="{% static 'img/logo/Diego-BarberShop.svg' %}" alt="Logo Diego BarberShop">
                 <div class="card-text-group">
                     <h3 class="card-name">Diego BarberShop</h3>
                     <div class="card-meta-info">
@@ -40,14 +40,14 @@
         <div class="data-section">
             <div class="data-item">
                 <div class="data-label-group">
-                    <img src="{% static 'img/localization.svg' %}" alt="Ícone de Localização" class="data-icon">
+                    <img src="{% static 'img/icones/icon_roxo/localization.svg' %}" alt="Ícone de Localização" class="data-icon">
                     <span class="data-label">Localização</span>
                 </div>
                 <p class="data-value">Rua: Frei Damião, 25 - Centro</p>
             </div>
             <div class="data-item">
                 <div class="data-label-group">
-                    <img src="{% static 'img/profile/phone.svg' %}" alt="Ícone de Telefone" class="data-icon">
+                    <img src="{% static 'img/icones/icon_roxo/phone.svg' %}" alt="Ícone de Telefone" class="data-icon">
                     <span class="data-label">Telefone</span>
                 </div>
                 <p class="data-value">(84) 99485-9785</p>
@@ -57,8 +57,8 @@
         <div class="photos-section">
             <h4 class="section-title">FOTOS DO LOCAL</h4>
             <div class="photo-gallery">
-                <img class="photo-item" src="{% static 'img/logo-details-diego.svg' %}" alt="Logo do Estabelecimento">
-                <img class="photo-item" src="{% static 'img/logo-details-diego-barber.svg' %}"
+                <img class="photo-item" src="{% static 'img/detalhes_est/logo-details-diego.svg' %}" alt="Logo do Estabelecimento">
+                <img class="photo-item" src="{% static 'img/detalhes_est/logo-details-diego-barber.svg' %}"
                     alt="Ambiente do Estabelecimento">
             </div>
         </div>
@@ -74,7 +74,7 @@
             <article class="review-card">
                 <div class="card-details-group">
                     <div class="reviewer-avatar">
-                        <img src="{% static 'img/foto-arthur.svg' %}" alt="Avatar do Revisor">
+                        <img src="{% static 'img/clientes/foto-arthur.svg' %}" alt="Avatar do Revisor">
                     </div>
                     <div class="reviewer-details">
                         <h5 class="reviewer-name">Arthur Lola</h5>

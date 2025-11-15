@@ -4,7 +4,7 @@
 {% block title %}Cadastro de Prestador{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/cadastro_prestador.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth/cadastro_prestador.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -13,12 +13,12 @@
         
         <div class="cabecalho-cadastro">
             <a href="#" class="botao-voltar"> 
-                <img src="{% static 'img/arrow-left.svg' %}" alt="Voltar">
+                <img src="{% static 'img/icones/icon_geral/arrow-left.svg' %}" alt="Voltar">
             </a>
         </div>
     
         <div class="logo">
-            <img class="logo-icon" src="{% static 'img/lotus.svg' %}" alt="Logo Wonder">
+            <img class="logo-icon" src="{% static 'img/icones/icon_roxo/lotus.svg' %}" alt="Logo Wonder">
             <h1 class="logo-name">WONDER</h1>
         </div>
     
@@ -44,7 +44,7 @@
                     <option value="serrinha">Serrinha dos Pintos / RN</option>
         
                 </select>
-                <img src="{% static 'img/seta-pra-baixo-cinza.svg' %}" class="select-icone" alt="">
+                <img src="{% static 'img/icones/icon_geral/seta-pra-baixo-cinza.svg' %}" class="select-icone" alt="">
             </div>
     
            
@@ -56,7 +56,7 @@
                     <option value="alimentacao">Alimentação</option>
                  
                 </select>
-                <img src="{% static 'img/seta-pra-baixo-cinza.svg' %}" class="select-icone" alt="">
+                <img src="{% static 'img/icones/icon_geral/seta-pra-baixo-cinza.svg' %}" class="select-icone" alt="">
             </div>
     
             <div class="grupo-input">
@@ -69,17 +69,17 @@
     
             <div class="grupo-input input-com-icone">
                 <input type="password" id="senha" name="senha" class="input-campo" placeholder="Senha" required>
-                <img src="{% static 'img/ant-design_eye-invisible-outlined.svg' %}" class="icone-input" alt="Mostrar/Ocultar Senha">
+                <img src="{% static 'img/icones/icon_geral/ant-design_eye-invisible-outlined.svg' %}" class="icone-input" alt="Mostrar/Ocultar Senha">
             </div>
     
             <div class="grupo-input input-com-icone">
                 <input type="password" id="confirmar_senha" name="confirmar_senha" class="input-campo" placeholder="Confirmar senha" required>
-                <img src="{% static 'img/ant-design_eye-invisible-outlined.svg' %}" class="icone-input" alt="Mostrar/Ocultar Senha">
+                <img src="{% static 'img/icones/icon_geral/ant-design_eye-invisible-outlined.svg' %}" class="icone-input" alt="Mostrar/Ocultar Senha">
             </div>
     
             <button type="submit" class="botao-prosseguir">
                 Prosseguir
-                <img src="{% static 'img/carbon_login.svg' %}" class="botao-prosseguir__icone" alt="">
+                <img src="{% static 'img/icones/icon_geral/carbon_login.svg' %}" class="botao-prosseguir__icone" alt="">
             </button>
         </form>
     </div>

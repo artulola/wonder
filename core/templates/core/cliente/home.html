@@ -3,7 +3,7 @@
 {% block title %}Início | WONDER{% endblock title %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/home.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -17,55 +17,55 @@
         <div class="category-list-scroll">
             
             <a href="{% url 'cliente-resultado--busca' %}" class="category-card">
-                <img src="{% static 'img/categorias/cat-barbearia.svg' %}" alt="Categoria Barbearia">
+                <img src="{% static 'img/categorias/servicos/cat-barbearia.svg' %}" alt="Categoria Barbearia">
                 <p class="category-label">Barbearia</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-unha.svg' %}" alt="Categoria Unha">
+                <img src="{% static 'img/categorias/servicos/cat-unha.svg' %}" alt="Categoria Unha">
                 <p class="category-label">Unha</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-cabeleireira.svg' %}" alt="Categoria Cabeleireira">
+                <img src="{% static 'img/categorias/servicos/cat-cabeleireira.svg' %}" alt="Categoria Cabeleireira">
                 <p class="category-label">Cabeleireira</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-depilacao.svg' %}" alt="Categoria Depilação">
+                <img src="{% static 'img/categorias/servicos/cat-depilacao.svg' %}" alt="Categoria Depilação">
                 <p class="category-label">Depilação</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-spa.svg' %}" alt="Categoria SPA">
+                <img src="{% static 'img/categorias/servicos/cat-spa.svg' %}" alt="Categoria SPA">
                 <p class="category-label">SPA</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-maquiagem.svg' %}" alt="Categoria Maquiagem">
+                <img src="{% static 'img/categorias/servicos/cat-maquiagem.svg' %}" alt="Categoria Maquiagem">
                 <p class="category-label">Maquiagem</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-massagem.svg' %}" alt="Categoria Massagem">
+                <img src="{% static 'img/categorias/servicos/cat-massagem.svg' %}" alt="Categoria Massagem">
                 <p class="category-label">Massagem</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-estetica.svg' %}" alt="Categoria Estética">
+                <img src="{% static 'img/categorias/servicos/cat-estetica.svg' %}" alt="Categoria Estética">
                 <p class="category-label">Estética</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-tatuagem.svg' %}" alt="Categoria Tatuagem">
+                <img src="{% static 'img/categorias/servicos/cat-tatuagem.svg' %}" alt="Categoria Tatuagem">
                 <p class="category-label">Tatuagem</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-podologia.svg' %}" alt="Categoria Podologia">
+                <img src="{% static 'img/categorias/servicos/cat-podologia.svg' %}" alt="Categoria Podologia">
                 <p class="category-label">Podologia</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-sobrancelha.svg' %}" alt="Categoria Sobrancelha">
+                <img src="{% static 'img/categorias/servicos/cat-sobrancelha.svg' %}" alt="Categoria Sobrancelha">
                 <p class="category-label">Sobrancelhas</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-bronzeamento.svg' %}" alt="Categoria Bronzeamento">
+                <img src="{% static 'img/categorias/servicos/cat-bronzeamento.svg' %}" alt="Categoria Bronzeamento">
                 <p class="category-label">Bronzeamento</p>
             </a>
             <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/cat-piercing.svg' %}" alt="Categoria Piercing">
+                <img src="{% static 'img/categorias/servicos/cat-piercing.svg' %}" alt="Categoria Piercing">
                 <p class="category-label">Piercing</p>
             </a>
         </div>
@@ -84,7 +84,7 @@
             <article class="result-card available">
                 <a href="{% url 'cliente-estabelecimento--detalhe' %}" style="text-decoration: none; color: inherit;">
                     <div class="card-details">
-                        <img src="{% static 'img/Diego-BarberShop.svg' %}" alt="Logo Diego BarberShop">
+                        <img src="{% static 'img/logo/Diego-BarberShop.svg' %}" alt="Logo Diego BarberShop">
                         <div class="card-info">
                             <h3 class="card-title">Diego BarberShop</h3>
                             <div class="card-meta">
@@ -103,7 +103,7 @@
 
             <article class="result-card available">
                 <div class="card-details">
-                    <img src="{% static 'img/SPA-da-gi.svg' %}" alt="Logo SPA da Gi">
+                    <img src="{% static 'img/logo/SPA-da-gi.svg' %}" alt="Logo SPA da Gi">
                     <div class="card-info">
                         <h3 class="card-title">SPA da Gi</h3>
                         <div class="card-meta">
@@ -121,7 +121,7 @@
 
             <article class="result-card available">
                 <div class="card-details">
-                    <img src="{% static 'img/RD-Cabelos.svg' %}" alt="Logo RD Cabelos">
+                    <img src="{% static 'img/logo/RD-Cabelos.svg' %}" alt="Logo RD Cabelos">
                     <div class="card-info">
                         <h3 class="card-title">RD Cabelos</h3>
                         <div class="card-meta">
@@ -139,7 +139,7 @@
         
             <article class="result-card closed">
                 <div class="card-details">
-                    <img src="{% static 'img/Diva-nails.svg' %}" alt="Logo Diva Nails">
+                    <img src="{% static 'img/logo/Diva-nails.svg' %}" alt="Logo Diva Nails">
                     <div class="card-info">
                         <h3 class="card-title">Diva Nails</h3>
                         <div class="card-meta">
@@ -157,7 +157,7 @@
             
             <article class="result-card closed">
                 <div class="card-details">
-                    <img src="{% static 'img/trancas-nego.svg' %}" alt="Logo Tranças Negô">
+                    <img src="{% static 'img/logo/trancas-nego.svg' %}" alt="Logo Tranças Negô">
                     <div class="card-info">
                         <h3 class="card-title">Tranças Negô</h3>
                         <div class="card-meta">
@@ -175,7 +175,7 @@
             
             <article class="result-card closed">
                 <div class="card-details">
-                    <img src="{% static 'img/studio-make.svg' %}" alt="Logo Studio Make-Up">
+                    <img src="{% static 'img/logo/studio-make.svg' %}" alt="Logo Studio Make-Up">
                     <div class="card-info">
                         <h3 class="card-title">Studio Make-Up</h3>
                         <div class="card-meta">
