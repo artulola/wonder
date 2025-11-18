@@ -11,13 +11,14 @@
 .section-header {
     display: flex;
     align-items: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    justify-content: space-between;
 }
 
 .section-title {
     font-family: "Poppins-SemiBold", Helvetica;
     font-weight: 600;
-    color: #000000;
+    color: #430b7a;
     font-size: 0.875rem;
 }
 
@@ -72,17 +73,10 @@
     border-radius: 0 0.15rem 0 0;
 }
 
-.more-categories-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 0.5rem;
-    padding-right: 0.5rem;
-}
-
 .more-categories-link {
     font-family: "Poppins", Helvetica;
     font-size: 0.7rem;
-    color: #8000ff;
+    color: #430b7a;
     text-decoration: none;
     font-weight: 500;
 }
@@ -174,4 +168,22 @@
     color: #c91818;
     font-size: 0.6rem;
     white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+
+    .category-card {
+        width: 6rem;
+        height: 6rem;
+        min-width: 6rem;
+    }
+
+    .category-label {
+        font-size: 0.7rem;
+    }
+
+    .section-title {
+        font-size: 1rem;
+    }
+
 }

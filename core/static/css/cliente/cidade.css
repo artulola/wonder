@@ -1,5 +1,5 @@
 :root {
-    --cor-principal: #8000ff;
+    --cor-principal: #430b7a;
     --cor-fundo-input: #f2f2f2;
     --cor-texto-principal: #505050;
     --cor-texto-branco: #ffffff;
@@ -96,7 +96,6 @@
     transform: translateY(-50%);
     width: 1.25rem;
     height: 1.25rem;
-    opacity: 0.6;
 }
 
 .lista-cidades {

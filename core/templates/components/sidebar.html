@@ -1,0 +1,49 @@
+{% load static %}
+{% load custom_tags %}
+
+<div id="sidebarOverlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+<aside class="sidebar-desktop" id="sidebarDesktop" aria-hidden="true">
+    <div class="sidebar-header">
+        <span>Menu</span>
+        <button id="closeSidebar" class="sidebar-close" aria-label="Fechar menu">
+            <img src="{% static 'img/icones/icon_roxo/close.svg' %}" alt="Fechar">
+        </button>
+    </div>
+
+    <ul class="sidebar-list">
+        {% if tipo == "cliente" %}
+            <li class="sidebar-item {% if request.path == '/' %}sidebar-item--active{% endif %}">
+                <a href="{% url 'cliente-home' %}">Início</a>
+            </li>
+            <li class="sidebar-item {% if request.path|startswith:'/busca' %}sidebar-item--active{% endif %}">
+                <a href="{% url 'cliente-busca' %}">Busca</a>
+            </li>
+
+            <li class="sidebar-item {% if request.path|startswith:'/agendamentos' %}sidebar-item--active{% endif %}">
+                <a href="{% url 'cliente-agendamentos' %}">Agendamentos</a>
+            </li>
+
+            <li class="sidebar-item {% if request.path|startswith:'/perfil' %}sidebar-item--active{% endif %}">
+                <a href="{% url 'cliente-perfil' %}">Perfil</a>
+            </li>
+        {% elif tipo == 'prestador' %}
+                <li class="sidebar-item {% if request.path|startswith:"/prestador/home" %}sidebar-item--active{% endif %}">
+                    <a href="{% url 'prestador-home' %}">Agendamentos em aberto</a>
+                </li>
+                <li class="sidebar-item {% if request.path|startswith:'/prestador/finalizados' or request.path|startswith:'/prestador/cancelados' %}sidebar-item--active{% endif %}">
+                    <a href="{% url 'prestador-finalizados' %}">Agendamentos finalizados</a>
+                </li>
+                <li class="sidebar-item {% if request.path|startswith:"/prestador/perfil" %}sidebar-item--active{% endif %}">
+                    <a href="{% url 'prestador-perfil' %}">Perfil</a>
+                </li>
+        {% elif tipo == 'admin' %}
+                <li class="sidebar-item {% if request.path|startswith:"/administrador/solicitacoes" or request.path|startswith:"/administrador/solicitacoes/detalhes-solicitacao/" %}sidebar-item--active{% endif %}">
+                    <a href="{% url 'admin-solicitacoes' %}">Solicitações Estabelecimentos</a>
+                </li>
+                <li class="sidebar-item {% if request.path|startswith:"/administrador/categorias" %}sidebar-item--active{% endif %}">
+                    <a href="{% url 'admin-categorias' %}">Categorias de Serviços</a>
+                </li>
+        {% endif %}
+    </ul>
+</aside>

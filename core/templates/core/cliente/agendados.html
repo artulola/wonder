@@ -1,6 +1,6 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
-{% block title %}Detalhe | WONDER{% endblock title %}
+{% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/agendados.css' %}">
@@ -11,8 +11,15 @@
 
 <section class="home-content">
     <div class="nav-tabs-container">
-        <button class="option-tab active">AGENDADOS</button>
-        <a href="{% url 'cliente-agendamentos--finalizados' %}"><button class="option-tab inactive">FINALIZADOS</button></a>
+        <button class="option-tab active left">Agendados</button>
+        <a href="{% url 'cliente-agendamentos--finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
+    </div>
+
+    <div class="block-text-tag">
+        <span class="text-tag">Meus Agendamentos</span>
+        <a href="{% url 'cliente-agendamentos--finalizados' %}" class="nova-categoria-button">
+            <span class="text-tag-category">Visualizar Agendamentos Finalizados ></span>
+        </a>
     </div>
 
     <div class="results-list">

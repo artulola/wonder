@@ -1,18 +1,29 @@
 :root {
-    --cor-principal: #8000ff;
+    --cor-principal: #430b7a;
     --cor-vermelho: #dc3545;
     --cor-vermelho-hover: #c82333;
     --cor-verde: #46c20d;
     --cor-verde-hover: #3ca10d;
-    --cor-principal-fundo: #5d14a6;
+    --cor-principal-fundo: #430b7a;
     --cor-azul: #2a6ccf;
     --cor-vermelho-texto: #FF5A5A; 
     --cor-texto-principal: #505050; 
     --cor-texto-branco: #ffffff;
     
-    --header-height: 52px;
+    --header-height: 4.5rem;
     --navbar-height: 56px;
     --desktop-padding: 5rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    list-style: none;
+    text-decoration: none;
+    box-shadow: none;
+    border: none;
 }
 
 /* --- Layout Principal --- */
@@ -35,12 +46,12 @@
     box-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.05); 
     z-index: 100;
 }
-.main-content {
+.main-prestador {
     flex-grow: 1;
     overflow-y: auto;
     width: 100%;
     max-width: 100%;
-    padding: var(--header-height) 1rem var(--navbar-height) 1rem;
+    padding: 0 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -72,8 +83,8 @@
     background-color: #fff;
     border: 1px solid var(--cor-vermelho-texto);
     color: var(--cor-vermelho-texto);
-    border-radius: 12px;
-    padding: 0.3rem 0.5rem;
+    border-radius: 0.6rem;
+    padding: 0.4rem 0.8rem;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     font-size: 0.8rem;
@@ -97,20 +108,20 @@
 .nav-tabs-container {
     display: flex;
     justify-content: center;
-    margin: 1rem 0 0 0;
     align-items: center;
 }
 .nav-tabs-container a {
     text-decoration: none;
 }
+
 .option-tab {
     display: flex;
-    width: 150px;
+    width: 10rem;
     align-items: center;
     justify-content: center;
     font-family: 'Roboto', sans-serif;
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding: 12px 35px;
     height: 50px;
     border: none;
@@ -131,25 +142,60 @@
     border-left: none; /* Linha que "gruda" */
 }
 
+.option-tab.left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.option-tab.right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 /* --- Link "Agendado Hoje" --- */
-.link-hoje {
+
+.block-text-tag {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    width: 100%;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0 0.5rem;
-    margin: 0.5rem 0;
-    text-decoration: none;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    padding: 0.8rem 0 ;
 }
-.link-hoje span {
-    font-family: 'Roboto', sans-serif;
+
+.text-tag-day{
+    color: #430b7a;
     font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--cor-principal-fundo);
 }
-.link-hoje img {
-    width: 20px;
-    height: 20px;
+
+.text-tag {
+    color: #fff;
+}
+
+.agenda-button {
+    display: flex;
+    background-color: #430b7a;
+    padding: 0.6rem 0.8rem;
+    text-decoration: none;
+    gap: 0.5rem;
+    border-radius: 0.8rem;
+    font-size: 0.8rem;
+    align-items: center;
+}
+
+.agenda-button:hover {
+    background-color: #430b7a;
+}
+
+.agenda-button:active {
+    background-color: #5D14A6;
+    transform: translateY(1px);
+}
+
+.agenda-button img {
+    width: 1.2.5rem;
 }
 
 /* --- Lista de Cards --- */
@@ -230,14 +276,17 @@
     width: 100%;
     text-align: center;
 }
+
 .botao-cancelar:hover {
-    background-color: #f5f5f5; 
-    border-color: #d0d0d0; 
+    background-color: #c82333;
+    color: white;
 }
+
 .botao-cancelar:active {
-    background-color: #ececec;
+    background-color: #bd2130;
     transform: translateY(1px);
 }
+
 .botao-finalizar {
     background-color: #ffffff;
     color: var(--cor-azul);
@@ -252,12 +301,14 @@
     width: 100%;
     text-align: center;
 }
+
 .botao-finalizar:hover {
-    background-color: #f5f5f5; 
-    border-color: #d0d0d0; 
+    background-color: #255aaa;
+    color: white;
 }
+
 .botao-finalizar:active {
-    background-color: #ececec;
+    background-color: #2A6CCF;
     transform: translateY(1px);
 }
 
@@ -293,53 +344,62 @@
 /* === ESTILOS PARA 'FINALIZADOS' E 'CANCELADOS' === */
 /* =================================================== */
 
-.filtros-container {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    padding: 0 0.5rem;
-    margin: 1.5rem 0; 
-}
 .filtro-data {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.25rem 0.4rem;
-    background-color: var(--cor-principal-fundo);
-    border-radius: 2px;
+    text-decoration: none;
+    gap: 0.5rem;
+    background-color: #430b7a;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.8rem;
+    font-size: 0.8rem;
+    color: #fff;
 }
+
 .filtro-data img {
-    width: 18px;
-    height: 18px;
+    width: 1,25rem;
     filter: brightness(0) invert(1); 
 }
-.filtro-data span {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 700;
-    font-size: 0.7rem;
-    color: var(--cor-texto-branco); 
-}
+
 .filtro-cancelados {
     display: flex;
     align-items: center;
     gap: 0.2rem;
-    text-decoration: none;
+    gap: 0.5rem;
+    background-color: #430b7a;
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.8rem;
+    font-size: 0.8rem;
+    color: #fff;
 }
-.filtro-cancelados span {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    font-size: 0.7rem;
-    color: var(--cor-principal-fundo);
+
+.filtro-cancelados img {
+    width: 1.25rem;
+    filter: brightness(0) invert(100); 
 }
-.filtro-cancelados svg {
-    width: 18px;
-    height: 18px;
-    stroke: var(--cor-principal-fundo);
+
+.filtro-cancelados:hover {
+    background-color: #430b7a;
+}
+
+.filtro-cancelados:active {
+    background-color: #5D14A6;
+    transform: translateY(1px);
+}
+
+.filtro-data:hover {
+    background-color: #430b7a;
+}
+
+.filtro-data:active {
+    background-color: #5D14A6;
+    transform: translateY(1px);
 }
 
 /* Estilos de Ativo/Inativo para Filtros */
 .filtro-data.inactive {
     background-color: #f0f0f0; 
+
 }
 .filtro-data.inactive img {
     filter: brightness(0) invert(0.5); 
@@ -347,17 +407,17 @@
 .filtro-data.inactive span {
     color: var(--cor-principal-fundo); 
 }
-.filtro-cancelados.active {
-    background-color: var(--cor-principal-fundo);
-    padding: 0.25rem 0.4rem;
-    border-radius: 2px;
+.filtro-cancelados.inactive {
+    background-color: #f0f0f0; ;
 }
-.filtro-cancelados.active span {
-    color: var(--cor-texto-branco);
+.filtro-cancelados.inactive span {
+    color: var(--cor-principal);
 }
 
+.filtro-cancelados.inactive img {
+    filter: none;
+}
 
-/* Botão "Concluído" (Verde) */
 .botao-concluido {
     background-color: var(--cor-verde);
     color: white;
@@ -368,7 +428,6 @@
     font-size: 0.8rem;
     font-family: 'Roboto', sans-serif;
     font-weight: 600; 
-    text-transform: uppercase;
     width: 100%;
     text-align: center;
     transition: background-color 0.3s ease;
@@ -377,7 +436,6 @@
     background-color: var(--cor-verde-hover);
 }
 
-/* Botão "Cancelado" (Vermelho) */
 .btn-status-cancelado {
     background-color: var(--cor-vermelho);
     color: white;
@@ -388,13 +446,16 @@
     font-size: 0.8rem;
     font-family: 'Roboto', sans-serif;
     font-weight: 600;
-    text-transform: uppercase;
     width: 100%;
     text-align: center;
 }
 
+@media (min-width: 30rem){
+    .option-tab {
+        width: 15.625rem;
+    }
+}
 
-/* --- Responsividade do Desktop --- */
 @media (min-width: 48rem) { 
     .main-content {
         padding-left: var(--desktop-padding);
@@ -408,15 +469,21 @@
         padding-left: calc(1rem + var(--desktop-padding));
         padding-right: calc(1rem + var(--desktop-padding));
     }
+
+    .nav-tabs-container {
+        display: none;
+    }
     
+    .nav-item {
+        display: none;
+    }
+
+    .block-text-tag {
+        font-size: 1rem;
+    }
+
     .prestador-navbar {
-        max-width: 300px; 
-        margin: 0 auto; 
-        border-radius: 5px 5px 0 0;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: space-around; 
+        display: none;
     }
 
     .option-tab {

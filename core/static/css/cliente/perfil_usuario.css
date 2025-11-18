@@ -66,26 +66,12 @@
     padding-bottom: 8px;
 }
 
-@media (min-width: 600px) {
-    .categories-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (min-width: 900px) {
-    .categories-grid {
-        grid-template-columns: repeat(4, 1fr); 
-    }
-}
-
-/* --- Estilos Globais e do Container da Página --- */
 :root {
-  /* Cores principais da sua marca (baseado nas imagens) */
   --brand-purple: #6A00F4;
   --brand-red: #FF5A5A;
   --text-dark: #333;
   --text-light: #555;
-  --bg-gray: #F0F2F5; /* Fundo cinza do app */
+  --bg-gray: #F0F2F5; 
   --bg-white: #FFFFFF;
   --border-light: #E0E0E0;
 }
@@ -97,7 +83,7 @@ body {
 .profile-page-content {
   width: 100%;
   padding: 16px;
-  box-sizing: border-box; /* Garante que o padding não estoure a largura */
+  box-sizing: border-box;
 }
 
 /* --- Card de Perfil (Base Mobile) --- */
@@ -134,7 +120,7 @@ body {
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  color: #8100FF;
+  color: #430b7a;
   font-weight: 600;
   font-size: 14px;
 }
@@ -167,15 +153,13 @@ body {
 .info-label-group {
   display: flex;
   align-items: center;
-  gap: 12px;
+  text-align: center;
+  gap: 0.5rem;
 }
 
 .info-icon {
-  width: 24px;
-  height: 24px;
-  /* Aplica a cor roxa nos ícones SVG */
-  filter: invert(18%) sepia(99%) saturate(6011%) hue-rotate(264deg) brightness(97%) contrast(109%);
-}
+  width: 20px;
+  height: 20px;}
 
 .info-label {
   font-weight: 600;
@@ -186,14 +170,12 @@ body {
 .info-value {
   font-size: 14px;
   color: var(--text-light);
-  /* Evita que textos longos quebrem o layout */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 50%; /* Ajuste conforme necessário */
+  max-width: 50%; 
 }
 
-/* --- Botão de Sair --- */
 .logout-button {
   display: flex;
   align-items: center;
@@ -202,8 +184,8 @@ body {
   background-color: var(--bg-white);
   border: 1px solid var(--brand-red);
   color: var(--brand-red);
-  border-radius: 12px;
-  padding: 12px 24px;
+  border-radius: 0.6rem;
+  padding: 0.4rem 0.8rem;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -212,7 +194,6 @@ body {
 .logout-button img {
   width: 20px;
   height: 20px;
-  /* Aplica a cor vermelha no ícone de sair */
   filter: invert(49%) sepia(85%) saturate(1478%) hue-rotate(331deg) brightness(101%) contrast(101%);
 }
 
@@ -221,10 +202,19 @@ body {
   color: var(--bg-white);
 }
 
-/* Filtro para inverter a cor do ícone no hover 
-  (de vermelho para branco) 
-*/
 .logout-button:hover img {
   filter: brightness(0) invert(1);
+}
+
+@media (min-width: 37.5rem) {
+    .categories-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 56.25rem) {
+    .categories-grid {
+        grid-template-columns: repeat(4, 1fr); 
+    }
 }
 

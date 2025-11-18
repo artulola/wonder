@@ -1,42 +1,38 @@
-{% extends 'core/base/base_auth.html' %}
+{% extends 'core/base/base.html' %}
 {% load static %}
 
-{% block title %}Agendamentos Finalizados | WONDER{% endblock title %}
+{% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
 {% endblock extra_css %}
 
+{% block header_extra %}
+<a href="{% url 'login' %}" class="header-logout-button">
+    <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
+    <span>Sair</span>
+</a>
+{% endblock header_extra %}
+
 {% block content %}
 <div class="prestador-layout-container">
 
-    <header class="app-header prestador-header">
-        <span class="header-saudacao">Olá, Diego</span>
-        <a href="{% url 'login' %}" class="header-logout-button">
-            <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
-            <span>Sair</span>
-        </a>
-    </header>
-
-    <main class="main-content">
+    <main class="main-prestador">
         
         <div class="nav-tabs-container">
-            <a href="{% url 'prestador-home' %}"><button class="option-tab inactive">EM ABERTO</button></a>
-            <button class="option-tab active">FINALIZADOS</button>
+            <a href="{% url 'prestador-home' %}"><button class="option-tab inactive left">Em Aberto</button></a>
+            <button class="option-tab active right">Finalizados</button>
         </div>
 
-        <div class="filtros-container">
+        <div class="block-text-tag">
             <div class="filtro-data">
                 <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" alt="Calendário">
                 <span>08/10/2025</span>
             </div>
-            <a href="{% url 'prestador-cancelados' %}" class="filtro-cancelados">
+            <a href="{% url 'prestador-cancelados' %}" class="filtro-cancelados inactive">
                 <span>Ver Cancelados</span>
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.5 4.5L4.5 13.5" stroke="#5D14A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M4.5 4.5L13.5 13.5" stroke="#5D14A6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <img src="{% static 'img/icones/icon_roxo/close.svg' %}" alt="close">
             </a>
         </div>
 
@@ -58,7 +54,6 @@
             </article>
 
         </div>
-    </section>
     
     </main>
 
