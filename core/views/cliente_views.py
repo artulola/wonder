@@ -27,3 +27,4 @@ def cliente_agendamentos_finalizados_view(request: HttpRequest) -> HttpResponse:
 
 def cliente_estabelecimento_oferece_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/estabelecimento_oferece.html')
+
