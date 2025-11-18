@@ -28,3 +28,8 @@ def cliente_agendamentos_finalizados_view(request: HttpRequest) -> HttpResponse:
 def cliente_estabelecimento_oferece_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/estabelecimento_oferece.html')
 
+def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/cliente/estabelecimento_horarios.html')
+
+def cliente_estabelecimento_horarios_calendario_view(request: HttpRequest) -> HttpResponse:
+    return render(request, 'core/cliente/estabelecimento_calendario.html')

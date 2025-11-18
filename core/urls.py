@@ -32,5 +32,7 @@ urlpatterns = [
     path('prestador/cancelados/', prestador_views.prestador_cancelados_view, name='prestador-cancelados'),
     path('prestador/perfil', prestador_views.prestador_perfil_view, name='prestador-perfil'),
     path('prestador/home/', prestador_views.prestador_home_view, name='prestador-home'),
+    path('cliente/estabelecimento_horarios/', cliente_views.cliente_estabelecimento_horarios_view, name='cliente-estabelecimento-horarios'),
+    path('cliente/estabelecimento-horarios/calendario/', cliente_views.cliente_estabelecimento_horarios_calendario_view, name='cliente-estabelecimento-horarios-calendario'),
  
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

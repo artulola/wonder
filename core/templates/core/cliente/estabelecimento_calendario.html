@@ -1,0 +1,102 @@
+{% extends 'core/base/base.html' %}
+{% load static %}
+{% block title %}HORÁRIOS | WONDER{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cliente/estabelecimento_calendario.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+
+<div class="nav-tabs-container">
+        <button class="option-tab inactive">SOBRE</button>
+        <a href="#"><button class="option-tab active">HORÁRIOS DISPONÍVEIS</button></a>
+    </div>
+
+
+{% load static %}
+
+<div class="calendar-wrapper">
+    
+    <div class="calendar-header">
+        <h2 class="page-title">ESCOLHA UM DIA PARA AGENDAR</h2>
+        <div class="calendar-icon-wrapper">
+            <img src="{% static 'img/icones/icon_geral/calendar-icon-purple.svg' %}" alt="Calendário">
+        </div>
+    </div>
+
+    <table class="calendar-grid">
+        <thead>
+            <tr>
+                <th>Su</th>
+                <th>Mo</th>
+                <th>Tu</th>
+                <th>We</th>
+                <th>Th</th>
+                <th>Tr</th>
+                <th>Sa</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="day-number">1</span></td>
+                <td><span class="day-number">2</span></td>
+                <td><span class="day-number">3</span></td>
+                <td><span class="day-number">4</span></td>
+                <td><span class="day-number">5</span></td>
+                <td><span class="day-number">6</span></td>
+                <td><span class="day-number">7</span></td>
+            </tr>
+            <tr>
+                <td><span class="day-number">8</span></td>
+                <td><span class="day-number">9</span></td>
+                <td><span class="day-number">10</span></td>
+                <td><span class="day-number">11</span></td>
+                <td><span class="day-number">12</span></td>
+                <td><span class="day-number">13</span></td>
+                <td><span class="day-number">14</span></td>
+            </tr>
+            <tr>
+                <td><span class="day-number">15</span></td>
+                <td><span class="day-number">16</span></td>
+                <td><span class="day-number">17</span></td>
+                <td><span class="day-number">18</span></td>
+                <td><span class="day-number">19</span></td>
+                <td><span class="day-number">20</span></td>
+                <td><span class="day-number">21</span></td>
+            </tr>
+            <tr>
+                <td><span class="day-number">22</span></td>
+                <td><span class="day-number">23</span></td>
+                <td><span class="day-number">24</span></td>
+                <td class="calendar-day--selected">
+                    <span class="day-number">25</span>
+                </td>
+                <td><span class="day-number">26</span></td>
+                <td><span class="day-number">27</span></td>
+                <td><span class="day-number">28</span></td>
+            </tr>
+            <tr>
+                <td><span class="day-number">29</span></td>
+                <td><span class="day-number">30</span></td>
+                <td class="calendar-day--other-month">
+                    <span class="day-number">1</span>
+                </td>
+                <td class="calendar-day--other-month">
+                    <span class="day-number">2</span>
+                </td>
+                <td class="calendar-day--other-month">
+                    <span class="day-number">3</span>
+                </td>
+                <td class="calendar-day--other-month">
+                    <span class="day-number">4</span>
+                </td>
+                <td class="calendar-day--other-month">
+                    <span class="day-number">5</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock content %}
