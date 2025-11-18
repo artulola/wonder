@@ -9,27 +9,66 @@
 
 /* TABS DE NAVEGAÇÃO (SOBRE / HORÁRIOS) */
 
+.block-text-tag {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    padding: 0.8rem 0;
+}
+
+.text-tag {
+    font-weight: 600;
+    color: #430b7a;
+}
+
+.text-tag-category {
+    color: #fff;
+}
+
+.nova-categoria-button {
+    display: flex;
+    background-color: #430b7a;
+    padding: 0.6rem 0.8rem;
+    text-decoration: none;
+    gap: 0.5rem;
+    border-radius: 0.8rem;
+    font-size: 0.8rem;
+    display: none;
+}
+
+.nova-categoria-button:hover {
+    background-color: #430b7a;
+}
+
+.nova-categoria-button:active {
+    background-color: #5D14A6;
+    transform: translateY(1px);
+}
+
+.nova-categoria-button img {
+    width: 0.8rem;
+}
+
+
 .nav-tabs-container {
     display: flex;
     justify-content: center;
-    margin: 1rem 0 2rem 0;
     align-items: center;
-}
-
-.nav-tabs-container a {
-    text-decoration: none;
 }
 
 .option-tab {
     display: flex;
-    width: 150px;
+    width: 10rem;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding: 12px 35px;
     height: 50px;
     font-weight: 600;
-    text-transform: uppercase;
     border: none;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -38,16 +77,26 @@
 }
 
 .option-tab.active {
-    background-color: #8000ff;
+    background-color: #430b7a;
     color: #ffffff;
     border: 1px solid #b4b4b433;
 }
 
 .option-tab.inactive {
     background-color: #ffffff;
-    color: #8000ff;
+    color: #430b7a;
     border: 1px solid #00000033;
     border-left: none;
+}
+
+.option-tab.left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.option-tab.right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 /* CARDS DE RESULTADO */
@@ -136,7 +185,6 @@
     cursor: pointer;
     font-size: 0.8rem;
     font-weight: bold;
-    text-transform: uppercase;
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
@@ -158,7 +206,6 @@
     cursor: pointer;
     font-size: 0.8rem;
     font-weight: bold;
-    text-transform: uppercase;
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
@@ -173,11 +220,37 @@
 
 /* RESPONSIVIDADE (WEB / DESKTOP) */
 
+@media (min-width: 30rem){
+    .option-tab {
+        width: 15.625rem;
+    }
+}
+
 @media (min-width: 48rem) {
 
     .main-content {
         padding-left: 5rem !important;
         padding-right: 5rem !important;
+    }
+
+    .nova-categoria-button {
+        display: flex;
+    }
+
+    .text-tag {
+        font-size: 1rem;
+    }
+
+    .text-tag-category {
+        font-size: 0.9rem;
+    }
+
+    .nav-tabs-container {
+        display: none;
+    }
+
+    .option-tab {
+        width: 25rem;
     }
 
     .option-tab {

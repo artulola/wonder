@@ -1,6 +1,6 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
-{% block title %}Detalhe | WONDER{% endblock title %}
+{% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/detalhe_estabelecimento.css' %}">
@@ -11,8 +11,8 @@
 <section class="establishment-detail-content">
 
     <div class="nav-tabs-container">
-        <button class="option-tab active">SOBRE</button>
-        <button class="option-tab inactive">HORÁRIOS DISPONÍVEIS</button>
+        <button class="option-tab active">Sobre</button>
+        <button class="option-tab inactive">Horários Disponíveis</button>
     </div>
 
     <div class="estab-info-section">
@@ -40,14 +40,14 @@
         <div class="data-section">
             <div class="data-item">
                 <div class="data-label-group">
-                    <img src="{% static 'img/icones/icon_roxo/localization.svg' %}" alt="Ícone de Localização" class="data-icon">
+                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" alt="Ícone de Localização" class="data-icon">
                     <span class="data-label">Localização</span>
                 </div>
                 <p class="data-value">Rua: Frei Damião, 25 - Centro</p>
             </div>
             <div class="data-item">
                 <div class="data-label-group">
-                    <img src="{% static 'img/icones/icon_roxo/phone.svg' %}" alt="Ícone de Telefone" class="data-icon">
+                    <img src="{% static 'img/icones/icon_roxo/phone(1).svg' %}" alt="Ícone de Telefone" class="data-icon">
                     <span class="data-label">Telefone</span>
                 </div>
                 <p class="data-value">(84) 99485-9785</p>
@@ -55,7 +55,7 @@
         </div>
 
         <div class="photos-section">
-            <h4 class="section-title">FOTOS DO LOCAL</h4>
+            <h4 class="section-title">Fotos do Local</h4>
             <div class="photo-gallery">
                 <img class="photo-item" src="{% static 'img/detalhes_est/logo-details-diego.svg' %}" alt="Logo do Estabelecimento">
                 <img class="photo-item" src="{% static 'img/detalhes_est/logo-details-diego-barber.svg' %}"
@@ -65,11 +65,11 @@
     </div>
 
     <div class="action-btn-wrapper">
-        <button class="schedule-btn">Agendar Serviço</button>
+        <a href="{% url 'cliente-estabelecimento--oferece' %}"><button class="schedule-btn">Agendar Serviço</button></a>
     </div>
 
     <div class="reviews-section">
-        <h4 class="section-title reviews-title">AVALIAÇÕES</h4>
+        <h4 class="section-title reviews-title">Avaliações</h4>
         <div class="review-list">
             <article class="review-card">
                 <div class="card-details-group">
