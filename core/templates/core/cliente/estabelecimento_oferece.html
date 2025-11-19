@@ -15,8 +15,8 @@
   
   <h1 class="page-title">O Estabelecimento Oferece:</h1>
 
-  <form action="#" method="post">
-    {% csrf_token %}
+  <form>
+    
     
     <div class="service-list">
       
@@ -80,8 +80,9 @@
         </label>
       </div>
 
-    </div> <div class="page-footer">
-      <button type="submit" class="submit-button">Confirmar Agendamento</button>
+    </div>
+    <div class="page-footer">
+      <button type="button" class="submit-button" onclick="window.location.href=`{% url 'cliente-estabelecimento-horarios' %}`">Confirmar Agendamento</button>
     </div>
 
   </form>

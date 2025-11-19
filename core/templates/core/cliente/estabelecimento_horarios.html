@@ -3,15 +3,16 @@
 {% block title %}HORÁRIOS | WONDER{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/cliente/estabelecimento_horarios.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/tabs.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/estabelecimento_horarios.css' %}?v=2">
 {% endblock extra_css %}
 
 {% block content %}
 
 <div class="nav-tabs-container">
-        <button class="option-tab inactive">SOBRE</button>
-        <a href="#"><button class="option-tab active">HORÁRIOS DISPONÍVEIS</button></a>
-    </div>
+        <button class="option-tab inactive">Sobre</button>
+        <button class="option-tab active">Horários Disponíveis</button>
+</div>
 
 
 <form action="#" method="post">
@@ -19,7 +20,7 @@
 
     <div class="time-slot-header">
         <h2 class="page-title">DISPONÍVEL HOJE</h2>
-        <a href="#" class="calendar-link" aria-label="Selecionar outra data">
+        <a href="{% url 'cliente-estabelecimento-horarios-calendario' %}" class="calendar-link" aria-label="Selecionar outra data">
             <img src="{% static 'img/icones/icon_geral/calendar-icon.svg' %}" alt="Calendário">
         </a>
     </div>
