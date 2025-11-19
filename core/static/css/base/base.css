@@ -91,6 +91,7 @@ body {
   z-index: 200;
   padding: 1.25rem;
   will-change: left;
+  padding: 0 1.25rem 1.25rem 1.25rem;
 }
 
 .sidebar-open {
@@ -104,6 +105,12 @@ body {
   font-weight: 700;
   font-size: 1.05rem;
   color: var(--color-primary);
+  width: calc(100% + 2.5rem);
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+  background-color: #9f64da57;
+  padding: 0.75rem 1.25rem 1rem 1.25rem;
+  margin-top: 0;
 }
 
 .sidebar-close {

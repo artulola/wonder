@@ -13,12 +13,11 @@
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 0 1rem;
 }
 
 /* --- Barra de Busca --- */
 .search-bar-wrapper {
-    margin-top: 1rem;
     margin-bottom: 2rem;
 }
 
