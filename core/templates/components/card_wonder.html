@@ -1,24 +1,47 @@
 {% load static %}
+
 <div class="result-card-wonder">
     <div class="card-wonder-details">
-        {% if img_url %}
-        <img src="{% static img_url %}" alt="Imagem">
-        {% endif %}
+        <img src="{% static img_url %}" alt="Logo SPA da Gi">
         <div class="card-wonder-info">
-            <h3 class="card-title">{{ title }}</h3>
+            <p class="card-title">{{ title }}</h3>
             <div class="card-wonder-meta card-wonder-meta-info">
-                {% if subtitle %}<span class="card-wonder-subtitle">{{ subtitle }}</span>{% endif %}
-                {% if time_value %}<span class="time-value-card-wonder">Horário: {{ time_value }}</span>{% endif %}
+                {% if subtitle %}
+                    <span class="card-wonder-subtitle">{{ subtitle }}</span>
+                {% endif %}
+                {% if time_value %}
+                    <span class="time-value-card-wonder">Horário: {{ time_value }}</span>
+                {% endif %}
             </div>
+            {% if time_rating %}
+                <div class="card-wonder-meta">
+                    <span class="card-wonder-star-icon">★</span>
+                    <span class="card-wonder-rating-value">{{ rating_value }}</span>
+                    <span class="card-wonder-separator ">·</span>
+                    <span class="card-wonder-schedule">{{ time_start }}h - {{ time_end }}h</span>
+                </div>
+            {% endif %}
         </div>
     </div>
 
     {% if day_text or btn_text_conclude %}
         <div class="card-wonder-status-day card-wonder-color-{{ color_status }}">
-            {% if day_text %}<p>{{ day_text }}</p>{% endif %}
+            {% if day_text %}
+                <p>{{ day_text }}</p>
+            {% endif %}
             {% if btn_text_conclude %}
                 <button class="card-wonder-btn card-wonder-btn-bg-color-{{ btn_color_conclude }}">{{ btn_text_conclude }}</button>
             {% endif %}
+        </div>
+    {% endif %}
+
+    {% if btn_finish %}
+        <div class="card-wonder-btn-block-day">
+            {% for btn in btn_finish %}
+                <button class="card-wonder-btn-finish card-wonder-btn-finish-color-{{ btn.color }}">
+                    {{ btn.text }}
+                </button>
+            {% endfor %}
         </div>
     {% endif %}
 </div>

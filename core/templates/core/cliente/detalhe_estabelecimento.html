@@ -1,10 +1,13 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{% load card_wonder %}
 {% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/cliente/tabs.css' %}">
 <link rel="stylesheet" href="{% static 'css/cliente/detalhe_estabelecimento.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/home.css' %}">
+
 {% endblock extra_css %}
 
 
@@ -12,29 +15,11 @@
 <section class="establishment-detail-content">
 
     <div class="nav-tabs-container">
-        <button class="option-tab active">Sobre</button>
-        <button class="option-tab inactive">Horários Disponíveis</button>
+        <button class="option-tab active left">Sobre</button>
+        <button class="option-tab inactive right">Horários Disponíveis</button>
     </div>
 
-    <div class="estab-info-section">
-        <article class="estab-info-card">
-            <div class="card-details-group">
-                <img src="{% static 'img/logo/Diego-BarberShop.svg' %}" alt="Logo Diego BarberShop">
-                <div class="card-text-group">
-                    <h3 class="card-name">Diego BarberShop</h3>
-                    <div class="card-meta-info">
-                        <span class="star-icon">★</span>
-                        <span class="rating-value">4,7</span>
-                        <span class="separator">·</span>
-                        <span class="schedule-time">8 - 18h</span>
-                    </div>
-                </div>
-            </div>
-            <div class="status-tag">
-                <p>Disponível Hoje</p>
-            </div>
-        </article>
-    </div>
+    {% card_wonder title="Diego BarberShop" img_url="img/logo/Diego-BarberShop.svg" time_rating=True rating_value="5.0" time_start="8:00" time_end="18:00" day_text="Disponível hoje" %}
 
     <div class="main-detail-sections">
 

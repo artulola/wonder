@@ -1,9 +1,11 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{% load card_wonder %}
 {% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -77,118 +79,15 @@
             <h2 class="section-title">Para você</h2>
             <a href="#" class="more-categories-link">Ver mais categorias</a>
         </div>
-        
-        <div class="results-list">
-            <article class="result-card available">
-                <a href="{% url 'cliente-estabelecimento--detalhe' %}" style="text-decoration: none; color: inherit;">
-                    <div class="card-details">
-                        <img src="{% static 'img/logo/Diego-BarberShop.svg' %}" alt="Logo Diego BarberShop">
-                        <div class="card-info">
-                            <h3 class="card-title">Diego BarberShop</h3>
-                            <div class="card-meta">
-                                <span class="star-icon">★</span>
-                                <span class="rating-value">4,7</span>
-                                <span class="separator">·</span>
-                                <span class="schedule">8 - 18h</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                <div class="card-status status-available">
-                    <p class="status-text">Disponível Hoje</p>
-                </div>
-            </article>
 
-            <article class="result-card available">
-                <div class="card-details">
-                    <img src="{% static 'img/logo/SPA-da-gi.svg' %}" alt="Logo SPA da Gi">
-                    <div class="card-info">
-                        <h3 class="card-title">SPA da Gi</h3>
-                        <div class="card-meta">
-                            <span class="star-icon">★</span>
-                            <span class="rating-value">105</span>
-                            <span class="separator">·</span>
-                            <span class="schedule">8 - 18h</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-status status-available">
-                    <p class="status-text">Disponível Hoje</p>
-                </div>
-            </article>
-
-            <article class="result-card available">
-                <div class="card-details">
-                    <img src="{% static 'img/logo/RD-Cabelos.svg' %}" alt="Logo RD Cabelos">
-                    <div class="card-info">
-                        <h3 class="card-title">RD Cabelos</h3>
-                        <div class="card-meta">
-                            <span class="star-icon">★</span>
-                            <span class="rating-value">100</span>
-                            <span class="separator">·</span>
-                            <span class="schedule">8 - 18h</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-status status-available">
-                    <p class="status-text">Disponível Hoje</p>
-                </div>
-            </article>
-        
-            <article class="result-card closed">
-                <div class="card-details">
-                    <img src="{% static 'img/logo/Diva-nails.svg' %}" alt="Logo Diva Nails">
-                    <div class="card-info">
-                        <h3 class="card-title">Diva Nails</h3>
-                        <div class="card-meta">
-                            <span class="star-icon">★</span>
-                            <span class="rating-value">21</span>
-                            <span class="separator">·</span>
-                            <span class="schedule">8 - 18h</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-status status-closed">
-                    <p class="status-text">Fechado</p>
-                </div>
-            </article>
-            
-            <article class="result-card closed">
-                <div class="card-details">
-                    <img src="{% static 'img/logo/trancas-nego.svg' %}" alt="Logo Tranças Negô">
-                    <div class="card-info">
-                        <h3 class="card-title">Tranças Negô</h3>
-                        <div class="card-meta">
-                            <span class="star-icon">★</span>
-                            <span class="rating-value">254</span>
-                            <span class="separator">·</span>
-                            <span class="schedule">8 - 18h</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-status status-closed">
-                    <p class="status-text">Fechado</p>
-                </div>
-            </article>
-            
-            <article class="result-card closed">
-                <div class="card-details">
-                    <img src="{% static 'img/logo/studio-make.svg' %}" alt="Logo Studio Make-Up">
-                    <div class="card-info">
-                        <h3 class="card-title">Studio Make-Up</h3>
-                        <div class="card-meta">
-                            <span class="star-icon">★</span>
-                            <span class="rating-value">25</span>
-                            <span class="separator">·</span>
-                            <span class="schedule">8 - 18h</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-status status-closed">
-                    <p class="status-text">Fechado</p>
-                </div>
-            </article>
-        </div>
+        <a href="{% url 'cliente-estabelecimento--detalhe' %}">{% card_wonder title="Diego BarberShop" img_url="img/logo/Diego-BarberShop.svg" time_rating=True rating_value="5.0" time_start="8:00" time_end="18:00" day_text="Disponível hoje" %}<a/>
+        {% card_wonder title="SPA da GI" img_url="img/logo/SPA-da-gi.svg" time_rating=True rating_value="4.8" time_start="8:00" time_end="18:00" day_text="Disponível hoje" %}
+        {% card_wonder title="RD Cabelos" img_url="img/logo/RD-Cabelos.svg" time_rating=True rating_value="100" time_start="8:00" time_end="18:00" day_text="Disponível Hoje" %}
+        {% card_wonder title="Diva Nails" img_url="img/logo/Diva-nails.svg" time_rating=True rating_value="21" time_start="8:00" time_end="18:00" day_text="Fechado" color_status="red" %}
+        {% card_wonder title="Tranças Negô" img_url="img/logo/trancas-nego.svg" time_rating=True rating_value="254" time_start="8:00" time_end="18:00" day_text="Fechado" color_status="red" %}
+        {% card_wonder title="Studio Make-Up" img_url="img/logo/studio-make.svg" time_rating=True rating_value="25" time_start="8:00" time_end="18:00" day_text="Fechado" color_status="red" %}
+    
     </div>
 </section>
+
 {% endblock content %}
