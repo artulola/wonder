@@ -1,0 +1,51 @@
+/* Shared Tabs Styles (Sobre / Horários) */
+
+.nav-tabs-container {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 2rem 0;
+    align-items: center;
+}
+
+.option-tab {
+    display: flex;
+    width: 10rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-family: "Poppins", sans-serif;
+    padding: 12px 35px;
+    height: 50px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 8px rgba(128, 0, 255, 0.2);
+}
+
+.option-tab.active {
+    background-color: #430b7a;
+    color: #ffffff;
+    border-radius: 0 0.3rem 0.3rem 0;
+    border: 1px solid #b4b4b433;
+}
+
+.option-tab.inactive {
+    background-color: #ffffff;
+    color: #430b7a;
+    border: 1px solid #00000033;
+    border-left: none;
+    border-radius: 0.3rem 0 0 0.3rem;
+}
+
+@media (min-width: 30rem){
+    .option-tab {
+        width: 15.625rem;
+    }
+}
+
+@media (min-width: 48rem) {
+    .option-tab {
+        width: 25rem;
+    }
+}
