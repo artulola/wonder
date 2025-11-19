@@ -1,118 +1,97 @@
 {% extends 'core/base/base.html' %}
-
 {% load static %}
-
-
-{% block title %}WONDER{% endblock title %}
+{% block title %}Meu Perfil | WONDER{% endblock title %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
-<link rel="stylesheet" href="{% static 'css/prestador/perfil_prestador.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/perfil_usuario.css' %}">
 {% endblock extra_css %}
 
-{% block header_extra %}
-<a href="{% url 'login' %}" class="header-logout-button">
-    <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
-    <span>Sair</span>   
-</a>
-{% endblock header_extra %}
-
 {% block content %}
-<div class="prestador-layout-container">
+<main class="profile-page-content">
+  
+  <div class="profile-card">
+    
+    <header class="profile-header">
+      <img class="profile-avatar" src="{% static 'img/perfil/perfil_prestador.svg' %}" alt="Foto de perfil">
+      <a href="#" class="edit-profile-link">
+        <img src="{% static 'img/icones/icon_roxo/pencil(1).svg' %}" alt="Editar">
+        <span>Editar perfil</span>
+      </a>
+    </header>
 
-    <main class="main-prestador">
-        
-        <section class="profile-header">
-            <img class="profile-pic" src="{% static 'img/perfil/perfil_prestador.svg' %}" alt="Foto do Perfil">
-            <div class="stats-box">
-                <div class="stat-item">
-                    <span>Avaliação:</span>
-                    <div class="stars">
-                        <span>★</span><span>★</span><span>★</span><span>★</span><span class="star-empty">★</span>
-                        <span class="stat-count">(11)</span>
-                    </div>
-                </div>
-                <div class="stat-item">
-                    <span>Serviços:</span>
-                    <span class="stat-count">11</span>
+    <section class="user-info-list">
+      
+
+      <div class="info-item">
+        <div class="info-label-group">
+          <img class="info-icon" src="{% static 'img/icones/icon_roxo/bxs_user-circle.svg' %}" alt="">
+          <span class="info-label">Estabelecimento</span>
+        </div>
+        <span class="info-value">Diego BarberShop</span>
+      </div>
+
+      <div class="info-item">
+        <div class="info-label-group">
+          <img class="info-icon" src="{% static 'img/icones/icon_roxo/User.svg' %}" alt="">
+          <span class="info-label">CPF/CNPJ</span>
+        </div>
+        <span class="info-value">62.173.620/0001-80</span>
+      </div>
+      
+      <div class="info-item">
+        <div class="info-label-group">
+          <img class="info-icon" src="{% static 'img/icones/icon_roxo/email.svg' %}" alt="">
+          <span class="info-label">Email</span>
+        </div>
+        <span class="info-value">DiegoBarber@gmail.com</span>
+      </div>
+
+      <div class="info-item">
+        <div class="info-label-group">
+          <img class="info-icon" src="{% static 'img/icones/icon_roxo/phone(1).svg' %}" alt="">
+          <span class="info-label">Telefone</span>
+        </div>
+        <span class="info-value">(84) 99485-9785</span>
+      </div>
+
+       <div class="info-item">
+        <div class="info-label-group">
+          <img class="info-icon" src="{% static 'img/icones/icon_roxo/time.svg' %}" alt="">
+          <span class="info-label">Horário</span>
+        </div>
+        <span class="info-value">SEG - SÁB / 8h - 12h</span>
+      </div>
+
+    </section>
+
+    <section class="user-info-list" style="margin-top: 1rem;">
+        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 4px; margin-bottom: 0.5rem;">
+            <span style="font-size: 0.9rem; font-weight: 600; color: #333;">Meus Serviços</span>
+            <a href="#" style="font-size: 0.8rem; font-weight: 600; color: #430b7a; text-decoration: none;">+ Adicionar</a>
+        </div>
+
+        <div class="info-item">
+            <div class="info-label-group">
+                <img class="info-icon" style="border-radius: 4px; width: 24px; height: 24px; object-fit: cover;" src="{% static 'img/categorias/cat_est/corte-social.svg' %}" alt="">
+                <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 0;">
+                    <span class="info-label">Corte de Cabelo</span>
+                    <span style="font-size: 0.7rem; color: #777; font-weight: 400;">R$ 25,00 • 1h</span>
                 </div>
             </div>
-        </section>
-
-        <section class="info-section">
-            <ul class="info-list">
-                
-                <li class="info-item">
-                    <div class="info-label">
-                        <img src="{% static 'img/icones/icon_roxo/bxs_user-circle.svg' %}" alt="Ícone Estabelecimento"> 
-                        <span>Nome do Estabelecimento</span>
-                    </div>
-                    <span class="info-value">Diego BarberShop</span>
-                </li>
-                <li class="info-item">
-                    <div class="info-label">
-                        <img src="{% static 'img/icones/icon_roxo/User.svg' %}" alt="Ícone Documento"> 
-                        <span>CPF/CNPJ</span>
-                    </div>
-                    <span class="info-value">62.173.620/0001-80</span>
-                </li>
-                <li class="info-item">
-                    <div class="info-label">
-                        <img src="{% static 'img/icones/icon_roxo/email-roxo.svg' %}" alt="Ícone Email"> 
-                        <span>Email</span>
-                    </div>
-                    <span class="info-value">DiegoBarber@gmail.com</span>
-                </li>
-                <li class="info-item">
-                    <div class="info-label">
-                        <img src="{% static 'img/icones/icon_roxo/telefone-roxo.svg' %}" alt="Ícone Telefone"> 
-                        <span>Telefone</span>
-                    </div>
-                    <span class="info-value">(84) 99485-9785</span>
-                </li>
-                <li class="info-item">
-                    <div class="info-label">
-                        <img src="{% static 'img/icones/icon_roxo/time.svg' %}" alt="Ícone Horário"> 
-                        <span>Horário de Funcionamento</span>
-                    </div>
-                    <span class="info-value">SEG - SÁB / 8h - 12h</span>
-                </li>
-                
-            </ul>
-            <a href="#" class="edit-profile-link">
-                <img src="{% static 'img/icones/icon_roxo/editar_azul.svg' %}" alt="Editar Perfil">
-                <span>Editar perfil</span>
+            <a href="#">
+                <img src="{% static 'img/icones/icon_geral/editar_cinza.svg' %}" style="width: 16px; opacity: 0.5;" alt="Editar">
             </a>
-        </section>
+        </div>
+    </section>
 
-        <section class="service-section">
-            <div class="service-header">
-                <span class="service-title">Serviços Cadastrados:</span>
-                <a href="#" class="service-add-link">
-                    <span>Cadastrar Serviço</span>
-                    <img src="{% static 'img/icones/icon_geral/icon_plus_black.svg' %}" alt="Adicionar Serviço"> 
-                </a>
-            </div>
-            
-            <div class="service-list">
+    <a href="{% url 'login' %}" class="logout-button" style="margin-top: 1.5rem;">
+      <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="">
+      <span>Sair</span>
+    </a>
+    
+  </div>
 
-                <article class="service-card">
-                    <img class="service-img" src="{% static 'img/categorias/cat_est/corte-social.svg' %}" alt="Imagem do Serviço">
-                    <div class="service-info">
-                        <span class="service-name">Corte de Cabelo Masc.</span>
-                        <span class="service-details">Tempo de duração: 1h | R$ 25,00</span>
-                    </div>
-                    <a href="#" class="service-edit-btn">
-                        <img src="{% static 'img/icones/icon_geral/editar_cinza.svg' %}" alt="Editar">
-                    </a>
-                </article>
-
-            </div>
-        </section>
-
-    </main>
-
-    <nav class="app-navbar prestador-navbar">
+  <nav class="app-navbar prestador-navbar">
         <a href="{% url 'prestador-home' %}" class="nav-item">
             <img src="{% static 'img/icones/icon_footer/calendar.svg' %}" alt="Agendamentos" class="nav-icon">
             <span class="nav-label">Agendamentos</span>
@@ -122,6 +101,6 @@
             <span class="nav-label">Perfil</span>
         </a>
     </nav>
-    
-</div>
-{% endblock %}
+
+</main>
+{% endblock content %}
