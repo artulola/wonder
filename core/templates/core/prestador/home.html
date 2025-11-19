@@ -1,34 +1,37 @@
-{% extends 'core/base/base_auth.html' %}
+{% extends 'core/base/base.html' %}
 {% load static %}
 
-{% block title %}Home Prestador | WONDER{% endblock title %}
+{% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
 {% endblock extra_css %}
 
+{% block header_extra %}
+<a href="{% url 'login' %}" class="header-logout-button">
+    <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
+    <span>Sair</span>
+</a>
+{% endblock header_extra %}
 {% block content %}
 <div class="prestador-layout-container">
 
-    <header class="app-header prestador-header">
-        <span class="header-saudacao">Olá, Diego</span>
-        <a href="{% url 'login' %}" class="header-logout-button">
-            <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
-            <span>Sair</span>
-        </a>
-    </header>
 
-    <main class="main-content">
+    <main class="main-prestador">
         
         <div class="nav-tabs-container">
-            <button class="option-tab active">EM ABERTO</button>
-            <a href="{% url 'prestador-finalizados' %}"><button class="option-tab inactive">FINALIZADOS</button></a>
+            <button class="option-tab active left">Em Aberto</button>
+            <a href="{% url 'prestador-finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
         </div>
 
-        <a href="#" class="link-hoje">
-            <span>AGENDADO HOJE</span>
-            <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" alt="Calendário">
-        </a>
+        <div href="#" class="block-text-tag">
+            <span class="text-tag-day">Agendamentos em Aberto</span>
+            <a href="#" class="agenda-button">
+                <span class="text-tag">Ver agenda</span>
+                <img src="{% static 'img/icones/icon_geral/calendar(1).svg' %}" alt="Calendário">
+            </a>
+        </div>
+
 
         <div class="results-list">
             
@@ -81,7 +84,6 @@
             </article>
 
         </div>
-    </section>
     
     </main>
 

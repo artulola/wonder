@@ -1,5 +1,5 @@
 :root {
-    --cor-principal: #8000ff;
+    --cor-principal: #430b7a;
     --cor-fundo-input: #f2f2f2;
     --cor-texto-principal: #505050;
     --cor-texto-branco: #ffffff;
@@ -96,7 +96,6 @@
     transform: translateY(-50%);
     width: 1.25rem;
     height: 1.25rem;
-    opacity: 0.6;
 }
 
 .lista-cidades {
@@ -148,19 +147,21 @@
 
 /* --- AJUSTE PARA TELAS LARGAS (DESKTOP) --- */
 @media (min-width: 768px) {
-    .main-container-cidade {
-        align-items: center;
-    }
     .conteudo-principal {
-        max-width: 25rem; 
         width: 100%;
-        padding: 2rem;
-        border-radius: 0.5rem;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        border: 1px solid var(--cor-borda-suave);
+        padding: 2rem 3rem;
     }
-    
-    /* Esta é a regra que esconde a seta no desktop */
+
+    .lista-cidades li a {
+        padding: 1.25rem 2rem;
+    }
+
+    .cidade-nome {
+        font-size: 1.125rem;
+        font-weight: 500;
+    }
+
+    /* Esconde a seta no desktop */
     .botao-voltar {
         display: none;
     }

@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_tags %}
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -7,9 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}WONDER{% endblock %}</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Gruppo&family=Poppins:wght@600&display=swap"
-        rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="{% static 'img/icones/icon_roxo/lotus.svg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static '/css/base/base.css' %}">
     {% block extra_css %}{% endblock extra_css %}
@@ -17,13 +17,22 @@
 
 <body>
     <header class="app-header">
-        <div class="header-logo">
-            <img class="logo-icon" src="{% static 'img/icones/icon_roxo/lotus.svg' %}" alt="Logo Wonder">
-            <span class="logo-name">WONDER</span>
+        <div class="header-left">
+            <button class="hamburger-menu" id="openSidebar" aria-label="Abrir menu">
+                <img src="{% static 'img/icones/icon_roxo/menu.svg' %}" alt="Menu">
+            </button>
+            
+            <div class="header-logo">
+                <img class="logo-icon" src="{% static 'img/icones/icon_roxo/lotus.svg' %}" alt="Logo Wonder">
+                <span class="logo-name">WONDER</span>
+            </div>
         </div>
+    
         <div class="header-location">
-            <span class="location-text">Pau dos Ferros/RN</span>
-            <img src="{% static 'img/icones/icon_roxo/seta-pra-baixo.svg' %}" alt="" class="location-icon-wrapper">
+            {% block header_extra %}
+                <span class="location-text">Pau dos Ferros/RN</span>
+                <img src="{% static 'img/icones/icon_roxo/arrow-down.svg' %}" alt="" class="location-icon-wrapper">
+            {% endblock header_extra %}
         </div>
     </header>
 
@@ -37,31 +46,16 @@
     <footer class="app-navbar">
         <nav>
             <ul class="nav-list">
-                <li class="nav-item nav-item--active">
-                    <a href="{% url 'cliente-home'%}">
-                        <img src="{% static 'img/icones/icon_footer/home-ativo.svg' %}" alt="" class="nav-icon">
-                        <span class="nav-text">Início</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'cliente-busca'%}">
-                        <img src="{% static 'img/icones/icon_footer/search.svg' %}" alt="" class="nav-icon">
-                        <span class="nav-text">Busca</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'cliente-agendamentos' %}"> <img src="{% static 'img/icones/icon_footer/calendar.svg' %}" alt="" class="nav-icon">
-                        <span class="nav-text">Agendamentos</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'cliente-perfil' %}"> <img src="{% static 'img/icones/icon_footer/user.svg' %}" alt="" class="nav-icon">
-                        <span class="nav-text">Perfil</span>
-                    </a>
-                </li>
+                {% include 'components/sidebar_itens.html' with tipo=tipo %}
             </ul>
         </nav>
     </footer>
+
+    {% include 'components/sidebar.html' %}
+
+    <script src="{% static 'js/base/sidebar.js' %}"></script>
+    {% block extra_js %}{% endblock extra_js %}
+
 </body>
 
 </html>

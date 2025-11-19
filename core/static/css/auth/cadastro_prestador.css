@@ -1,5 +1,5 @@
 :root {
-    --cor-principal: #8000ff;
+    --cor-principal: #430b7a;
     --cor-fundo-input: #f2f2f2;
     --cor-texto-principal: #505050;
     --cor-texto-branco: #ffffff;
@@ -199,9 +199,6 @@
 }
 
 @media (min-width: 768px) {
-    .container-cadastro-prestador {
- 
-    }
     .cabecalho-cadastro {
         display: none;
     }

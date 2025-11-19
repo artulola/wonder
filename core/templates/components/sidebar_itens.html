@@ -1,0 +1,60 @@
+{% load static %}
+{% load custom_tags %}
+
+{% if tipo == "cliente" %}
+
+    <li class="nav-item {% if request.path == '/' %}nav-item--active{% endif %}">
+        <a href="{% url 'cliente-home' %}">
+            <img class="nav-icon"
+                src="{% if request.path == '/' %}
+                        {% static 'img/icones/icon_footer/home(1).svg' %}
+                    {% else %}
+                        {% static 'img/icones/icon_footer/home.svg' %}
+                    {% endif %}">
+            <span class="nav-text">Início</span>
+        </a>
+    </li>
+
+    <li class="nav-item {% if request.path|startswith:'/busca' %}nav-item--active{% endif %}">
+        <a href="{% url 'cliente-busca' %}">
+            <img class="nav-icon"
+                src="{% static request.path|startswith:'/busca'|yesno:'img/icones/icon_footer/busca.svg,img/icones/icon_footer/search.svg' %}">
+            <span class="nav-text">Buscar</span>
+        </a>
+    </li>
+
+    <li class="nav-item {% if request.path|startswith:'/agendamentos' %}nav-item--active{% endif %}">
+        <a href="{% url 'cliente-agendamentos' %}">
+            <img class="nav-icon"
+                src="{% static request.path|startswith:'/agendamentos'|yesno:'img/icones/icon_footer/calendar(2).svg,img/icones/icon_footer/calendar.svg' %}">
+            <span class="nav-text">Agendamentos</span>
+        </a>
+    </li>
+
+    <li class="nav-item {% if request.path|startswith:'/perfil' %}nav-item--active{% endif %}">
+        <a href="{% url 'cliente-perfil' %}">
+            <img class="nav-icon"
+                src="{% static request.path|startswith:'/perfil'|yesno:'img/icones/icon_footer/user(1).svg,img/icones/icon_footer/user.svg' %}">
+            <span class="nav-text">Perfil</span>
+        </a>
+    </li>
+
+{% elif tipo == "prestador" %}    
+
+    <li class="nav-item {% if request.path|startswith:'/prestador/home' or request.path == '/prestador/finalizados' or request.path|startswith:'/prestador/cancelados' %} nav-item--active {% endif %}">
+        <a href="{% url 'prestador-home' %}">
+            <img class="nav-icon" 
+                src="{% static request.path|startswith:'/prestador/home'|yesno:'img/icones/icon_footer/calendar(2).svg,img/icones/icon_footer/calendar.svg' %}">
+            <span class="nav-text">Agendamentos</span>
+        </a>
+    </li>
+
+    <li class="nav-item {% if request.path|startswith:'/prestador/perfil' %}nav-item--active{% endif %}">
+        <a href="{% url 'prestador-perfil' %}">
+            <img class="nav-icon"
+                src="{% static request.path|startswith:'/prestador/perfil'|yesno:'img/icones/icon_footer/user(1).svg,img/icones/icon_footer/user.svg' %}">
+            <span class="nav-text">Perfil</span>
+        </a>
+    </li>
+
+{% endif %}
