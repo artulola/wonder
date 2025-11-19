@@ -1,0 +1,176 @@
+.result-card-wonder {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: #f8f8f8;
+    border-radius: 0.3125rem;
+    min-height: 4rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.card-wonder-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-wonder-details {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.card-wonder-subtitle {
+    color: #9D7ABF;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.time-value-card-wonder {
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    color: #5f5a5a;
+    font-size: 0.75rem;
+}
+
+.card-wonder-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: #8000ff9a;
+}
+
+.card-wonder-meta-info {
+    margin-top: 0.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.card-wonder-star-icon {
+    color: #ffd95e;
+    font-size: 1rem;
+    margin-right: 0.1rem;
+}
+
+.card-wonder-rating-value, .card-wonder-schedule {
+    font-family: "Source Sans Pro", Helvetica;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    color: #505050;
+}
+
+.card-wonder-separator {
+    margin: 0 0.25rem;
+    color: #505050;
+    font-size: 0.5rem;
+}
+
+.card-wonder-status-day {
+    font-family: "Poppins-SemiBold", Helvetica;
+    font-weight: 600;
+    font-size: 0.75rem;
+    white-space: nowrap;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-end;
+}
+
+.card-wonder-color-red {
+    color: #c91818;
+}
+
+.card-wonder-color-green {
+    color: #158e19;
+}
+
+.card-wonder-btn {
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.card-wonder-btn-bg-color-green {
+    background-color: #158E19;
+}
+
+.card-wonder-btn-bg-color-red {
+    background-color: #C91818;
+}
+
+.card-wonder-btn-bg-color-red:hover {
+    background-color: #e52636;
+}
+
+.card-wonder-btn-bg-color-red:active {
+    background-color: #bd2130;
+    transform: translateY(1px);
+}
+
+.card-wonder-btn-bg-color-green:hover {
+    background-color: #3ca10d;
+}
+
+.card-wonder-btn-bg-color-green:active {
+    background-color: #158E19;
+    transform: translateY(1px);
+}
+
+.card-wonder-btn-block-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    width: 110px;
+}
+
+.card-wonder-btn-finish {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.3rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.1s ease, border-color 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.card-wonder-btn-finish-color-blue {
+    color: #2A6CCF;
+}
+
+.card-wonder-btn-finish-color-red {
+    color: #DC3545FF;
+}
+
+.card-wonder-btn-finish-color-red:hover {
+    background-color: #c82333;
+    color: white;
+}
+
+.card-wonder-btn-finish-color-blue:hover {
+    background-color: #255aaa;
+    color: white;
+}
+
+.card-wonder-btn-finish-color-blue:active {
+    background-color: #2A6CCF;
+    transform: translateY(1px);
+}
+
+.card-wonder-btn-finish-color-red:active {
+    background-color: #bd2130;
+    transform: translateY(1px);
+}
