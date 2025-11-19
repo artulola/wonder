@@ -21,6 +21,43 @@
         <a href="{% url 'admin-categorias' %}"><button class="option-tab active right">Categorias</button></a>
     </div>
 
+
+    <div class="modal-overlay" id="modalCategoria">
+  <div class="modal-content">
+    <h2 class="modal-title">Cadastrar Categorias</h2>
+
+    <label class="modal-label">Nome da Categoria</label>
+    <input type="text" class="modal-input" placeholder="Ex: Cabelo Masculino">
+
+    <label class="modal-label">Adicione uma foto para o card</label>
+    <input type="file" class="modal-input" accept="image/*">
+
+    <div class="modal-buttons">
+      <button class="modal-cancel" onclick="fecharModal()">Cancelar</button>
+      <button class="modal-save">Salvar</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-overlay" id="modalEditarCategoria">
+  <div class="modal-content">
+    <h2 class="modal-title">Editar Categoria</h2>
+
+    <label class="modal-label">Nome da Categoria</label>
+    <input type="text" class="modal-input" id="editNomeCategoria" value="">
+
+    <label class="modal-label">Atualize a foto do card</label>
+    <input type="file" class="modal-input" accept="image/*">
+
+    <div class="modal-buttons">
+      <button class="modal-cancel" onclick="fecharModalEditar()">Cancelar</button>
+      <button class="modal-save">Salvar Alterações</button>
+    </div>
+  </div>
+</div>
+
+
     <div class="block-text-tag">
         <span class="text-tag">Categorias</span>
         <a href="#" class="nova-categoria-button">
@@ -71,5 +108,45 @@
     </div>
 
 </section>
+
+<script>
+  const botaoNovaCategoria = document.querySelector('.nova-categoria-button');
+  const modal = document.getElementById('modalCategoria');
+
+  botaoNovaCategoria.addEventListener('click', function(e) {
+    e.preventDefault();
+    modal.style.display = 'flex';
+  });
+
+  function fecharModal() {
+    modal.style.display = 'none';
+  }
+
+
+const botoesEditar = document.querySelectorAll('.botao-visualizar');
+  const modalEditar = document.getElementById('modalEditarCategoria');
+  const campoNomeCategoria = document.getElementById('editNomeCategoria');
+
+  botoesEditar.forEach(botao => {
+    botao.addEventListener('click', function(e) {
+      e.preventDefault();
+
+      // Pega o nome da categoria do card correspondente
+      const nomeCategoria = this.closest('.result-card').querySelector('.card-title').innerText;
+      campoNomeCategoria.value = nomeCategoria;
+
+      modalEditar.style.display = 'flex';
+    });
+  });
+
+  function fecharModalEditar() {
+    modalEditar.style.display = 'none';
+  }
+
+
+
+
+
+</script>
 
 {% endblock content %}

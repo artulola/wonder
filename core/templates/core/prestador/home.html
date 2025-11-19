@@ -98,5 +98,65 @@
         </a>
     </nav>
     
+<!-- Modal de Confirmação Finalizar -->
+<div class="modal-overlay" id="modalFinalizar">
+  <div class="modal-content">
+    <h2 class="modal-title">Confirmar Finalização</h2>
+    <p>Tem certeza que deseja finalizar este agendamento?</p>
+    <div class="modal-buttons">
+      <button class="modal-cancel" onclick="fecharModal('modalFinalizar')">Não</button>
+      <button class="modal-save">Sim, Finalizar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Cancelamento -->
+<div class="modal-overlay" id="modalCancelar">
+  <div class="modal-content">
+    <h2 class="modal-title">Cancelar Agendamento</h2>
+    <label class="modal-label">Motivo do cancelamento</label>
+    <textarea class="modal-input" rows="3" placeholder="Digite o motivo..."></textarea>
+    <div class="modal-buttons">
+      <button class="modal-cancel" onclick="fecharModal('modalCancelar')">Voltar</button>
+      <button class="modal-save">Confirmar Cancelamento</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function abrirModal(id) {
+    document.getElementById(id).style.display = 'flex';
+  }
+
+  function fecharModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  // Abrir modal de Finalizar
+  document.querySelectorAll('.botao-finalizar').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      abrirModal('modalFinalizar');
+    });
+  });
+
+  // Abrir modal de Cancelar
+  document.querySelectorAll('.botao-cancelar').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      abrirModal('modalCancelar');
+    });
+  });
+
+  // Fechar ao clicar fora
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+</script>
+
 </div>
 {% endblock %}
