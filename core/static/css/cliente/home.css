@@ -102,6 +102,12 @@
     transition: background-color 0.2s;
 }
 
+.recommendation-section, .recommendation-section a{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
 .result-card:hover {
     background-color: #efefef;
 }

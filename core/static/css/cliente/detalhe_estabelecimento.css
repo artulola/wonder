@@ -43,6 +43,56 @@
     transition: background-color 0.2s;
 }
 
+.main-detail-sections {
+    margin-top: 0.5rem;
+}
+
+.nav-tabs-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.option-tab {
+    display: flex;
+    width: 10rem;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 12px 35px;
+    height: 50px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: 0 4px 8px rgba(128, 0, 255, 0.2);
+    border-radius: 0.3rem;
+}
+
+.option-tab.active {
+    background-color: #430b7a;
+    color: #ffffff;
+    border: 1px solid #b4b4b433;
+}
+
+.option-tab.inactive {
+    background-color: #ffffff;
+    color: #430b7a;
+    border: 1px solid #00000033;
+    border-left: none;
+}
+
+.option-tab.left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.option-tab.right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
 .estab-info-card:hover {
     background-color: #efefef;
 }
@@ -270,6 +320,10 @@
     .photo-item {
         height: 10rem;
     }
+
+    .option-tab {
+        width: 15.625rem;
+    }
 }
 
 @media (min-width: 48rem) {
@@ -304,5 +358,13 @@
 
     .schedule-btn {
         width: 600px;
+    }
+
+    .option-tab {
+        width: 25rem;
+    }
+
+    .option-tab {
+        min-width: 300px;
     }
 }
