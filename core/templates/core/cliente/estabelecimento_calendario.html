@@ -3,16 +3,16 @@
 {% block title %}HORÁRIOS | WONDER{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/cliente/tabs.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/detalhe_estabelecimento.css' %}">
 <link rel="stylesheet" href="{% static 'css/cliente/estabelecimento_calendario.css' %}?v=2">
 {% endblock extra_css %}
 
 {% block content %}
 
 <div class="nav-tabs-container">
-        <button class="option-tab inactive">Sobre</button>
-        <button class="option-tab active">Horários Disponíveis</button>
-    </div>
+        <a href="{% url 'cliente-estabelecimento--detalhe' %}"><button class="option-tab inactive left">Sobre o Estabelecimento</button></a>
+        <button class="option-tab active right"> Horários Disponíveis</button>
+</div>
 
 
 {% load static %}
