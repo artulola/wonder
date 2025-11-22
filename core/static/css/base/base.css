@@ -121,7 +121,10 @@ body {
   line-height: 0;
 }
 
-.sidebar-close img { width: 1.25rem; height: 1.25rem; }
+.sidebar-close img {
+  width: 1.25rem;
+  height: 1.25rem;
+}
 
 .sidebar-list {
   list-style: none;
@@ -166,6 +169,7 @@ body {
 }
 
 .app-navbar {
+  display: flex;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -219,11 +223,16 @@ body {
 
 /* NAVBAR FOOTER */
 
+.app-navbar nav {
+  width: 100%;
+}
+
 .nav-list {
   display: flex;
   justify-content: space-around;
   list-style: none;
   height: 100%;
+  width: 100%;
 }
 
 .nav-item {
