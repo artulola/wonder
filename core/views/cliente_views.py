@@ -33,6 +33,3 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
 
 def cliente_estabelecimento_horarios_calendario_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/estabelecimento_calendario.html')
-
-def cliente_estabelecimento_horarios_view(request):
-    return render(request, 'core/cliente/horarios-disponiveis.html')
