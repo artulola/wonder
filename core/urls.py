@@ -3,7 +3,8 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from core.views import admin_views, auth_views, cliente_views, prestador_views
+from core.views import admin_views, cliente_views, prestador_views
+from accounts import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
