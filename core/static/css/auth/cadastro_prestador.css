@@ -176,6 +176,13 @@
     height: 1.25rem;
 }
 
+.mensagem-erro {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    text-align: left;
+    display: block;
+}
 
 @media (max-height: 900px) { 
     .main-container-auth {
