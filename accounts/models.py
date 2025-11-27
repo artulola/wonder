@@ -44,7 +44,6 @@ class Prestador(models.Model):
 
     usuario = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='perfil_prestador')
     
-    nome = models.CharField(max_length=100, verbose_name="Nome do Profissional") 
     nome_estabelecimento = models.CharField(max_length=200, verbose_name="Nome do Estabelecimento")
     tipo_documento = models.CharField(max_length=4, choices=TipoDocumento.choices, default=TipoDocumento.CPF)
     documento = models.CharField(max_length=18, unique=True, verbose_name='CPF ou CNPJ')
@@ -55,7 +54,10 @@ class Prestador(models.Model):
     categorias = models.ManyToManyField(Categoria, related_name='prestadores')
 
     def __str__(self):
-        return f"{self.nome} ({self.nome_estabelecimento})"
+        nome_completo = self.usuario.get_full_name() 
+        if not nome_completo:
+            nome_completo = self.usuario.username
+        return f"{nome_completo} ({self.nome_estabelecimento})"
 
 class Servico(models.Model):
     prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='servicos')
