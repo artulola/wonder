@@ -15,12 +15,35 @@
 
     <form class="formulario-login" method="POST">
         {% csrf_token %}
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert-error">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        {% if form.non_field_errors %}
+            <div class="alert-error">
+                {{ form.non_field_errors.0 }}
+            </div>
+        {% endif %}
+
         <div class="grupo-input">
-            <input type="email" name="email" class="input-campo" placeholder="Email" required>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <span class="mensagem-erro">{{ form.username.errors.0 }}</span>
+            {% endif %}
         </div>
+
         <div class="grupo-input">
-            <input type="password" name="password" class="input-campo" placeholder="Senha" required>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <span class="mensagem-erro">{{ form.password.errors.0 }}</span>
+            {% endif %}
         </div>
+
         <button type="submit" class="botao-entrar">
             <img src="{% static 'img/icones/icon_geral/carbon_login.svg' %}" alt="Ícone de login" class="botao-entrar__icone">
             <span>Entrar</span>

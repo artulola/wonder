@@ -3,7 +3,6 @@
     --cor-fundo-input: #f2f2f2;
     --cor-texto-principal: #505050;
     --cor-texto-branco: #ffffff;
-    font-size: 16px;
 }
 
 * {
@@ -182,6 +181,26 @@
     margin-top: 5px;
     text-align: left;
     display: block;
+}
+
+.link-login {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: var(--cor-texto-principal);
+    text-align: center;
+}
+
+.link-login a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    color: var(--cor-texto-principal);
+    text-decoration: none;
+}
+
+.link-login a:hover {
+    text-decoration: underline;
+    color: var(--cor-principal);
 }
 
 @media (max-height: 900px) { 

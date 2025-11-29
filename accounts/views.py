@@ -1,13 +1,44 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from accounts.forms import ClienteRegistrationForm, PrestadorRegistrationForm, PrestadorProfileForm, ClienteEnderecoForm
 from accounts.models import Cliente, Prestador, Categoria
+from accounts.forms import CustomLoginForm, PrestadorProfileForm, ClienteEnderecoForm, ClienteRegistrationForm, PrestadorRegistrationForm
 
 
-def auth_login_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'core/auth/login.html')
+def auth_login_view(request):
+    if request.method == 'POST':
+        form = CustomLoginForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            
+            if user.tipo_usuario == 'CLIENTE':
+                return redirect('cliente-home')
+            
+            elif user.tipo_usuario == 'PRESTADOR':
+                if hasattr(user, 'perfil_prestador') and user.perfil_prestador.status == 'PENDENTE':
+                    messages.warning(request, 'Seu cadastro ainda está em análise.')
+                    return redirect('aguardando_aprovacao')
+                return redirect('prestador-home')
+            
+            elif user.tipo_usuario == 'ADMINISTRADOR' or user.is_staff:
+                return redirect('admin-solicitacoes') 
+            
+            else:
+                return redirect('cliente-home')
+        else:
+            messages.error(request, 'Email ou senha inválidos.')
+    else:
+        form = CustomLoginForm()
+
+    return render(request, 'core/auth/login.html', {'form': form})
+
+def auth_logout_view(request):
+    logout(request)
+    messages.success(request, 'Você saiu do sistema.')
+    return redirect('login')
 
 
 def auth_cadastro_view(request: HttpRequest) -> HttpResponse:

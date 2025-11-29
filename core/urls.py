@@ -23,6 +23,7 @@ urlpatterns = [
     path('estabelecimento/horarios/',cliente_views.cliente_estabelecimento_horarios_view, name='cliente-estabelecimento-horarios'),
 
     path('auth/login/', auth_views.auth_login_view, name='login' ),
+    path('auth/logout/', auth_views.auth_logout_view, name='logout' ),
     path('auth/cadastro/', auth_views.auth_cadastro_view, name='cadastro'),
     path('auth/opcoes-cadastro/', auth_views.auth_opcoes_cadastro_view, name='opcoes-cadastro'),
     path('auth/cadastro-prestador/', auth_views.auth_cadastro_prestador_view, name='cadastro-prestador'),
