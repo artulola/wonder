@@ -10,12 +10,6 @@
 {% block content %}
 <main class="main-container-auth">
     <div class="container-cadastro-prestador">
-        
-        <div class="cabecalho-cadastro">
-            <a href="#" class="botao-voltar"> 
-                <img src="{% static 'img/icones/icon_geral/arrow-left.svg' %}" alt="Voltar">
-            </a>
-        </div>
     
         <div class="logo">
             <img class="logo-icon" src="{% static 'img/icones/icon_roxo/lotus.svg' %}" alt="Logo Wonder">
@@ -120,6 +114,7 @@
     
             <button type="submit" class="botao-prosseguir">Prosseguir</button>
         </form>
+        <p class="link-login">Já tem conta? <a href="{% url 'login' %}">Login</a></p>
     </div>
 </main>
 {% endblock %}

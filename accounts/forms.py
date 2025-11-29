@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.exceptions import ValidationError
 from .models import CustomUser, Cliente, Prestador, Categoria
 
@@ -97,3 +97,13 @@ class PrestadorProfileForm(forms.ModelForm):
             'endereco': forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Endereço do Estabelecimento'}),
             'cidade_atendimento': forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Cidade de Atendimento'}),
         }
+
+class CustomLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        label="Email",
+        widget=forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Email'})
+    )
+    password = forms.CharField(
+        label="Senha",
+        widget=forms.PasswordInput(attrs={'class': 'input-campo', 'placeholder': 'Senha'})
+    )
