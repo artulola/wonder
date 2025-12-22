@@ -14,12 +14,13 @@
 {% endblock header_extra %}
 
 {% block content %}
-
 <section class="home-content">
     <div class="profile-card">
 
         <header class="profile-header">
-            <img class="profile-avatar" src="{% static 'img/logo/Diego-BarberShop.svg' %}" alt="Foto de perfil">
+            {% if prestador.usuario.foto_perfil %}
+                <img class="profile-avatar" src="{{ prestador.usuario.foto_perfil.url }}" alt="Foto de perfil">
+            {% endif %}
         </header>
 
         <section class="user-info-list">
@@ -29,7 +30,7 @@
                     <img class="info-icon" src="{% static 'img/icones/icon_roxo/user(1).svg' %}" alt="">
                     <span class="info-label">Nome</span>
                 </div>
-                <span class="info-value">Diego Silva Costa</span>
+                <span class="info-value">{{ prestador.usuario.get_full_name|default:prestador.usuario.username }}</span>
             </div>
 
             <div class="info-item">
@@ -37,7 +38,7 @@
                     <img class="info-icon" src="{% static 'img/icones/icon_roxo/department.svg' %}" alt="">
                     <span class="info-label">Estabelecimento</span>
                 </div>
-                <span class="info-value">Diego Barber Shop</span>
+                <span class="info-value">{{ prestador.nome_estabelecimento }}</span>
             </div>
 
             <div class="info-item">
@@ -45,7 +46,7 @@
                     <img class="info-icon" src="{% static 'img/icones/icon_roxo/email.svg' %}" alt="">
                     <span class="info-label">Email</span>
                 </div>
-                <span class="info-value">Diegobarber@gmail.com</span>
+                <span class="info-value">{{ prestador.usuario.email }}</span>
             </div>
 
             <div class="info-item">
@@ -53,7 +54,7 @@
                     <img class="info-icon" src="{% static 'img/icones/icon_roxo/local.svg' %}" alt="">
                     <span class="info-label">Cidade de Atendimento</span>
                 </div>
-                <span class="info-value">Pau dos Ferros - RN</span>
+                <span class="info-value">{{ prestador.cidade_atendimento }}</span>
             </div>
 
             <div class="info-item">
@@ -61,7 +62,7 @@
                     <img class="info-icon" src="{% static 'img/icones/icon_roxo/phone(1).svg' %}" alt="">
                     <span class="info-label">Telefone</span>
                 </div>
-                <span class="info-value">(84) 99485-9785</span>
+                <span class="info-value">{{ prestador.usuario.telefone }}</span>
             </div>
 
             <div class="info-item">
@@ -69,25 +70,32 @@
                     <img class="info-icon" src="{% static 'img/icones/icon_roxo/cpf.svg' %}" alt="">
                     <span class="info-label">CPF/CNPJ</span>
                 </div>
-                <span class="info-value">62.173.620/0001-80</span>
+                <span class="info-value">{{ prestador.documento }}</span>
             </div>
 
             <div class="info-item">
                 <div class="info-label-group">
                     <img class="info-icon" src="{% static 'img/icones/icon_roxo/time(2).svg' %}" alt="">
-                    <span class="info-label">Horário de Funcionamento</span>
+                    <span class="info-label">Categorias</span>
                 </div>
-                <span class="info-value">SEG - SÁB / 8h - 12h</span>
+                <span class="info-value">
+                    {% for categoria in prestador.categorias.all %}
+                        {{ categoria.nome }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        Nenhuma categoria vinculada
+                    {% endfor %}
+                </span>
             </div>
         </section>
 
         <div class="block-btn">
-            <a href="{% url 'admin-solicitacoes' %}">
-                <button class="botao-recusar">Recusar</button>
-                <button class="botao-aceitar">Aceitar</button>
-            </a>
+            <form method="post" action="{% url 'admin-detalhes--solicitacao' prestador.id %}">
+                {% csrf_token %}
+                <button name="acao" value="rejeitar" class="botao-recusar">Recusar</button>
+                <button name="acao" value="aprovar" class="botao-aceitar">Aceitar</button>
+            </form>
         </div>
 
+    </div>
 </section>
-
 {% endblock content %}
