@@ -30,7 +30,7 @@ urlpatterns = [
     path('auth/aguardando_aprovacao/', auth_views.auth_aguardando_aprovacao_view, name='aguardando_aprovacao'),
 
     path('administrador/solicitacoes/', admin_views.admin_solicitacoes_view, name='admin-solicitacoes'),
-    path('administrador/solicitacoes/detalhes-solicitacao/', admin_views.admin_detalhes_solicitacoes_view, name='admin-detalhes--solicitacao'),
+    path('administrador/solicitacoes/detalhes-solicitacao/<int:prestador_id>/', admin_views.admin_detalhes_solicitacoes_view, name='admin-detalhes--solicitacao'),
     path('administrador/categorias/', admin_views.admin_categorias_view, name='admin-categorias'),
 
     path('prestador/finalizados/', prestador_views.prestador_finalizados_view, name='prestador-finalizados'),

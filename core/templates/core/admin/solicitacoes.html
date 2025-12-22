@@ -1,10 +1,11 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
-{% block title %}WONDER{% endblock title %}
+
+{% block title %}Solicitações | WONDER{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/admin/admin.css' %}">
-{% endblock extra_css %}
+{% endblock %}
 
 {% block header_extra %}
 <a href="{% url 'login' %}" class="header-logout-button">
@@ -14,61 +15,39 @@
 {% endblock header_extra %}
 
 {% block content %}
-
 <section class="home-content">
     <div class="nav-tabs-container">
-        <a href="{% url 'admin-solicitacoes' %}"><button class="option-tab active left">Solicitações</button></a>
-        <a href="{% url 'admin-categorias' %}"><button class="option-tab inactive right">Categorias</button></a>
-    </div>
-
-    <div class="block-text-tag">
-        <span class="text-tag">Estabelecimentos Pendentes</span>
-        <a href="#" class="nova-categoria-button">
-            <span class="text-tag-category">Estabelecimentos cadastrados ></span>
+        <a href="{% url 'admin-solicitacoes' %}">
+            <button class="option-tab active left">Solicitações</button>
+        </a>
+        <a href="{% url 'admin-categorias' %}">
+            <button class="option-tab inactive right">Categorias</button>
         </a>
     </div>
 
     <div class="results-list">
+        {% for prestador in pendentes %}
         <article class="result-card">
             <div class="card-details">
-                <img src="{% static 'img/logo/Diego-BarberShop.svg' %}" alt="">
+                {% if prestador.usuario.foto_perfil %}
+                <img src="{{ prestador.usuario.foto_perfil.url }}" alt="Foto do prestador">
+                {% endif %}
                 <div class="card-info">
-                    <h2 class="card-title">Diego BarberShop</h2>
+                    <h2 class="card-title">{{ prestador.nome_estabelecimento }}</h2>
+                    <div class="card-meta">
+                        <span>{{ prestador.usuario.get_full_name|default:prestador.usuario.username }}</span>
+                        <span>{{ prestador.cidade_atendimento }}</span>
+                        <span>Documento: {{ prestador.documento }}</span>
+                    </div>
                 </div>
             </div>
             <div class="block-day-btn">
-                <a href="{% url 'admin-detalhes--solicitacao' %}"><button class="botao-visualizar">Visualizar</button></a>
-                <button class="botao-vermelho">Recusar</button>
+                <a href="{% url 'admin-detalhes--solicitacao' prestador.id %}" class="botao-visualizar">Ver detalhes</a>
             </div>
         </article>
-
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/logo/RD-Cabelos.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">RD Cabelos</h2>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-visualizar">Visualizar</button>
-                <button class="botao-vermelho">Recusar</button>
-            </div>
-        </article>
-
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/logo/SPA-da-gi.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">SPA da GI</h2>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-visualizar">Visualizar</button>
-                <button class="botao-vermelho">Recusar</button>
-            </div>
-        </article>
+        {% empty %}
+        <p>Nenhum prestador pendente.</p>
+        {% endfor %}
     </div>
-
 </section>
-
-{% endblock content %}
+{% endblock %}
