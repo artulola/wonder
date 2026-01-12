@@ -241,6 +241,19 @@ body {
   gap: 1rem;
 }
 
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-content form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+
 .modal-title {
   font-size: 1.25rem;
   font-weight: 600;
@@ -269,7 +282,7 @@ body {
 
 .modal-cancel,
 .modal-save {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem;
   border: none;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -287,6 +300,10 @@ body {
   color: #fff;
 }
 
+.modal-input:focus {
+  outline: none;
+  border-color: #8000ff;
+}
 
 .dias-semana {
   display: flex;
