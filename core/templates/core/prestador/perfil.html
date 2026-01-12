@@ -9,11 +9,26 @@
 {% block content %}
 <main class="profile-page-content">
   
+  {% if messages %}
+    <div style="width: 100%; max-width: 600px; margin-bottom: 1rem;">
+      {% for message in messages %}
+        <div style="padding: 10px; border-radius: 5px; margin-bottom: 5px; background-color: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; color: {% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %};">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   <div class="profile-card">
     
     <header class="profile-header">
-      <img class="profile-avatar" src="{% static 'img/perfil/perfil_prestador.svg' %}" alt="Foto de perfil">
-      <a href="#" class="edit-profile-link">
+      {% if user.foto_perfil %}
+        <img class="profile-avatar" src="{{ user.foto_perfil.url }}" alt="Foto de perfil">
+      {% else %}
+        <img class="profile-avatar" src="https://placehold.co/80x80/8000ff/ffffff?text={{ user.first_name|slice:':1' }}" alt="Foto padrão">
+      {% endif %}
+      
+      <a href="#" class="edit-profile-link" onclick="abrirModal('modalEditarPerfil'); return false;">
         <img src="{% static 'img/icones/icon_roxo/pencil(1).svg' %}" alt="Editar">
         <span>Editar perfil</span>
       </a>
@@ -21,13 +36,12 @@
 
     <section class="user-info-list">
       
-
       <div class="info-item">
         <div class="info-label-group">
           <img class="info-icon" src="{% static 'img/icones/icon_roxo/bxs_user-circle.svg' %}" alt="">
           <span class="info-label">Estabelecimento</span>
         </div>
-        <span class="info-value">Diego BarberShop</span>
+        <span class="info-value">{{ prestador.nome_estabelecimento }}</span>
       </div>
 
       <div class="info-item">
@@ -35,7 +49,7 @@
           <img class="info-icon" src="{% static 'img/icones/icon_roxo/User.svg' %}" alt="">
           <span class="info-label">CPF/CNPJ</span>
         </div>
-        <span class="info-value">62.173.620/0001-80</span>
+        <span class="info-value">{{ prestador.documento }}</span>
       </div>
       
       <div class="info-item">
@@ -43,7 +57,7 @@
           <img class="info-icon" src="{% static 'img/icones/icon_roxo/email.svg' %}" alt="">
           <span class="info-label">Email</span>
         </div>
-        <span class="info-value">DiegoBarber@gmail.com</span>
+        <span class="info-value">{{ user.email }}</span>
       </div>
 
       <div class="info-item">
@@ -51,15 +65,15 @@
           <img class="info-icon" src="{% static 'img/icones/icon_roxo/phone(1).svg' %}" alt="">
           <span class="info-label">Telefone</span>
         </div>
-        <span class="info-value">(84) 99485-9785</span>
+        <span class="info-value">{{ user.telefone|default:"Não informado" }}</span>
       </div>
-
-       <div class="info-item">
+      
+      <div class="info-item">
         <div class="info-label-group">
-          <img class="info-icon" src="{% static 'img/icones/icon_roxo/time.svg' %}" alt="">
-          <span class="info-label">Horário</span>
+          <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" alt="Ícone de Localização" class="data-icon">
+          <span class="info-label">Endereço</span>
         </div>
-        <span class="info-value">SEG - SÁB / 8h - 12h</span>
+        <span class="info-value">{{ prestador.endereco }} - {{ prestador.cidade_atendimento }}</span>
       </div>
 
     </section>
@@ -67,7 +81,7 @@
     <section class="user-info-list" style="margin-top: 1rem;">
         <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 4px; margin-bottom: 0.5rem;">
             <span style="font-size: 0.9rem; font-weight: 600; color: #333;">Meus Serviços</span>
-            <a href="#" class="add-service-link" style="font-size: 0.8rem; font-weight: 600; color: #430b7a; text-decoration: none;">+ Adicionar</a>
+            <a href="#" class="add-service-link" onclick="abrirModal('modalAdicionarServico'); return false;" style="font-size: 0.8rem; font-weight: 600; color: #430b7a; text-decoration: none;">+ Adicionar</a>
         </div>
 
         <div class="info-item">
@@ -84,7 +98,7 @@
         </div>
     </section>
 
-    <a href="{% url 'login' %}" class="logout-button" style="margin-top: 1.5rem;">
+    <a href="{% url 'logout' %}" class="logout-button" style="margin-top: 1.5rem;">
       <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="">
       <span>Sair</span>
     </a>
@@ -104,157 +118,75 @@
 
 </main>
 
-<!-- Modal Editar Perfil -->
 <div class="modal-overlay" id="modalEditarPerfil">
   <div class="modal-content">
     <h2 class="modal-title">Editar Perfil</h2>
 
-    <label class="modal-label">Foto de Perfil</label>
-    <input type="file" class="modal-input" accept="image/*">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <label class="modal-label">Foto de Perfil</label>
+        {{ u_form.foto_perfil }}
 
-    <label class="modal-label">Nome do Estabelecimento</label>
-    <input type="text" class="modal-input" value="Diego BarberShop">
+        <label class="modal-label">Nome do Estabelecimento</label>
+        {{ p_form.nome_estabelecimento }}
 
-    <label class="modal-label">Email</label>
-    <input type="email" class="modal-input" value="DiegoBarber@gmail.com">
+        <label class="modal-label">Email</label>
+        {{ u_form.email }}
 
-    <label class="modal-label">Telefone</label>
-    <input type="text" class="modal-input" value="(84) 99485-9785">
+        <label class="modal-label">Telefone</label>
+        {{ u_form.telefone }}
+        
+        <label class="modal-label">Endereço</label>
+        {{ p_form.endereco }}
 
-    <label class="modal-label">Dias de Funcionamento</label>
-    <div class="dias-semana">
-      <button>D</button><button>S</button><button>T</button>
-      <button>Q</button><button>Q</button><button>S</button><button>S</button>
-    </div>
+        <label class="modal-label">Cidade</label>
+        {{ p_form.cidade_atendimento }}
 
-    <label class="modal-label">Horários</label>
-    <div class="horario-bloco">
-      <input type="time" class="modal-input" value="08:00">
-      <span>até</span>
-      <input type="time" class="modal-input" value="12:00">
-    </div>
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
+        <p style="font-size: 0.8rem; color: #888; text-align: center;">Horários de funcionamento em breve.</p>
 
-    <div class="horario-bloco">
-      <input type="time" class="modal-input" value="13:00">
-      <span>até</span>
-      <input type="time" class="modal-input" value="21:00">
-    </div>
-
-    <div class="checkbox-opcoes">
-      <label><input type="checkbox"> Aberto 24 horas</label>
-      <label><input type="checkbox"> Fechado</label>
-    </div>
-
-    <button class="adicionar-horario">+ Adicionar novo horário</button>
-
-    <div class="modal-buttons">
-      <button class="modal-cancel" onclick="fecharModal('modalEditarPerfil')">Cancelar</button>
-      <button class="modal-save">Salvar Alterações</button>
-    </div>
+        <div class="modal-buttons">
+          <button type="button" class="modal-cancel" onclick="fecharModal('modalEditarPerfil')">Cancelar</button>
+          <button type="submit" class="modal-save">Salvar Alterações</button>
+        </div>
+    </form>
   </div>
 </div>
 
-<!-- Modal Adicionar Serviço -->
 <div class="modal-overlay" id="modalAdicionarServico">
   <div class="modal-content">
     <h2 class="modal-title">Adicionar Serviço</h2>
-
-    <label class="modal-label">Nome do Serviço</label>
-    <input type="text" class="modal-input" placeholder="Ex: Corte de Cabelo">
-
-    <label class="modal-label">Preço</label>
-    <input type="text" class="modal-input" placeholder="Ex: R$ 25,00">
-
-    <label class="modal-label">Duração</label>
-    <input type="text" class="modal-input" placeholder="Ex: 1h">
-
-    <label class="modal-label">Foto do Serviço</label>
-    <input type="file" class="modal-input" accept="image/*">
-
+    <p style="text-align: center; color: #666;">Funcionalidade em desenvolvimento.</p>
     <div class="modal-buttons">
-      <button class="modal-cancel" onclick="fecharModal('modalAdicionarServico')">Cancelar</button>
-      <button class="modal-save">Salvar</button>
+      <button class="modal-cancel" onclick="fecharModal('modalAdicionarServico')">Fechar</button>
     </div>
   </div>
 </div>
-
-<!-- Modal Editar Serviço -->
-<div class="modal-overlay" id="modalEditarServico">
-  <div class="modal-content">
-    <h2 class="modal-title">Editar Serviço</h2>
-
-    <label class="modal-label">Nome do Serviço</label>
-    <input type="text" class="modal-input" id="editNomeServico" value="">
-
-    <label class="modal-label">Preço</label>
-    <input type="text" class="modal-input" id="editPrecoServico" value="">
-
-    <label class="modal-label">Duração</label>
-    <input type="text" class="modal-input" id="editDuracaoServico" value="">
-
-    <label class="modal-label">Foto do Serviço</label>
-    <input type="file" class="modal-input" id="editFotoServico" accept="image/*">
-
-    <div class="modal-buttons">
-      <button class="modal-cancel" onclick="fecharModal('modalEditarServico')">Cancelar</button>
-      <button class="modal-save">Salvar Alterações</button>
-    </div>
-  </div>
-</div>
-
 
 <script>
-  // Função para abrir/fechar modais
   function abrirModal(id) {
-    document.getElementById(id).style.display = 'flex';
+    const modal = document.getElementById(id);
+    if(modal) modal.style.display = 'flex';
   }
 
   function fecharModal(id) {
-    document.getElementById(id).style.display = 'none';
+    const modal = document.getElementById(id);
+    if(modal) modal.style.display = 'none';
   }
 
-  // Editar perfil
-  document.querySelector('.edit-profile-link').addEventListener('click', function(e) {
-    e.preventDefault();
-    abrirModal('modalEditarPerfil');
-  });
-
-  // Adicionar serviço
-document.querySelector('.add-service-link').addEventListener('click', function(e) {
-  e.preventDefault();
-  abrirModal('modalAdicionarServico');
-});
-
-  // Editar serviço
-  const botoesEditarServico = document.querySelectorAll('.info-item a img[alt="Editar"]');
-  botoesEditarServico.forEach(botao => {
-    botao.parentElement.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      // Pega dados do serviço
-      const card = this.closest('.info-item');
-      const nome = card.querySelector('.info-label').innerText;
-      const precoDuracao = card.querySelector('span[style]').innerText;
-
-      document.getElementById('editNomeServico').value = nome;
-      document.getElementById('editPrecoServico').value = precoDuracao.split('•')[0].trim();
-      document.getElementById('editDuracaoServico').value = precoDuracao.split('•')[1].trim();
-
-      abrirModal('modalEditarServico');
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
     });
   });
-
-document.querySelectorAll('.modal-overlay').forEach(modal => {
-  modal.addEventListener('click', function(e) {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-    }
-  });
-});
-
-
-
+  
+  {% if u_form.errors or p_form.errors %}
+    document.addEventListener('DOMContentLoaded', function() {
+        abrirModal('modalEditarPerfil');
+    });
+  {% endif %}
 </script>
-
-
 {% endblock content %}

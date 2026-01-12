@@ -1,5 +1,5 @@
 from django import forms 
-from accounts.models import CustomUser, Cliente
+from accounts.models import CustomUser, Cliente, Prestador
 
 class UserUpdateForm(forms.ModelForm):
 
@@ -20,4 +20,14 @@ class ClienteEnderecoUpdateForm(forms.ModelForm):
         fields = ['endereco']
         widgets = {
             'endereco': forms.TextInput(attrs= {'class': 'modal-input', 'placeholder': 'Endereço completo'})
+        }
+
+class PrestadorEstabelecimentoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Prestador
+        fields = ['nome_estabelecimento', 'endereco', 'cidade_atendimento'] 
+        widgets = {
+            'nome_estabelecimento': forms.TextInput(attrs={'class': 'modal-input', 'placeholder': 'Nome do Estabelecimento'}),
+            'endereco': forms.TextInput(attrs={'class': 'modal-input', 'placeholder': 'Endereço'}),
+            'cidade_atendimento': forms.TextInput(attrs={'class': 'modal-input', 'placeholder': 'Cidade'}),
         }

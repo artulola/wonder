@@ -3,7 +3,7 @@ from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import cliente_required
-from .forms import UserUpdateForm, ClienteEnderecoUpdateForm
+from core.forms import UserUpdateForm, ClienteEnderecoUpdateForm
 
 @cliente_required
 def cliente_home_view(request: HttpRequest) -> HttpResponse:
