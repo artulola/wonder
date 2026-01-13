@@ -18,16 +18,12 @@
 
         {% if messages %}
             {% for message in messages %}
-                <div class="alert-error">
-                    {{ message }}
-                </div>
+                <div class="alert-error">{{ message }}</div>
             {% endfor %}
         {% endif %}
         
         {% if form.non_field_errors %}
-            <div class="alert-error">
-                {{ form.non_field_errors.0 }}
-            </div>
+            <div class="alert-error">{{ form.non_field_errors.0 }}</div>
         {% endif %}
 
         <div class="grupo-input">
@@ -37,12 +33,20 @@
             {% endif %}
         </div>
 
-        <div class="grupo-input">
+        <div class="grupo-input input-com-icone">
             {{ form.password }}
-            {% if form.password.errors %}
-                <span class="mensagem-erro">{{ form.password.errors.0 }}</span>
-            {% endif %}
+            <img 
+                src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
+                class="icone-input" 
+                onclick="togglePassword(this)"
+                data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
+                data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
+                alt="Mostrar senha"
+            >
         </div>
+        {% if form.password.errors %}
+            <span class="mensagem-erro">{{ form.password.errors.0 }}</span>
+        {% endif %}
 
         <button type="submit" class="botao-entrar">
             <img src="{% static 'img/icones/icon_geral/carbon_login.svg' %}" alt="Ícone de login" class="botao-entrar__icone">
@@ -57,5 +61,24 @@
     </p>
 
 </main>
-{% endblock content %}
 
+<script>
+    function togglePassword(icon) {
+        const container = icon.parentElement;
+        const input = container.querySelector('input');
+        
+        const eyeOpen = icon.getAttribute('data-eye-open');
+        const eyeClosed = icon.getAttribute('data-eye-closed');
+        
+        if (input.type === "password") {
+            input.type = "text";
+            icon.src = eyeClosed; 
+            icon.style.opacity = "1"; 
+        } else {
+            input.type = "password";
+            icon.src = eyeOpen;
+            icon.style.opacity = "0.6";
+        }
+    }
+</script>
+{% endblock content %}

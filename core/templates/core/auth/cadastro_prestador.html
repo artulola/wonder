@@ -19,102 +19,87 @@
         <form class="formulario-cadastro-prestador" method="POST">
             {% csrf_token %}
 
-            {% if user_form.non_field_errors or prestador_form.non_field_errors %}
-                    {{ user_form.non_field_errors }}
-                    {{ prestador_form.non_field_errors }}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.non_field_errors %}
+                <div class="alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                    {{ form.non_field_errors }}
                 </div>
             {% endif %}
 
-            <div class="grupo-input">
-                {{ user_form.first_name }}
-                {% if user_form.first_name.errors %}
-                    <span class="mensagem-erro">{{ user_form.first_name.errors.0 }}</span>
-                {% endif %}
-            </div>
+            <div class="grupo-input">{{ user_form.first_name }}</div>
+            <div class="grupo-input">{{ user_form.last_name }}</div>
+            <div class="grupo-input">{{ user_form.email }}</div>
+            <div class="grupo-input">{{ user_form.telefone }}</div>
 
-            <div class="grupo-input">
-                {{ user_form.last_name }}
-                {% if user_form.last_name.errors %}
-                    <span class="mensagem-erro">{{ user_form.last_name.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="grupo-input">
-                {{ user_form.email }}
-                {% if user_form.email.errors %}
-                    <span class="mensagem-erro">{{ user_form.email.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="grupo-input">
-                {{ user_form.telefone }}
-                {% if user_form.telefone.errors %}
-                    <span class="mensagem-erro">{{ user_form.telefone.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="grupo-input">
-                {{ prestador_form.nome_estabelecimento }}
-                {% if prestador_form.nome_estabelecimento.errors %}
-                    <span class="mensagem-erro">{{ prestador_form.nome_estabelecimento.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="grupo-input">
-                {{ prestador_form.cidade_atendimento }}
-                {% if prestador_form.cidade_atendimento.errors %}
-                    <span class="mensagem-erro">{{ prestador_form.cidade_atendimento.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="grupo-input">
-                {{ prestador_form.endereco }}
-                {% if prestador_form.endereco.errors %}
-                    <span class="mensagem-erro">{{ prestador_form.endereco.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="grupo-input grupo-input-select">
-                {{ prestador_form.tipo_documento }}
-                {% if prestador_form.tipo_documento.errors %}
-                    <span class="mensagem-erro">{{ prestador_form.tipo_documento.errors.0 }}</span>
-                {% endif %}
-            </div>
-
-            <div class="grupo-input">
-                {{ prestador_form.documento }}
-                {% if prestador_form.documento.errors %}
-                    <span class="mensagem-erro">{{ prestador_form.documento.errors.0 }}</span>
-                {% endif %}
-            </div>
+            <div class="grupo-input">{{ prestador_form.nome_estabelecimento }}</div>
+            <div class="grupo-input">{{ prestador_form.cidade_atendimento }}</div>
+            <div class="grupo-input">{{ prestador_form.endereco }}</div>
+            <div class="grupo-input grupo-input-select">{{ prestador_form.tipo_documento }}</div>
+            <div class="grupo-input">{{ prestador_form.documento }}</div>
 
             <div class="grupo-input">
                 <label style="color: #666; font-size: 0.9em;">Selecione suas Categorias:</label>
                 <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px;">
                     {{ prestador_form.categorias }}
                 </div>
-                {% if prestador_form.categorias.errors %}
-                    <span class="mensagem-erro">{{ prestador_form.categorias.errors.0 }}</span>
-                {% endif %}
             </div>
     
             <div class="grupo-input input-com-icone">
                 {{ user_form.password1 }}
-                {% if user_form.password1.errors %}
-                    <span class="mensagem-erro">{{ user_form.password1.errors.0 }}</span>
-                {% endif %}
+                <img 
+                    src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
+                    class="icone-input" 
+                    onclick="togglePassword(this)"
+                    data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
+                    data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
+                >
             </div>
+            {% if user_form.password1.errors %}
+                <span class="mensagem-erro">{{ user_form.password1.errors.0 }}</span>
+            {% endif %}
 
             <div class="grupo-input input-com-icone">
                 {{ user_form.password2 }}
-                {% if user_form.password2.errors %}
-                    <span class="mensagem-erro">{{ user_form.password2.errors.0 }}</span>
-                {% endif %}
+                <img 
+                    src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
+                    class="icone-input" 
+                    onclick="togglePassword(this)"
+                    data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
+                    data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
+                >
             </div>
+            {% if user_form.password2.errors %}
+                <span class="mensagem-erro">{{ user_form.password2.errors.0 }}</span>
+            {% endif %}
     
             <button type="submit" class="botao-prosseguir">Prosseguir</button>
         </form>
         <p class="link-login">Já tem conta? <a href="{% url 'login' %}">Login</a></p>
     </div>
 </main>
+
+<script>
+    function togglePassword(icon) {
+        const input = icon.parentElement.querySelector('input');
+        const eyeOpen = icon.getAttribute('data-eye-open');
+        const eyeClosed = icon.getAttribute('data-eye-closed');
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.src = eyeClosed;
+            icon.style.opacity = "1";
+        } else {
+            input.type = "password";
+            icon.src = eyeOpen;
+            icon.style.opacity = "0.6";
+        }
+    }
+</script>
 {% endblock %}
