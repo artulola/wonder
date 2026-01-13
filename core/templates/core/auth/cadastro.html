@@ -15,44 +15,35 @@
     <form class="formulario-cadastro" method="POST">
         {% csrf_token %}
 
-        <div class="grupo-input">
-            {{ form.first_name }}
-            {% if form.first_name.errors %}
-                <span class="mensagem-erro">{{ form.first_name.errors.0 }}</span>
-            {% endif %}
-        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
 
-        <div class="grupo-input">
-            {{ form.last_name }}
-            {% if form.last_name.errors %}
-                <span class="mensagem-erro">{{ form.last_name.errors.0 }}</span>
-            {% endif %}
-        </div>
+        {% if form.non_field_errors %}
+            <div class="alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
 
-        <div class="grupo-input">
-            {{ form.email }}
-            {% if form.email.errors %}
-                <span class="mensagem-erro">{{ form.email.errors.0 }}</span>
-            {% endif %}
-        </div>
-
-        <div class="grupo-input">
-            {{ form.telefone }}
-            {% if form.telefone.errors %}
-                <span class="mensagem-erro">{{ form.telefone.errors.0 }}</span>
-            {% endif %}
-        </div>
-
-        <div class="grupo-input">
-            {{ endereco_form.endereco }}
-            {% if endereco_form.endereco.errors %}
-                <span class="mensagem-erro">{{ endereco_form.endereco.errors.0 }}</span>
-            {% endif %}
-        </div>
+        <div class="grupo-input">{{ form.first_name }}</div>
+        <div class="grupo-input">{{ form.last_name }}</div>
+        <div class="grupo-input">{{ form.email }}</div>
+        <div class="grupo-input">{{ form.telefone }}</div>
+        <div class="grupo-input">{{ endereco_form.endereco }}</div>
 
         <div class="grupo-input input-com-icone">
             {{ form.password1 }}
-            <img src="{% static 'img/icones/icon_geral/ant-design_eye-invisible-outlined.svg' %}" class="icone-input">
+            <img 
+                src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
+                class="icone-input" 
+                onclick="togglePassword(this)"
+                data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
+                data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
+            >
         </div>
         {% if form.password1.errors %}
             <span class="mensagem-erro">{{ form.password1.errors.0 }}</span>
@@ -60,7 +51,13 @@
 
         <div class="grupo-input input-com-icone">
             {{ form.password2 }}
-            <img src="{% static 'img/icones/icon_geral/ant-design_eye-invisible-outlined.svg' %}" class="icone-input">
+            <img 
+                src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
+                class="icone-input" 
+                onclick="togglePassword(this)"
+                data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
+                data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
+            >
         </div>
         {% if form.password2.errors %}
             <span class="mensagem-erro">{{ form.password2.errors.0 }}</span>
@@ -71,4 +68,22 @@
     
     <p class="link-login">Já tem conta? <a href="{% url 'login' %}">Login</a></p>
 </main>
+
+<script>
+    function togglePassword(icon) {
+        const input = icon.parentElement.querySelector('input');
+        const eyeOpen = icon.getAttribute('data-eye-open');
+        const eyeClosed = icon.getAttribute('data-eye-closed');
+
+        if (input.type === "password") {
+            input.type = "text";
+            icon.src = eyeClosed;
+            icon.style.opacity = "1";
+        } else {
+            input.type = "password";
+            icon.src = eyeOpen;
+            icon.style.opacity = "0.6";
+        }
+    }
+</script>
 {% endblock %}
