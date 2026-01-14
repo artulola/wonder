@@ -83,11 +83,6 @@ body {
     gap: 1rem; 
 }
 
-.grupo-input {
-    width: 100%;
-    position: relative;
-}
-
 .input-campo {
     width: 100%;
     padding: 0.875rem 1rem;
@@ -113,15 +108,27 @@ body {
     padding-right: 3rem; 
 }
 
+.input-com-icone {
+    position: relative;
+    display: block;
+}
+
+.input-com-icone input {
+    width: 100%;
+    padding-right: 40px;
+    box-sizing: border-box;
+}
+
 .icone-input {
     position: absolute;
-    top: 50%;
-    right: 1rem;
+    right: 10px;
+    top: 24px; 
     transform: translateY(-50%);
-    width: 1rem; 
-    height: 1rem; 
+    width: 1rem;
+    height: 1rem;
     cursor: pointer;
     opacity: 0.6;
+    z-index: 10;
 }
 
 .botao-cadastrar {
@@ -182,7 +189,7 @@ body {
 
 .mensagem-erro {
     color: #dc3545;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     margin-top: 5px;
     text-align: left;
     display: block;

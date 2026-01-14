@@ -13,18 +13,8 @@
         <h1 class="logo-name">WONDER</h1>
     </div>
 
-    <form class="formulario-login" method="POST">
+    <form class="formulario-login" method="POST" novalidate>
         {% csrf_token %}
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert-error">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        
-        {% if form.non_field_errors %}
-            <div class="alert-error">{{ form.non_field_errors.0 }}</div>
-        {% endif %}
 
         <div class="grupo-input">
             {{ form.username }}
@@ -43,10 +33,10 @@
                 data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
                 alt="Mostrar senha"
             >
+            {% if form.password.errors %}
+                <span class="mensagem-erro">{{ form.password.errors.0 }}</span>
+            {% endif %}
         </div>
-        {% if form.password.errors %}
-            <span class="mensagem-erro">{{ form.password.errors.0 }}</span>
-        {% endif %}
 
         <button type="submit" class="botao-entrar">
             <img src="{% static 'img/icones/icon_geral/carbon_login.svg' %}" alt="Ícone de login" class="botao-entrar__icone">
@@ -82,3 +72,13 @@
     }
 </script>
 {% endblock content %}
+
+{% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if form.non_field_errors %}
+                criarToast("{{ form.non_field_errors.0|escapejs }}", "error");
+            {% endif %}
+        });
+    </script>
+{% endblock %}

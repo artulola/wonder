@@ -12,16 +12,8 @@
         <h1 class="logo-name">WONDER</h1>
     </div>
 
-    <form class="formulario-cadastro" method="POST">
+    <form class="formulario-cadastro" method="POST" novalidate>
         {% csrf_token %}
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
 
         {% if form.non_field_errors %}
             <div class="alert-error" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center;">
@@ -29,11 +21,40 @@
             </div>
         {% endif %}
 
-        <div class="grupo-input">{{ form.first_name }}</div>
-        <div class="grupo-input">{{ form.last_name }}</div>
-        <div class="grupo-input">{{ form.email }}</div>
-        <div class="grupo-input">{{ form.telefone }}</div>
-        <div class="grupo-input">{{ endereco_form.endereco }}</div>
+        <div class="grupo-input">
+            {{ form.first_name }}
+            {% for error in form.first_name.errors %}
+                <span class="mensagem-erro">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="grupo-input">
+            {{ form.last_name }}
+            {% for error in form.last_name.errors %}
+                <span class="mensagem-erro">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="grupo-input">
+            {{ form.email }}
+            {% for error in form.email.errors %}
+                <span class="mensagem-erro">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="grupo-input">
+            {{ form.telefone }}
+            {% for error in form.telefone.errors %}
+                <span class="mensagem-erro">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="grupo-input">
+            {{ endereco_form.endereco }}
+            {% for error in endereco_form.endereco.errors %}
+                <span class="mensagem-erro">{{ error }}</span>
+            {% endfor %}
+        </div>
 
         <div class="grupo-input input-com-icone">
             {{ form.password1 }}
@@ -45,9 +66,10 @@
                 data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
             >
         </div>
-        {% if form.password1.errors %}
-            <span class="mensagem-erro">{{ form.password1.errors.0 }}</span>
-        {% endif %}
+
+        {% for error in form.password1.errors %}
+            <span class="mensagem-erro">{{ error }}</span>
+        {% endfor %}
 
         <div class="grupo-input input-com-icone">
             {{ form.password2 }}
@@ -59,9 +81,9 @@
                 data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
             >
         </div>
-        {% if form.password2.errors %}
-            <span class="mensagem-erro">{{ form.password2.errors.0 }}</span>
-        {% endif %}
+        {% for error in form.password2.errors %}
+            <span class="mensagem-erro">{{ error }}</span>
+        {% endfor %}
 
         <button type="submit" class="botao-cadastrar">Cadastrar</button>
     </form>
@@ -86,4 +108,15 @@
         }
     }
 </script>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/validacao_toasts.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if form.non_field_errors %}
+                criarToast("{{ form.non_field_errors.0|escapejs }}", "error");
+            {% endif %}
+        });
+    </script>
 {% endblock %}
