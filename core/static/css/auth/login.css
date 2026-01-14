@@ -146,10 +146,16 @@ body {
 
 .mensagem-erro {
     color: #dc3545;
-    font-size: 0.85rem;
+    font-size: 0.8rem; 
     margin-top: 5px;
-    text-align: center;
     display: block;
+    text-align: left;
+    margin-left: 2px;
+}
+
+.input-erro {
+    border: 1px solid #dc3545 !important;
+    background-color: #fff8f8 !important;
 }
 
 .alert-error {
@@ -159,26 +165,28 @@ body {
     border-radius: 5px;
     margin-bottom: 15px;
     text-align: center;
+    font-size: 0.9rem;
 }
 
 /* OLHO MÁGICO */
 
 .input-com-icone {
     position: relative;
-    display: flex;
-    align-items: center;
+    display: block; 
 }
 
 .input-com-icone .input-campo {
     padding-right: 3rem; 
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .icone-input {
     position: absolute;
     right: 1rem;
-    top: 50%;  
+    top: 24px; 
     transform: translateY(-50%);
-    width: 1rem; 
+    width: 1.25rem;
     height: auto;
     cursor: pointer;
     opacity: 0.6;
