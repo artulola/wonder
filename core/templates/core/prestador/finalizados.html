@@ -1,12 +1,13 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
-
+{% load card_wonder %}
 
 {% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 {% endblock extra_css %}
 
 {% block header_extra %}
@@ -39,20 +40,7 @@
 
         <div class="results-list">
             
-            <article class="result-card">
-                <div class="card-details">
-                    <img src="{% static 'img/clientes/thiago_cliente.svg' %}" alt="Foto do cliente">
-                    <div class="card-info">
-                        <h2 class="card-title">Corte de Cabelo Mas.</h2>
-                        <div class="card-meta">
-                            <span class="cliente-nome">Thiago Henrique</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-day-btn">
-                    <button class="botao-concluido">Concluído</button> 
-                </div>
-            </article>
+            {% card_wonder title="Corte de Cabelo Mas." img_url="img/clientes/thiago_cliente.svg" subtitle="Thiago Henrique" btn_text_conclude="Concluído" %}
 
         </div>
     
