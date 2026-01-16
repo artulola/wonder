@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from accounts.models import Prestador
+from accounts.models import Prestador, Categoria
 from django.http import HttpRequest, HttpResponse
-from django.contrib.auth.decorators import login_required
 from accounts.decorators import admin_required
 
 @admin_required
@@ -30,6 +29,38 @@ def admin_detalhes_solicitacoes_view(request: HttpRequest, prestador_id: int) ->
 
     return render(request, 'core/admin/detalhes_solicitacao.html', {'prestador': prestador})
 
+
 @admin_required
 def admin_categorias_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'core/admin/categorias.html')
+    categorias = Categoria.objects.all()
+
+    if request.method == 'POST':
+        acao = request.POST.get('acao')
+
+        if acao == 'criar':
+            nome = request.POST.get('nome')
+            foto = request.FILES.get('foto')
+            Categoria.objects.create(nome=nome, foto=foto)
+            messages.success(request, 'Categoria criada com sucesso!')
+            return redirect('admin-categorias')
+
+        elif acao == 'editar':
+            categoria_id = request.POST.get('categoria_id')
+            categoria = get_object_or_404(Categoria, id=categoria_id)
+            categoria.nome = request.POST.get('nome')
+            if 'foto' in request.FILES:
+                categoria.foto = request.FILES['foto']
+            categoria.save()
+            messages.success(request, 'Categoria atualizada com sucesso!')
+            return redirect('admin-categorias')
+
+        elif acao == 'excluir':
+            categoria_id = request.POST.get('categoria_id')
+            categoria = get_object_or_404(Categoria, id=categoria_id)
+            categoria.delete()
+            messages.success(request, 'Categoria excluída com sucesso!')
+            return redirect('admin-categorias')
+
+    return render(request, 'core/admin/categorias.html', {
+        'categorias': categorias
+    })
