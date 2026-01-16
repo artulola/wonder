@@ -44,7 +44,7 @@ def card_wonder(
             {'text': 'Excluir', 'color': 'red'},
         ],
         'view_refuse': [
-            {'text': 'Visualizar', 'color': 'blue'},
+            {'text': 'Ver detalhes', 'color': 'blue'},
             {'text': 'Recusar', 'color': 'red'},
         ],
     }

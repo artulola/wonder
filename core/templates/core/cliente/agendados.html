@@ -1,9 +1,11 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{% load card_wonder %}
 {% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/agendados.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 {% endblock extra_css %}
 
 
@@ -22,40 +24,12 @@
         </a>
     </div>
 
+    
     <div class="results-list">
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/logo/Diego-BarberShop.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">Diego BarberShop</h2>
-                    <div class="card-meta">
-                        <span>Cabelo e Barba</span>
-                        <span class="time-value">Horário: 14:00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <p class="day-text">Segunda-Feira</p>
-                <button class="botao-cancelar">Cancelar</button>
-            </div>
-        </article>
 
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/logo/RD-Cabelos.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">RD Cabelos</h2>
-                    <div class="card-meta">
-                        <span>Sobrancelha</span>
-                        <span class="time-value">Horário: 16:00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <p class="day-text">Terça-Feira</p>
-                <button class="botao-cancelar">Cancelar</button>
-            </div>
-        </article>
+      {% card_wonder title="Diego BarberShop" img_url="img/logo/Diego-BarberShop.svg" subtitle="Cabelo, Barba"  time_value="14:00" day_text="Segunda-Feira" btn_text_conclude="Cancelar" btn_color_conclude="red" %}
+      {% card_wonder title="Studio de Beleza" img_url="img/logo/Diva-nails.svg" subtitle="Unha"  time_value="18:00" day_text="Segunda-Feira" btn_text_conclude="Cancelar" btn_color_conclude="red" %}
+      {% card_wonder title="RD Cabelos" img_url="img/logo/RD-Cabelos.svg" subtitle="Sobrancelha" time_value="18:00" day_text="Terça-feira" btn_text_conclude="Cancelar" btn_color_conclude="red" %}
 
 <!-- Modal de Cancelamento -->
 <div class="modal-overlay" id="modalCancelar">
@@ -80,11 +54,13 @@
   }
 
   // Abrir modal de Cancelar ao clicar nos botões
-  document.querySelectorAll('.botao-cancelar').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-      e.preventDefault();
-      abrirModal('modalCancelar');
-    });
+  document.querySelectorAll('button').forEach(btn => {
+    if (btn.textContent.trim() === 'Cancelar'){ 
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        abrirModal('modalCancelar');
+      });
+    }
   });
 
   // Fechar ao clicar fora
