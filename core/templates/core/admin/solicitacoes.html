@@ -1,14 +1,16 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{% load card_wonder %}
 
 {% block title %}Solicitações | WONDER{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/admin/admin.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 {% endblock %}
 
 {% block header_extra %}
-<a href="{% url 'login' %}" class="header-logout-button">
+<a href="{% url 'logout' %}" class="header-logout-button">
     <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
     <span>Sair</span>
 </a>
@@ -25,29 +27,44 @@
         </a>
     </div>
 
-    <div class="results-list">
+    <div class="results-list" id="lista-solicitacoes">
         {% for prestador in pendentes %}
-        <article class="result-card">
-            <div class="card-details">
-                {% if prestador.usuario.foto_perfil %}
-                <img src="{{ prestador.usuario.foto_perfil.url }}" alt="Foto do prestador">
-                {% endif %}
-                <div class="card-info">
-                    <h2 class="card-title">{{ prestador.nome_estabelecimento }}</h2>
-                    <div class="card-meta">
-                        <span>{{ prestador.usuario.get_full_name|default:prestador.usuario.username }}</span>
-                        <span>{{ prestador.cidade_atendimento }}</span>
-                        <span>Documento: {{ prestador.documento }}</span>
-                    </div>
-                </div>
+            
+            <div class="card-link-wrapper" data-url="{% url 'admin-detalhes--solicitacao' prestador.id %}">
+                {% with avatar_url="https://ui-avatars.com/api/?background=random&color=fff&name="|add:prestador.usuario.get_full_name %}
+
+                    {% card_wonder title=prestador.usuario.get_full_name subtitle=prestador.nome_estabelecimento img_url=avatar_url buttons_preset="view_refuse" %}
+
+                {% endwith %}
             </div>
-            <div class="block-day-btn">
-                <a href="{% url 'admin-detalhes--solicitacao' prestador.id %}" class="botao-visualizar">Ver detalhes</a>
-            </div>
-        </article>
+
         {% empty %}
-        <p>Nenhum prestador pendente.</p>
+            <div style="width: 100%; text-align: center; margin-top: 3rem; color: #666;">
+                <p>Nenhum prestador pendente.</p>
+            </div>
         {% endfor %}
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const lista = document.getElementById('lista-solicitacoes');
+
+        if (lista) {
+            lista.addEventListener('click', function(e) {
+                const botao = e.target.closest('button');
+                
+                if (botao && botao.textContent.trim() === 'Ver detalhes') {
+                    e.preventDefault();
+                    
+                    const wrapper = botao.closest('.card-link-wrapper');
+                    
+                    if (wrapper && wrapper.dataset.url) {
+                        window.location.href = wrapper.dataset.url;
+                    }
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

@@ -21,6 +21,10 @@
     gap: 1rem;
 }
 
+.card-wonder-details img {
+    width: 3.125rem;
+}
+
 .card-wonder-subtitle {
     color: #9D7ABF;
     font-weight: 600;
