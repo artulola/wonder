@@ -21,42 +21,64 @@
         <a href="{% url 'admin-categorias' %}"><button class="option-tab active right">Categorias</button></a>
     </div>
 
-
     <div class="modal-overlay" id="modalCategoria">
-  <div class="modal-content">
-    <h2 class="modal-title">Cadastrar Categorias</h2>
+      <div class="modal-content">
+        <h2 class="modal-title">Cadastrar Categoria</h2>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="acao" value="criar">
 
-    <label class="modal-label">Nome da Categoria</label>
-    <input type="text" class="modal-input" placeholder="Ex: Cabelo Masculino">
+          <label class="modal-label">Nome da Categoria</label>
+          <input type="text" class="modal-input" name="nome" placeholder="Ex: Cabelo Masculino" required>
 
-    <label class="modal-label">Adicione uma foto para o card</label>
-    <input type="file" class="modal-input" accept="image/*">
+          <label class="modal-label">Adicione uma foto para o card</label>
+          <input type="file" class="modal-input" name="foto" accept="image/*">
 
-    <div class="modal-buttons">
-      <button class="modal-cancel" onclick="fecharModal()">Cancelar</button>
-      <button class="modal-save">Salvar</button>
+          <div class="modal-buttons">
+            <button type="button" class="modal-cancel" onclick="fecharModal()">Cancelar</button>
+            <button type="submit" class="modal-save">Salvar</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-</div>
 
+    <div class="modal-overlay" id="modalEditarCategoria">
+      <div class="modal-content">
+        <h2 class="modal-title">Editar Categoria</h2>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="acao" value="editar">
+          <input type="hidden" name="categoria_id" id="editCategoriaId">
 
-<div class="modal-overlay" id="modalEditarCategoria">
-  <div class="modal-content">
-    <h2 class="modal-title">Editar Categoria</h2>
+          <label class="modal-label">Nome da Categoria</label>
+          <input type="text" class="modal-input" id="editNomeCategoria" name="nome" required>
 
-    <label class="modal-label">Nome da Categoria</label>
-    <input type="text" class="modal-input" id="editNomeCategoria" value="">
+          <label class="modal-label">Atualize a foto do card</label>
+          <input type="file" class="modal-input" name="foto" accept="image/*">
 
-    <label class="modal-label">Atualize a foto do card</label>
-    <input type="file" class="modal-input" accept="image/*">
-
-    <div class="modal-buttons">
-      <button class="modal-cancel" onclick="fecharModalEditar()">Cancelar</button>
-      <button class="modal-save">Salvar Alterações</button>
+          <div class="modal-buttons">
+            <button type="button" class="modal-cancel" onclick="fecharModalEditar()">Cancelar</button>
+            <button type="submit" class="modal-save">Salvar Alterações</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-</div>
 
+    <div class="modal-overlay" id="modalExcluirCategoria">
+      <div class="modal-content">
+        <h2 class="modal-title">Excluir Categoria</h2>
+        <p>Tem certeza que deseja excluir a categoria <strong id="nomeCategoriaExcluir"></strong>?</p>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="acao" value="excluir">
+          <input type="hidden" name="categoria_id" id="categoriaIdExcluir">
+          <div class="modal-buttons">
+            <button type="button" class="modal-cancel" onclick="fecharModalExcluir()">Cancelar</button>
+            <button type="submit" class="modal-save">Confirmar Exclusão</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <div class="block-text-tag">
         <span class="text-tag">Categorias</span>
@@ -67,11 +89,14 @@
     </div>
 
     <div class="results-list">
-        <article class="result-card">
+        {% for categoria in categorias %}
+        <article class="result-card" data-id="{{ categoria.id }}">
             <div class="card-details">
-                <img src="{% static 'img/categorias/servicos/cat-unha.svg' %}" alt="">
+                {% if categoria.foto %}
+                  <img src="{{ categoria.foto.url }}" alt="{{ categoria.nome }}">
+                {% endif %}
                 <div class="card-info">
-                    <h2 class="card-title">Unha</h2>
+                    <h2 class="card-title">{{ categoria.nome }}</h2>
                 </div>
             </div>
             <div class="block-day-btn">
@@ -79,74 +104,60 @@
                 <button class="botao-vermelho">Excluir</button>
             </div>
         </article>
-
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/categorias/servicos/cat-cabeleireira.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">Cabeleireira</h2>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-visualizar">Editar</button>
-                <button class="botao-vermelho">Excluir</button>
-            </div>
-        </article>
-
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/categorias/servicos/cat-spa.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">SPA</h2>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-visualizar">Editar</button>
-                <button class="botao-vermelho">Excluir</button>
-            </div>
-        </article>
+        {% empty %}
+        <p>Nenhuma categoria cadastrada ainda.</p>
+        {% endfor %}
     </div>
 
 </section>
 
 <script>
+  // Modal Criar
   const botaoNovaCategoria = document.querySelector('.nova-categoria-button');
   const modal = document.getElementById('modalCategoria');
-
   botaoNovaCategoria.addEventListener('click', function(e) {
     e.preventDefault();
     modal.style.display = 'flex';
   });
+  function fecharModal() { modal.style.display = 'none'; }
 
-  function fecharModal() {
-    modal.style.display = 'none';
-  }
-
-
-const botoesEditar = document.querySelectorAll('.botao-visualizar');
+  // Modal Editar
+  const botoesEditar = document.querySelectorAll('.botao-visualizar');
   const modalEditar = document.getElementById('modalEditarCategoria');
   const campoNomeCategoria = document.getElementById('editNomeCategoria');
+  const campoIdCategoria = document.getElementById('editCategoriaId');
 
   botoesEditar.forEach(botao => {
     botao.addEventListener('click', function(e) {
       e.preventDefault();
-
-      // Pega o nome da categoria do card correspondente
-      const nomeCategoria = this.closest('.result-card').querySelector('.card-title').innerText;
+      const card = this.closest('.result-card');
+      const nomeCategoria = card.querySelector('.card-title').innerText;
+      const categoriaId = card.getAttribute('data-id');
       campoNomeCategoria.value = nomeCategoria;
-
+      campoIdCategoria.value = categoriaId;
       modalEditar.style.display = 'flex';
     });
   });
+  function fecharModalEditar() { modalEditar.style.display = 'none'; }
 
-  function fecharModalEditar() {
-    modalEditar.style.display = 'none';
-  }
+  // Modal Excluir
+  const botoesExcluir = document.querySelectorAll('.botao-vermelho');
+  const modalExcluir = document.getElementById('modalExcluirCategoria');
+  const nomeCategoriaExcluir = document.getElementById('nomeCategoriaExcluir');
+  const categoriaIdExcluir = document.getElementById('categoriaIdExcluir');
 
-
-
-
-
+  botoesExcluir.forEach(botao => {
+    botao.addEventListener('click', function(e) {
+      e.preventDefault();
+      const card = this.closest('.result-card');
+      const nomeCategoria = card.querySelector('.card-title').innerText;
+      const categoriaId = card.getAttribute('data-id');
+      nomeCategoriaExcluir.innerText = nomeCategoria;
+      categoriaIdExcluir.value = categoriaId;
+      modalExcluir.style.display = 'flex';
+    });
+  });
+  function fecharModalExcluir() { modalExcluir.style.display = 'none'; }
 </script>
 
 {% endblock content %}

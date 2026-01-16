@@ -66,6 +66,7 @@ class Servico(models.Model):
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     duracao_minutos = models.IntegerField(help_text="Duração em minutos")
     categorias = models.ManyToManyField(Categoria, related_name='servicos')
+    foto = models.ImageField(upload_to='servicos/', null=True, blank=True)
 
     def __str__(self):
         return f"{self.nome} - {self.prestador.nome_estabelecimento}"
