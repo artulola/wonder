@@ -46,21 +46,37 @@
     </div>
 </section>
 
+<form id="form-recusar" method="post" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="acao" value="rejeitar">
+</form>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const lista = document.getElementById('lista-solicitacoes');
+        const formRecusar = document.getElementById('form-recusar');
 
         if (lista) {
             lista.addEventListener('click', function(e) {
                 const botao = e.target.closest('button');
+                if (!botao) return;
                 
-                if (botao && botao.textContent.trim() === 'Ver detalhes') {
+                const wrapper = botao.closest('.card-link-wrapper');
+                if (!wrapper || !wrapper.dataset.url) return;
+
+                const textoBotao = botao.textContent.trim();
+
+                if (textoBotao === 'Ver detalhes') {
+                    e.preventDefault();
+                    window.location.href = wrapper.dataset.url;
+                }
+
+                else if (textoBotao === 'Recusar') {
                     e.preventDefault();
                     
-                    const wrapper = botao.closest('.card-link-wrapper');
-                    
-                    if (wrapper && wrapper.dataset.url) {
-                        window.location.href = wrapper.dataset.url;
+                    if (confirm('Tem certeza que deseja recusar esta solicitação?')) {
+                        formRecusar.action = wrapper.dataset.url;
+                        formRecusar.submit();
                     }
                 }
             });

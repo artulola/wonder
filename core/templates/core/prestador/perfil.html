@@ -9,16 +9,6 @@
 {% block content %}
 <main class="profile-page-content">
 
-  {% if messages %}
-    <div style="width: 100%; max-width: 600px; margin-bottom: 1rem;">
-      {% for message in messages %}
-        <div style="padding: 10px; border-radius: 5px; margin-bottom: 5px; background-color: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; color: {% if message.tags == 'success' %}#155724{% else %}#721c24{% endif %};">
-          {{ message }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
   <div class="profile-card">
     <!-- Cabeçalho -->
     <header class="profile-header">
