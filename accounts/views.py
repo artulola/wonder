@@ -62,12 +62,8 @@ def auth_cadastro_view(request: HttpRequest) -> HttpResponse:
             except Exception as e:
                 messages.error(request, f'Erro ao criar cadastro: {str(e)}')
         else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
-            for field, errors in endereco_form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
+            messages.error(request, 'Erro no cadastro. Verifique os campos destacados em vermelho.')
+
     else:
         form = ClienteRegistrationForm()
         endereco_form = ClienteEnderecoForm()
@@ -110,12 +106,7 @@ def auth_cadastro_prestador_view(request: HttpRequest) -> HttpResponse:
             except Exception as e:
                 messages.error(request, f'Erro ao criar cadastro: {str(e)}')
         else:
-            for field, errors in user_form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
-            for field, errors in prestador_form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
+            messages.error(request, 'Erro no cadastro. Verifique os campos destacados em vermelho.')
     else:
         user_form = PrestadorRegistrationForm()
         prestador_form = PrestadorProfileForm()
