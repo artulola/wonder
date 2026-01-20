@@ -7,6 +7,7 @@ from accounts.models import Cliente, Prestador, Categoria
 from accounts.forms import CustomLoginForm, PrestadorProfileForm, ClienteEnderecoForm, ClienteRegistrationForm, PrestadorRegistrationForm
 
 
+
 def auth_login_view(request):
     if request.method == 'POST':
         form = CustomLoginForm(request, data=request.POST)
@@ -130,3 +131,4 @@ def auth_cadastro_prestador_view(request: HttpRequest) -> HttpResponse:
 
 def auth_aguardando_aprovacao_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/auth/aguardando_aprovacao.html')
+

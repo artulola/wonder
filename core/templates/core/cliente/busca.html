@@ -1,10 +1,32 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
 
-{% block title %}WONDER{% endblock title %}
+{% block title %}WONDER - Busca{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/busca.css' %}?v=2">
+<style>
+    .provider-card {
+        background: white;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        text-decoration: none;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        transition: transform 0.2s;
+    }
+    .provider-card:hover {
+        transform: translateY(-5px);
+    }
+    .provider-info h3 { margin: 0; font-size: 1.1rem; color: #4B0082; }
+    .provider-info p { margin: 5px 0; font-size: 0.9rem; color: #666; }
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+    .tag { background: #f0f0f0; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; }
+    .no-results { text-align: center; width: 100%; grid-column: 1 / -1; padding: 40px; }
+</style>
 {% endblock extra_css %}
 
 {% block content %}
@@ -15,87 +37,77 @@
             <button type="submit" class="search-btn">
                 <img class="search-icon" src="{% static 'img/icones/icon_roxo/busca-barra(1).svg' %}" alt="Pesquisa">
             </button>
-            <input type="text" name="q" class="search-input" placeholder="Procurar por serviços ou estabelecimentos">
+            <input type="text" name="q" value="{{ query|default:'' }}" class="search-input" placeholder="Procurar por serviços, prestadores ou categorias...">
         </form>
     </div>
     
-    <div class="categories">
-        <h2 class="section-title">Categorias Populares</h2>
-        
-        <div class="categories-grid">
+    {% if query %}
+        <div class="categories">
+            <h2 class="section-title">Resultados para: "{{ query }}"</h2>
             
-            <a href="#" class="category-card">
-                <div class="card-image">
-                    <img src="{% static 'img/categories/card-barbearia.svg' %}" alt="Barbearia">
-                </div>
-                <div class="card-overlay">
-                    <span class="category-name">Barbearia</span>
-                </div>
-            </a>
+            <div class="categories-grid">
+                {% for prestador in prestadores %}
+                    <a href="#" class="provider-card">
+                        <div class="provider-img" style="height: 100px; background: #eee; border-radius: 8px; overflow: hidden;">
+                             {% if prestador.usuario.foto_perfil %}
+                                <img src="{{ prestador.usuario.foto_perfil.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                             {% else %}
+                                <div style="display:flex; align-items:center; justify-content:center; height:100%; color:#999;">Sem Foto</div>
+                             {% endif %}
+                        </div>
 
-            <a href="#" class="category-card">
-                <div class="card-image">
-                    <img src="{% static 'img/categories/card-cabelos.svg' %}" alt="Cabelo">
-                </div>
-                <div class="card-overlay">
-                    <span class="category-name">Cabelos</span>
-                </div>
-            </a>
+                        <div class="provider-info">
+                            <h3>{{ prestador.nome_estabelecimento }}</h3>
+                            <p>Profissional: {{ prestador.usuario.get_full_name|default:prestador.usuario.username }}</p>
+                            <p class="cidade"><small>📍 {{ prestador.cidade_atendimento }}</small></p>
+                        </div>
 
-            <a href="#" class="category-card">
-                <div class="card-image">
-                    <img src="{% static 'img/categories/card-unhas.svg' %}" alt="Unhas">
-                </div>
-                <div class="card-overlay">
-                    <span class="category-name">Unhas</span>
-                </div>
-            </a>
+                        <div class="tags">
+                            {% for cat in prestador.categorias.all|slice:":3" %}
+                                <span class="tag">{{ cat.nome }}</span>
+                            {% endfor %}
+                        </div>
+                    </a>
 
-            <a href="#" class="category-card">
-                <div class="card-image">
-                    <img src="{% static 'img/categories/card-spa.svg' %}" alt="SPA">
-                </div>
-                <div class="card-overlay">
-                    <span class="category-name">SPA</span>
-                </div>
-            </a>
-
-             <a href="#" class="category-card">
-                <div class="card-image">
-                    <img src="{% static 'img/categories/card-depilacao.svg' %}" alt="Depilação">
-                </div>
-                <div class="card-overlay">
-                    <span class="category-name">Depilação</span>
-                </div>
-            </a>
-
-            <a href="#" class="category-card">
-                <div class="card-image">
-                    <img src="{% static 'img/categories/card-maquiagem.svg' %}" alt="Maquiagem">
-                </div>
-                <div class="card-overlay">
-                    <span class="category-name">Maquiagem</span>
-                </div>
-            </a>
-
-            <a href="#" class="category-card">
-                <div class="card-image">
-                    <img src="{% static 'img/categories/card-tatuagem.svg' %}" alt="Tatuagem">
-                </div>
-                <div class="card-overlay">
-                    <span class="category-name">Tatuagem</span>
-                </div>
-            </a>
-
-            <a href="#" class="category-card">
-                <div class="card-image">
-                    <img src="{% static 'img/categories/card-bronzeamento.svg' %}" alt="Bronzeamento">
-                </div>
-                <div class="card-overlay">
-                    <span class="category-name">Bronzeamento</span>
-                </div>
-            </a>
+                {% empty %}
+                    <div class="no-results">
+                        <h3>Nenhum resultado encontrado.</h3>
+                        <p>Tente buscar por termos mais gerais ou verifique a ortografia.</p>
+                        <br>
+                        <a href="{% url 'cliente-busca' %}" style="text-decoration: underline; color: #4B0082;">Limpar busca e ver categorias</a>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-    </div>
+
+    {% else %}
+        <div class="categories">
+            <h2 class="section-title">Categorias Populares</h2>
+            
+            <div class = 'categories-grid'>
+                {% for categoria in categorias %}
+                    <a href="?q={{ categoria.nome }}" class="category-card">
+
+                        <div class="card-image">
+                            {% if categoria.foto %}
+                                <img src="{{ categoria.foto.url }}" alt="{{ categoria.nome }}">
+                            {% else %}
+                                <img src="{% static '' %}" alt="{{ categoria.nome }}">
+                            {% endif %}
+                        </div>
+
+                        <div class="card-overlay">
+                            <span class="category-name">{{ categoria.nome }}</span>
+                        </div>
+                    </a>
+                {% empty %}
+                    <p style="grid-column: 1/-1; text-align: center; color: #666;">Nenhuma categoria disponível.</p>
+                {% endfor %}
+            </div>
+                
+                
+        </div>
+    {% endif %}
+
 </section>
 {% endblock content %}
