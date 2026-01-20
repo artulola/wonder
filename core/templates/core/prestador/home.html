@@ -7,6 +7,9 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
 <link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
+
+<!-- Calendário Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock extra_css %}
 
 {% block header_extra %}
@@ -15,9 +18,9 @@
     <span>Sair</span>
 </a>
 {% endblock header_extra %}
+
 {% block content %}
 <div class="prestador-layout-container">
-
 
     <main class="main-prestador">
         
@@ -26,27 +29,38 @@
             <a href="{% url 'prestador-finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
         </div>
 
-        <div href="#" class="block-text-tag">
-            <span class="text-tag-day">Agendamentos em Aberto</span>
-            <a href="#" class="agenda-button">
-                <span class="text-tag">Ver agenda</span>
-                <img src="{% static 'img/icones/icon_geral/calendar(1).svg' %}" alt="Calendário">
-            </a>
+        <div class="block-text-tag" style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="text-tag-day">Agendamentos em {{ data_escolhida|date:"d/m/Y" }}</span>
+
+            <div>
+                <button type="button" class="agenda-button" onclick="abrirCalendario()">
+                    <span class="text-tag">Ver agenda</span>
+                    <img src="{% static 'img/icones/icon_geral/calendar(1).svg' %}" alt="Calendário">
+                </button>
+
+                <form method="get" action="{% url 'prestador-home' %}">
+                    <input type="text" id="agenda-input" name="data" value="{{ data_escolhida|date:'Y-m-d' }}" style="display:none;">
+                </form>
+            </div>
         </div>
 
-
         <div class="results-list">
-
-          {% card_wonder title="Corte de Cabelo Mas." img_url="img/clientes/gustavo_cliente.svg" subtitle="Gustavo Emanuel" buttons_preset="finish_cancel" %}
-          {% card_wonder title="Corte de Cabelo Mas." img_url="img/clientes/thiago_cliente.svg" subtitle="Thiago Henrique" buttons_preset="finish_cancel" %}
-          {% card_wonder title="Barba" img_url="img/clientes/lwkas_cliente.svg" subtitle="Lwkas Carvalho" buttons_preset="finish_cancel" %}
-
+            {% for agendamento in agendamentos %}
+                {% card_wonder 
+                    title=agendamento.servico.nome 
+                    img_url=agendamento.cliente.usuario.foto_perfil.url|default:"img/icones/icon_footer/user.svg" 
+                    subtitle=agendamento.cliente.usuario.first_name 
+                    buttons_preset="finish_cancel" 
+                %}
+            {% empty %}
+                <p>Não há agendamentos em aberto nesta data.</p>
+            {% endfor %}
         </div>
     
     </main>
 
     <nav class="app-navbar prestador-navbar">
-        <a href="{% url 'prestador-home' %}" class="nav-item">
+        <a href="{% url 'prestador-home' %}" class="nav-item active">
             <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" alt="Agendamentos" class="nav-icon">
             <span class="nav-label">Agendamentos</span>
         </a>
@@ -56,69 +70,21 @@
         </a>
     </nav>
     
-<!-- Modal de Confirmação Finalizar -->
-<div class="modal-overlay" id="modalFinalizar">
-  <div class="modal-content">
-    <h2 class="modal-title">Confirmar Finalização</h2>
-    <p>Tem certeza que deseja finalizar este agendamento?</p>
-    <div class="modal-buttons">
-      <button class="modal-cancel" onclick="fecharModal('modalFinalizar')">Não</button>
-      <button class="modal-save">Sim, Finalizar</button>
-    </div>
-  </div>
 </div>
 
-<!-- Modal de Cancelamento -->
-<div class="modal-overlay" id="modalCancelar">
-  <div class="modal-content">
-    <h2 class="modal-title">Cancelar Agendamento</h2>
-    <label class="modal-label">Motivo do cancelamento</label>
-    <textarea class="modal-input" rows="3" placeholder="Digite o motivo..."></textarea>
-    <div class="modal-buttons">
-      <button class="modal-cancel" onclick="fecharModal('modalCancelar')">Voltar</button>
-      <button class="modal-save">Confirmar Cancelamento</button>
-    </div>
-  </div>
-</div>
-
+<!-- Calaendário Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-  function abrirModal(id) {
-    document.getElementById(id).style.display = 'flex';
-  }
-
-  function fecharModal(id) {
-    document.getElementById(id).style.display = 'none';
-  }
-
-  // Abrir modal de Finalizar
-  document.querySelectorAll('button').forEach(btn => {
-    if (btn.textContent.trim() === 'Finalizar') {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        abrirModal('modalFinalizar');
-      });
+  const fp = flatpickr("#agenda-input", {
+    dateFormat: "Y-m-d",
+    defaultDate: "{{ data_escolhida|date:'Y-m-d' }}",
+    onChange: function(selectedDates, dateStr, instance) {
+      instance.input.form.submit();
     }
   });
 
-  // Abrir modal de Cancelar
-  document.querySelectorAll('button').forEach(btn => {
-    if (btn.textContent.trim() === 'Cancelar') {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        abrirModal('modalCancelar');
-      });
-    }
-  });
-
-  // Fechar ao clicar fora
-  document.querySelectorAll('.modal-overlay').forEach(modal => {
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  });
+  function abrirCalendario() {
+    fp.open();
+  }
 </script>
-
-</div>
 {% endblock %}
