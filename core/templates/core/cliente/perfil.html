@@ -8,13 +8,18 @@
 
 {% block content %}
 <main class="profile-page-content">
-  
+
   <div class="profile-card">
     
     <header class="profile-header">
-      <img class="profile-avatar" src="{% static 'img/perfil/gustavo.svg' %}" alt="Foto de perfil">
-      <a href="#" class="edit-profile-link">
-        <img src="{% static 'img/icones/icon_roxo/pencil(1).svg' %}" alt="">
+      {% if user.foto_perfil %}
+        <img class="profile-avatar" src="{{ user.foto_perfil.url }}" alt="Foto de perfil">
+      {% else %}
+        <img class="profile-avatar" src="https://placehold.co/80x80/8000ff/ffffff?text={{ user.first_name|slice:':1' }}" alt="Foto padrão">
+      {% endif %}
+      
+      <a href="#" class="edit-profile-link" onclick="abrirModal('modalEditarPerfil'); return false;">
+        <img src="{% static 'img/icones/icon_roxo/pencil(1).svg' %}" alt="Editar">
         <span>Editar perfil</span>
       </a>
     </header>
@@ -24,9 +29,9 @@
       <div class="info-item">
         <div class="info-label-group">
           <img class="info-icon" src="{% static 'img/icones/icon_roxo/user(1).svg' %}" alt="">
-          <span class="info-label">Nome</span>
+          <span class="info-label">Nome Completo</span>
         </div>
-        <span class="info-value">Gustavo Emanuel</span>
+        <span class="info-value">{{ user.get_full_name|default:user.username }}</span>
       </div>
       
       <div class="info-item">
@@ -34,7 +39,7 @@
           <img class="info-icon" src="{% static 'img/icones/icon_roxo/email.svg' %}" alt="">
           <span class="info-label">Email</span>
         </div>
-        <span class="info-value">gustavinho@gmail.com</span>
+        <span class="info-value">{{ user.email }}</span>
       </div>
 
       <div class="info-item">
@@ -42,16 +47,108 @@
           <img class="info-icon" src="{% static 'img/icones/icon_roxo/phone(1).svg' %}" alt="">
           <span class="info-label">Telefone</span>
         </div>
-        <span class="info-value">(84) 99485-9785</span>
+        <span class="info-value">{{ user.telefone|default:"Não informado" }}</span>
+      </div>
+
+      <div class="info-item">
+        <div class="info-label-group">
+          <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" alt="Ícone de Localização" class="data-icon">
+          <span class="info-label">Endereço</span>
+        </div>
+        <span class="info-value">{{ user.perfil_cliente.endereco|default:"Não informado" }}</span>
       </div>
 
     </section>
 
-    <a href="{% url 'login' %}" class="logout-button">
+    <a href="{% url 'logout' %}" class="logout-button">
       <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="">
       <span>Sair</span>
     </a>
     
+    <!-- MODAL DE EDIÇÃO -->
+    <div class="modal-overlay" id="modalEditarPerfil">
+      <div class="modal-content">
+        <h2 class="modal-title">Editar Perfil</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div>
+                <label class="modal-label">Foto de Perfil</label>
+                {{ u_form.foto_perfil }}
+                {% if u_form.foto_perfil.errors %}
+                    <div style="color: red; font-size: 0.8em;">{{ u_form.foto_perfil.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label class="modal-label">Nome</label>
+                {{ u_form.first_name }}
+                {% if u_form.first_name.errors %}
+                    <div style="color: red; font-size: 0.8em;">{{ u_form.first_name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label class="modal-label">Sobrenome</label>
+                {{ u_form.last_name }}
+            </div>
+
+            <div>
+                <label class="modal-label">Email</label>
+                {{ u_form.email }}
+            </div>
+
+            <div>
+                <label class="modal-label">Telefone</label>
+                {{ u_form.telefone }}
+            </div>
+
+            <div> 
+                <label class="modal-label">Endereço</label>
+                {{ c_form.endereco }}
+            </div>
+
+            <div class="modal-buttons">
+              <button type="button" class="modal-cancel" onclick="fecharModal('modalEditarPerfil')">Cancelar</button>
+              <button type="submit" class="modal-save">Salvar Alterações</button>
+            </div>
+        </form>
+      </div>
+    </div>
   </div>
 </main>
+
+<script>
+  function abrirModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+  }
+
+  function fecharModal(id) {
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.style.display = 'none';
+    }
+  }
+
+  // Fechar ao clicar fora
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+
+  // Reabre o modal se houver erros no formulário
+  {% if u_form.errors or c_form.errors %}
+    document.addEventListener('DOMContentLoaded', function() {
+        abrirModal('modalEditarPerfil');
+    });
+  {% endif %}
+</script>
+
 {% endblock content %}

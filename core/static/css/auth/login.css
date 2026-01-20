@@ -1,12 +1,8 @@
-
 :root {
-
     --cor-principal: #430b7a;
     --cor-fundo-input: #f2f2f2;
     --cor-texto-principal: #505050;
     --cor-texto-branco: #ffffff;
-
-   
     font-size: 16px;
 }
 
@@ -69,6 +65,7 @@ body {
 
 .grupo-input {
     width: 100%;
+    position: relative; 
 }
 
 .input-campo {
@@ -147,3 +144,56 @@ body {
 }
 
 
+.mensagem-erro {
+    color: #dc3545;
+    font-size: 0.8rem; 
+    margin-top: 5px;
+    display: block;
+    text-align: left;
+    margin-left: 2px;
+}
+
+.input-erro {
+    border: 1px solid #dc3545 !important;
+    background-color: #fff8f8 !important;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* OLHO MÁGICO */
+
+.input-com-icone {
+    position: relative;
+    display: block; 
+}
+
+.input-com-icone .input-campo {
+    padding-right: 3rem; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.icone-input {
+    position: absolute;
+    right: 1rem;
+    top: 24px; 
+    transform: translateY(-50%);
+    width: 1.25rem;
+    height: auto;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+    z-index: 10;
+}
+
+.icone-input:hover {
+    opacity: 1;
+}

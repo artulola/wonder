@@ -8,99 +8,249 @@
 
 {% block content %}
 <main class="profile-page-content">
-  
+
   <div class="profile-card">
-    
+    <!-- Cabeçalho -->
     <header class="profile-header">
-      <img class="profile-avatar" src="{% static 'img/perfil/perfil_prestador.svg' %}" alt="Foto de perfil">
-      <a href="#" class="edit-profile-link">
+      {% if user.foto_perfil %}
+        <img class="profile-avatar" src="{{ user.foto_perfil.url }}" alt="Foto de perfil">
+      {% else %}
+        <img class="profile-avatar" src="https://placehold.co/80x80/8000ff/ffffff?text={{ user.first_name|slice:':1' }}" alt="Foto padrão">
+      {% endif %}
+      <a href="#" class="edit-profile-link" onclick="abrirModal('modalEditarPerfil'); return false;">
         <img src="{% static 'img/icones/icon_roxo/pencil(1).svg' %}" alt="Editar">
         <span>Editar perfil</span>
       </a>
     </header>
 
+    <!-- Informações -->
     <section class="user-info-list">
-      
-
-      <div class="info-item">
-        <div class="info-label-group">
-          <img class="info-icon" src="{% static 'img/icones/icon_roxo/bxs_user-circle.svg' %}" alt="">
-          <span class="info-label">Estabelecimento</span>
-        </div>
-        <span class="info-value">Diego BarberShop</span>
-      </div>
-
-      <div class="info-item">
-        <div class="info-label-group">
-          <img class="info-icon" src="{% static 'img/icones/icon_roxo/User.svg' %}" alt="">
-          <span class="info-label">CPF/CNPJ</span>
-        </div>
-        <span class="info-value">62.173.620/0001-80</span>
-      </div>
-      
-      <div class="info-item">
-        <div class="info-label-group">
-          <img class="info-icon" src="{% static 'img/icones/icon_roxo/email.svg' %}" alt="">
-          <span class="info-label">Email</span>
-        </div>
-        <span class="info-value">DiegoBarber@gmail.com</span>
-      </div>
-
-      <div class="info-item">
-        <div class="info-label-group">
-          <img class="info-icon" src="{% static 'img/icones/icon_roxo/phone(1).svg' %}" alt="">
-          <span class="info-label">Telefone</span>
-        </div>
-        <span class="info-value">(84) 99485-9785</span>
-      </div>
-
-       <div class="info-item">
-        <div class="info-label-group">
-          <img class="info-icon" src="{% static 'img/icones/icon_roxo/time.svg' %}" alt="">
-          <span class="info-label">Horário</span>
-        </div>
-        <span class="info-value">SEG - SÁB / 8h - 12h</span>
-      </div>
-
+      <div class="info-item"><span class="info-label">Estabelecimento</span><span class="info-value">{{ prestador.nome_estabelecimento }}</span></div>
+      <div class="info-item"><span class="info-label">CPF/CNPJ</span><span class="info-value">{{ prestador.documento }}</span></div>
+      <div class="info-item"><span class="info-label">Email</span><span class="info-value">{{ user.email }}</span></div>
+      <div class="info-item"><span class="info-label">Telefone</span><span class="info-value">{{ user.telefone|default:"Não informado" }}</span></div>
+      <div class="info-item"><span class="info-label">Endereço</span><span class="info-value">{{ prestador.endereco }} - {{ prestador.cidade_atendimento }}</span></div>
     </section>
 
+    <!-- Serviços -->
     <section class="user-info-list" style="margin-top: 1rem;">
-        <div style="width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 4px; margin-bottom: 0.5rem;">
-            <span style="font-size: 0.9rem; font-weight: 600; color: #333;">Meus Serviços</span>
-            <a href="#" style="font-size: 0.8rem; font-weight: 600; color: #430b7a; text-decoration: none;">+ Adicionar</a>
-        </div>
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:600;">Meus Serviços</span>
+        <a href="#" onclick="abrirModal('modalAdicionarServico'); return false;" style="color:#430b7a;">+ Adicionar</a>
+      </div>
 
-        <div class="info-item">
-            <div class="info-label-group">
-                <img class="info-icon" style="border-radius: 4px; width: 24px; height: 24px; object-fit: cover;" src="{% static 'img/categorias/cat_est/corte-social.svg' %}" alt="">
-                <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 0;">
-                    <span class="info-label">Corte de Cabelo</span>
-                    <span style="font-size: 0.7rem; color: #777; font-weight: 400;">R$ 25,00 • 1h</span>
-                </div>
-            </div>
-            <a href="#">
-                <img src="{% static 'img/icones/icon_geral/editar_cinza.svg' %}" style="width: 16px; opacity: 0.5;" alt="Editar">
-            </a>
+      {% for servico in servicos %}
+      <div class="info-item" data-id="{{ servico.id }}">
+        <div class="info-label-group">
+          {% if servico.foto %}
+            <img src="{{ servico.foto.url }}" alt="{{ servico.nome }}" style="width:40px; height:40px; border-radius:4px; object-fit:cover; margin-right:8px;">
+          {% endif %}
+          <div>
+            <span class="info-label">{{ servico.nome }}</span>
+            <span style="font-size:0.8rem; color:#777;">R$ {{ servico.preco }} • {{ servico.duracao_minutos }} min</span>
+          </div>
         </div>
+        <div style="display:flex; gap:10px;">
+          <a href="#" onclick="abrirModalEditarServico({{ servico.id }}, '{{ servico.nome }}', '{{ servico.descricao }}', '{{ servico.preco }}', '{{ servico.duracao_minutos }}'); return false;">
+            <img src="{% static 'img/icones/icon_geral/editar_cinza.svg' %}" style="width:16px; opacity:0.5;">
+          </a>
+          <a href="#" onclick="abrirModalExcluirServico({{ servico.id }}, '{{ servico.nome }}'); return false;">
+            <img src="{% static 'img/icones/icon_geral/delete.svg' %}" style="width:16px; opacity:0.5;">
+          </a>
+        </div>
+      </div>
+      {% empty %}
+      <p>Nenhum serviço cadastrado ainda.</p>
+      {% endfor %}
     </section>
 
-    <a href="{% url 'login' %}" class="logout-button" style="margin-top: 1.5rem;">
+        <a href="{% url 'logout' %}" class="logout-button" style="margin-top: 1.5rem;">
       <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="">
       <span>Sair</span>
     </a>
-    
   </div>
 
   <nav class="app-navbar prestador-navbar">
-        <a href="{% url 'prestador-home' %}" class="nav-item">
-            <img src="{% static 'img/icones/icon_footer/calendar.svg' %}" alt="Agendamentos" class="nav-icon">
-            <span class="nav-label">Agendamentos</span>
-        </a>
-        <a href="{% url 'prestador-perfil' %}" class="nav-item active">
-            <img src="{% static 'img/icones/icon_roxo/User.svg' %}" alt="Perfil" class="nav-icon">
-            <span class="nav-label">Perfil</span>
-        </a>
-    </nav>
-
+    <a href="{% url 'prestador-home' %}" class="nav-item">
+      <img src="{% static 'img/icones/icon_footer/calendar.svg' %}" alt="Agendamentos" class="nav-icon">
+      <span class="nav-label">Agendamentos</span>
+    </a>
+    <a href="{% url 'prestador-perfil' %}" class="nav-item active">
+      <img src="{% static 'img/icones/icon_roxo/User.svg' %}" alt="Perfil" class="nav-icon">
+      <span class="nav-label">Perfil</span>
+    </a>
+  </nav>
 </main>
+
+<div class="modal-overlay" id="modalEditarPerfil">
+  <div class="modal-content">
+    <h2 class="modal-title">Editar Perfil</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="acao" value="atualizar_perfil">
+
+      <label class="modal-label">Foto de Perfil</label>
+      {{ u_form.foto_perfil }}
+
+      <label class="modal-label">Nome do Estabelecimento</label>
+      {{ p_form.nome_estabelecimento }}
+
+      <label class="modal-label">Email</label>
+      {{ u_form.email }}
+
+      <label class="modal-label">Telefone</label>
+      {{ u_form.telefone }}
+
+      <label class="modal-label">Endereço</label>
+      {{ p_form.endereco }}
+
+      <label class="modal-label">Cidade</label>
+      {{ p_form.cidade_atendimento }}
+
+      <div class="modal-buttons">
+        <button type="button" class="modal-cancel" onclick="fecharModal('modalEditarPerfil')">Cancelar</button>
+        <button type="submit" class="modal-save">Salvar Alterações</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalAdicionarServico">
+  <div class="modal-content">
+    <h2 class="modal-title">Adicionar Serviço</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="acao" value="criar_servico">
+
+      <label class="modal-label">Foto do Serviço</label>
+      <input type="file" name="foto" class="modal-input" accept="image/*">
+
+      <label class="modal-label">Nome</label>
+      <input type="text" name="nome" class="modal-input" required>
+
+      <label class="modal-label">Descrição</label>
+      <textarea name="descricao" class="modal-input"></textarea>
+
+      <label class="modal-label">Preço</label>
+      <input type="number" step="0.01" name="preco" class="modal-input" required>
+
+      <label class="modal-label">Duração (minutos)</label>
+      <input type="number" name="duracao" class="modal-input" required>
+
+      <label class="modal-label">Categorias</label>
+      <div style="display:flex; flex-direction:column; gap:5px;">
+        {% for categoria in categorias %}
+          <label>
+            <input type="checkbox" name="categorias" value="{{ categoria.id }}">
+            {{ categoria.nome }}
+          </label>
+        {% endfor %}
+      </div>
+
+      <div class="modal-buttons">
+        <button type="button" class="modal-cancel" onclick="fecharModal('modalAdicionarServico')">Cancelar</button>
+        <button type="submit" class="modal-save">Salvar Serviço</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalEditarServico">
+  <div class="modal-content">
+    <h2 class="modal-title">Editar Serviço</h2>
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="acao" value="editar_servico">
+      <input type="hidden" name="servico_id" id="editServicoId">
+
+      <label class="modal-label">Foto do Serviço</label>
+      <input type="file" name="foto" class="modal-input" accept="image/*">
+
+      <label class="modal-label">Nome</label>
+      <input type="text" name="nome" id="editNomeServico" class="modal-input" required>
+
+      <label class="modal-label">Descrição</label>
+      <textarea name="descricao" id="editDescricaoServico" class="modal-input"></textarea>
+
+      <label class="modal-label">Preço</label>
+      <input type="number" step="0.01" name="preco" id="editPrecoServico" class="modal-input" required>
+
+      <label class="modal-label">Duração (minutos)</label>
+      <input type="number" name="duracao" id="editDuracaoServico" class="modal-input" required>
+
+      <label class="modal-label">Categorias</label>
+      <div style="display:flex; flex-direction:column; gap:5px;">
+        {% for categoria in categorias %}
+          <label>
+            <input type="checkbox" name="categorias" value="{{ categoria.id }}" class="editCategoriaCheckbox">
+            {{ categoria.nome }}
+          </label>
+        {% endfor %}
+      </div>
+
+      <div class="modal-buttons">
+        <button type="button" class="modal-cancel" onclick="fecharModal('modalEditarServico')">Cancelar</button>
+        <button type="submit" class="modal-save">Salvar Alterações</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalExcluirServico">
+  <div class="modal-content">
+    <h2 class="modal-title">Excluir Serviço</h2>
+    <p>Tem certeza que deseja excluir o serviço <strong id="nomeServicoExcluir"></strong>?</p>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="acao" value="excluir_servico">
+      <input type="hidden" name="servico_id" id="servicoIdExcluir">
+
+      <div class="modal-buttons">
+        <button type="button" class="modal-cancel" onclick="fecharModal('modalExcluirServico')">Cancelar</button>
+        <button type="submit" class="modal-save">Confirmar Exclusão</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function abrirModal(id) {
+    const modal = document.getElementById(id);
+    if(modal) modal.style.display = 'flex';
+  }
+
+  function fecharModal(id) {
+    const modal = document.getElementById(id);
+    if(modal) modal.style.display = 'none';
+  }
+
+  function abrirModalEditarServico(id, nome, descricao, preco, duracao) {
+    document.getElementById('editServicoId').value = id;
+    document.getElementById('editNomeServico').value = nome;
+    document.getElementById('editDescricaoServico').value = descricao;
+    document.getElementById('editPrecoServico').value = preco;
+    document.getElementById('editDuracaoServico').value = duracao;
+    abrirModal('modalEditarServico');
+  }
+
+  function abrirModalExcluirServico(id, nome) {
+    document.getElementById('servicoIdExcluir').value = id;
+    document.getElementById('nomeServicoExcluir').innerText = nome;
+    abrirModal('modalExcluirServico');
+  }
+
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+
+  {% if u_form.errors or p_form.errors %}
+    document.addEventListener('DOMContentLoaded', function() {
+        abrirModal('modalEditarPerfil');
+    });
+  {% endif %}
+</script>
 {% endblock content %}

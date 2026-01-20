@@ -1,9 +1,11 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{% load card_wonder %}
 {% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/admin/admin.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 {% endblock extra_css %}
 
 {% block header_extra %}
@@ -21,6 +23,65 @@
         <a href="{% url 'admin-categorias' %}"><button class="option-tab active right">Categorias</button></a>
     </div>
 
+    <div class="modal-overlay" id="modalCategoria">
+      <div class="modal-content">
+        <h2 class="modal-title">Cadastrar Categoria</h2>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="acao" value="criar">
+
+          <label class="modal-label">Nome da Categoria</label>
+          <input type="text" class="modal-input" name="nome" placeholder="Ex: Cabelo Masculino" required>
+
+          <label class="modal-label">Adicione uma foto para o card</label>
+          <input type="file" class="modal-input" name="foto" accept="image/*">
+
+          <div class="modal-buttons">
+            <button type="button" class="modal-cancel" onclick="fecharModal()">Cancelar</button>
+            <button type="submit" class="modal-save">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalEditarCategoria">
+      <div class="modal-content">
+        <h2 class="modal-title">Editar Categoria</h2>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="acao" value="editar">
+          <input type="hidden" name="categoria_id" id="editCategoriaId">
+
+          <label class="modal-label">Nome da Categoria</label>
+          <input type="text" class="modal-input" id="editNomeCategoria" name="nome" required>
+
+          <label class="modal-label">Atualize a foto do card</label>
+          <input type="file" class="modal-input" name="foto" accept="image/*">
+
+          <div class="modal-buttons">
+            <button type="button" class="modal-cancel" onclick="fecharModalEditar()">Cancelar</button>
+            <button type="submit" class="modal-save">Salvar Alterações</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="modalExcluirCategoria">
+      <div class="modal-content">
+        <h2 class="modal-title">Excluir Categoria</h2>
+        <p>Tem certeza que deseja excluir a categoria <strong id="nomeCategoriaExcluir"></strong>?</p>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="acao" value="excluir">
+          <input type="hidden" name="categoria_id" id="categoriaIdExcluir">
+          <div class="modal-buttons">
+            <button type="button" class="modal-cancel" onclick="fecharModalExcluir()">Cancelar</button>
+            <button type="submit" class="modal-save">Confirmar Exclusão</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <div class="block-text-tag">
         <span class="text-tag">Categorias</span>
         <a href="#" class="nova-categoria-button">
@@ -30,46 +91,76 @@
     </div>
 
     <div class="results-list">
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/categorias/servicos/cat-unha.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">Unha</h2>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-visualizar">Editar</button>
-                <button class="botao-vermelho">Excluir</button>
-            </div>
-        </article>
 
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/categorias/servicos/cat-cabeleireira.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">Cabeleireira</h2>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-visualizar">Editar</button>
-                <button class="botao-vermelho">Excluir</button>
-            </div>
-        </article>
+      {% card_wonder title="Unha" img_url="img/categorias/servicos/cat-unha.svg" buttons_preset="edit_delete" %}
+      {% card_wonder title="Cabeleireira" img_url="img/categorias/servicos/cat-cabeleireira.svg" buttons_preset="edit_delete" %}
+      {% card_wonder title="SPA" img_url="img/categorias/servicos/cat-spa.svg" buttons_preset="edit_delete" %}
 
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/categorias/servicos/cat-spa.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">SPA</h2>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-visualizar">Editar</button>
-                <button class="botao-vermelho">Excluir</button>
-            </div>
-        </article>
     </div>
 
 </section>
+
+<script>
+  // Modal Criar
+  const botaoNovaCategoria = document.querySelector('.nova-categoria-button');
+  const modal = document.getElementById('modalCategoria');
+  botaoNovaCategoria.addEventListener('click', function(e) {
+    e.preventDefault();
+    modal.style.display = 'flex';
+  });
+  function fecharModal() { modal.style.display = 'none'; }
+
+  function fecharModal() {
+    modal.style.display = 'none';
+  }
+
+
+  const modalEditar = document.getElementById('modalEditarCategoria');
+  const campoNomeCategoria = document.getElementById('editNomeCategoria');
+  const campoIdCategoria = document.getElementById('editCategoriaId');
+
+  const resultsList = document.querySelector('.results-list');
+
+  if (resultsList) {
+      resultsList.addEventListener('click', function(e) {
+          const botao = e.target.closest('button');
+          
+          if (botao && botao.textContent.trim() === 'Editar') {
+              e.preventDefault();
+
+              let card = botao.closest('.result-card-wonder'); 
+
+              if (card) {
+                  const tituloEl = card.querySelector('.card-title');
+                  
+                  if (tituloEl) {
+                      campoNomeCategoria.value = tituloEl.innerText.trim();
+                  }
+                  
+                  modalEditar.style.display = 'flex';
+              }
+          }
+      });
+  }
+
+  // Modal Excluir
+  const botoesExcluir = document.querySelectorAll('.botao-vermelho');
+  const modalExcluir = document.getElementById('modalExcluirCategoria');
+  const nomeCategoriaExcluir = document.getElementById('nomeCategoriaExcluir');
+  const categoriaIdExcluir = document.getElementById('categoriaIdExcluir');
+
+  botoesExcluir.forEach(botao => {
+    botao.addEventListener('click', function(e) {
+      e.preventDefault();
+      const card = this.closest('.result-card');
+      const nomeCategoria = card.querySelector('.card-title').innerText;
+      const categoriaId = card.getAttribute('data-id');
+      nomeCategoriaExcluir.innerText = nomeCategoria;
+      categoriaIdExcluir.value = categoriaId;
+      modalExcluir.style.display = 'flex';
+    });
+  });
+  function fecharModalExcluir() { modalExcluir.style.display = 'none'; }
+</script>
 
 {% endblock content %}

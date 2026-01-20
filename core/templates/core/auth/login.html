@@ -13,14 +13,31 @@
         <h1 class="logo-name">WONDER</h1>
     </div>
 
-    <form class="formulario-login" method="POST">
+    <form class="formulario-login" method="POST" novalidate>
         {% csrf_token %}
+
         <div class="grupo-input">
-            <input type="email" name="email" class="input-campo" placeholder="Email" required>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <span class="mensagem-erro">{{ form.username.errors.0 }}</span>
+            {% endif %}
         </div>
-        <div class="grupo-input">
-            <input type="password" name="password" class="input-campo" placeholder="Senha" required>
+
+        <div class="grupo-input input-com-icone">
+            {{ form.password }}
+            <img 
+                src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
+                class="icone-input" 
+                onclick="togglePassword(this)"
+                data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
+                data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
+                alt="Mostrar senha"
+            >
+            {% if form.password.errors %}
+                <span class="mensagem-erro">{{ form.password.errors.0 }}</span>
+            {% endif %}
         </div>
+
         <button type="submit" class="botao-entrar">
             <img src="{% static 'img/icones/icon_geral/carbon_login.svg' %}" alt="Ícone de login" class="botao-entrar__icone">
             <span>Entrar</span>
@@ -34,5 +51,34 @@
     </p>
 
 </main>
+
+<script>
+    function togglePassword(icon) {
+        const container = icon.parentElement;
+        const input = container.querySelector('input');
+        
+        const eyeOpen = icon.getAttribute('data-eye-open');
+        const eyeClosed = icon.getAttribute('data-eye-closed');
+        
+        if (input.type === "password") {
+            input.type = "text";
+            icon.src = eyeClosed; 
+            icon.style.opacity = "1"; 
+        } else {
+            input.type = "password";
+            icon.src = eyeOpen;
+            icon.style.opacity = "0.6";
+        }
+    }
+</script>
 {% endblock content %}
 
+{% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if form.non_field_errors %}
+                criarToast("{{ form.non_field_errors.0|escapejs }}", "error");
+            {% endif %}
+        });
+    </script>
+{% endblock %}

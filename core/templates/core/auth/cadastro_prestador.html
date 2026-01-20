@@ -1,4 +1,4 @@
-{% extends 'core//base/base_auth.html' %}
+{% extends 'core/base/base_auth.html' %}
 {% load static %}
 
 {% block title %}Cadastro de Prestador{% endblock %}
@@ -10,78 +10,155 @@
 {% block content %}
 <main class="main-container-auth">
     <div class="container-cadastro-prestador">
-        
-        <div class="cabecalho-cadastro">
-            <a href="#" class="botao-voltar"> 
-                <img src="{% static 'img/icones/icon_geral/arrow-left.svg' %}" alt="Voltar">
-            </a>
-        </div>
     
         <div class="logo">
             <img class="logo-icon" src="{% static 'img/icones/icon_roxo/lotus.svg' %}" alt="Logo Wonder">
             <h1 class="logo-name">WONDER</h1>
         </div>
     
-        <form class="formulario-cadastro-prestador">
+        <form class="formulario-cadastro-prestador" method="POST" novalidate>
+            {% csrf_token %}
+
             <div class="grupo-input">
-                <input type="text" id="nome" name="nome" class="input-campo" placeholder="Nome completo" required>
+                {{ user_form.first_name }}
+                {% for error in user_form.first_name.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
             </div>
-            
+
             <div class="grupo-input">
-                <input type="text" id="nome_estabelecimento" name="nome_estabelecimento" class="input-campo" placeholder="Nome do seu estabelecimento" required>
+                {{ user_form.last_name }}
+                {% for error in user_form.last_name.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
             </div>
-    
+
             <div class="grupo-input">
-                <input type="email" id="email" name="email" class="input-campo" placeholder="Email" required>
+                {{ user_form.email }}
+                {% for error in user_form.email.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
             </div>
-    
-        
+
+            <div class="grupo-input">
+                {{ user_form.telefone }}
+                {% for error in user_form.telefone.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="grupo-input">
+                {{ prestador_form.nome_estabelecimento }}
+                {% for error in prestador_form.nome_estabelecimento.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="grupo-input">
+                {{ prestador_form.cidade_atendimento }}
+                {% for error in prestador_form.cidade_atendimento.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="grupo-input">
+                {{ prestador_form.endereco }}
+                {% for error in prestador_form.endereco.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
+            </div>
+
             <div class="grupo-input grupo-input-select">
-                <select id="cidade" name="cidade" class="input-campo" required>
-                    <option value="" disabled selected>Cidade de atendimento</option>
-                    <option value="pdf">Pau dos Ferros / RN</option>
-                    <option value="mossoro">Mossoró / RN</option>
-                    <option value="serrinha">Serrinha dos Pintos / RN</option>
-        
-                </select>
-                <img src="{% static 'img/icones/icon_geral/seta-pra-baixo-cinza.svg' %}" class="select-icone" alt="">
+                {{ prestador_form.tipo_documento }}
+                {% for error in prestador_form.tipo_documento.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
             </div>
-    
-           
-            <div class="grupo-input grupo-input-select">
-                <select id="categoria" name="categoria" class="input-campo" required>
-                    <option value="" disabled selected>Selecione a categoria</option>
-                    <option value="beleza">Beleza</option>
-                    <option value="saude">Saúde</option>
-                    <option value="alimentacao">Alimentação</option>
-                 
-                </select>
-                <img src="{% static 'img/icones/icon_geral/seta-pra-baixo-cinza.svg' %}" class="select-icone" alt="">
-            </div>
-    
+
             <div class="grupo-input">
-                <input type="tel" id="telefone" name="telefone" class="input-campo" placeholder="Telefone" required>
+                {{ prestador_form.documento }}
+                {% for error in prestador_form.documento.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
             </div>
-    
+
             <div class="grupo-input">
-                <input type="text" id="documento" name="documento" class="input-campo" placeholder="CPF/CNPJ" required>
+                <label style="color: #666; font-size: 1rem; margin-bottom: 5px; display: block;">Selecione suas Categorias:</label>
+                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; background-color: #f9f9f9;">
+                    {{ prestador_form.categorias }}
+                </div>
+                {% for error in prestador_form.categorias.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
             </div>
     
             <div class="grupo-input input-com-icone">
-                <input type="password" id="senha" name="senha" class="input-campo" placeholder="Senha" required>
-                <img src="{% static 'img/icones/icon_geral/ant-design_eye-invisible-outlined.svg' %}" class="icone-input" alt="Mostrar/Ocultar Senha">
+                {{ user_form.password1 }}
+                <img 
+                    src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
+                    class="icone-input" 
+                    onclick="togglePassword(this)"
+                    data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
+                    data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
+                    alt="Ver senha"
+                >
+                {% for error in user_form.password1.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
             </div>
-    
+
             <div class="grupo-input input-com-icone">
-                <input type="password" id="confirmar_senha" name="confirmar_senha" class="input-campo" placeholder="Confirmar senha" required>
-                <img src="{% static 'img/icones/icon_geral/ant-design_eye-invisible-outlined.svg' %}" class="icone-input" alt="Mostrar/Ocultar Senha">
+                {{ user_form.password2 }}
+                <img 
+                    src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
+                    class="icone-input" 
+                    onclick="togglePassword(this)"
+                    data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
+                    data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
+                    alt="Ver senha"
+                >
+                {% for error in user_form.password2.errors %}
+                    <span class="mensagem-erro">{{ error }}</span>
+                {% endfor %}
             </div>
     
-            <button type="submit" class="botao-prosseguir">
-                Prosseguir
-                <img src="{% static 'img/icones/icon_geral/carbon_login.svg' %}" class="botao-prosseguir__icone" alt="">
-            </button>
+            <button type="submit" class="botao-prosseguir">Prosseguir</button>
         </form>
+        <p class="link-login">Já tem conta? <a href="{% url 'login' %}">Login</a></p>
     </div>
 </main>
+
+<script>
+    function togglePassword(icon) {
+        const container = icon.parentElement;
+        const input = container.querySelector('input');
+        const eyeOpen = icon.getAttribute('data-eye-open');
+        const eyeClosed = icon.getAttribute('data-eye-closed');
+        
+        if (input.type === "password") {
+            input.type = "text";
+            icon.src = eyeClosed;
+            icon.style.opacity = "1";
+        } else {
+            input.type = "password";
+            icon.src = eyeOpen;
+            icon.style.opacity = "0.6";
+        }
+    }
+
+</script>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            {% if user_form.non_field_errors %}
+                criarToast("{{ user_form.non_field_errors.0|escapejs }}", "error");
+            {% endif %}
+
+            {% if prestador_form.non_field_errors %}
+                criarToast("{{ prestador_form.non_field_errors.0|escapejs }}", "error");
+            {% endif %}
+        });
+    </script>
 {% endblock %}

@@ -1,10 +1,15 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{% load card_wonder %}
 
 {% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
+
+<!-- Calendário Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock extra_css %}
 
 {% block header_extra %}
@@ -13,9 +18,9 @@
     <span>Sair</span>
 </a>
 {% endblock header_extra %}
+
 {% block content %}
 <div class="prestador-layout-container">
-
 
     <main class="main-prestador">
         
@@ -24,71 +29,38 @@
             <a href="{% url 'prestador-finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
         </div>
 
-        <div href="#" class="block-text-tag">
-            <span class="text-tag-day">Agendamentos em Aberto</span>
-            <a href="#" class="agenda-button">
-                <span class="text-tag">Ver agenda</span>
-                <img src="{% static 'img/icones/icon_geral/calendar(1).svg' %}" alt="Calendário">
-            </a>
+        <div class="block-text-tag" style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="text-tag-day">Agendamentos em {{ data_escolhida|date:"d/m/Y" }}</span>
+
+            <div>
+                <button type="button" class="agenda-button" onclick="abrirCalendario()">
+                    <span class="text-tag">Ver agenda</span>
+                    <img src="{% static 'img/icones/icon_geral/calendar(1).svg' %}" alt="Calendário">
+                </button>
+
+                <form method="get" action="{% url 'prestador-home' %}">
+                    <input type="text" id="agenda-input" name="data" value="{{ data_escolhida|date:'Y-m-d' }}" style="display:none;">
+                </form>
+            </div>
         </div>
 
-
         <div class="results-list">
-            
-            <article class="result-card">
-                <div class="card-details">
-                    <img src="{% static 'img/clientes/gustavo_cliente.svg' %}" alt="Foto do cliente">
-                    <div class="card-info">
-                        <h2 class="card-title">Corte de Cabelo Mas.</h2>
-                        <div class="card-meta">
-                            <span class="cliente-nome">Gustavo Emanuel</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-day-btn">
-                    <button class="botao-finalizar">Finalizar</button> 
-                    <button class="botao-cancelar">Cancelar</button> 
-                </div>
-            </article>
-
-            <article class="result-card">
-                <div class="card-details">
-                    <img src="{% static 'img/clientes/thiago_cliente.svg' %}" alt="Foto do cliente">
-                    <div class="card-info">
-                        <h2 class="card-title">Corte de Cabelo Mas.</h2>
-                        <div class="card-meta">
-                            <span class="cliente-nome">Thiago Henrique</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-day-btn">
-                    <button class="botao-finalizar">Finalizar</button>
-                    <button class="botao-cancelar">Cancelar</button>
-                </div>
-            </article>
-            
-            <article class="result-card">
-                <div class="card-details">
-                    <img src="{% static 'img/clientes/lwkas_cliente.svg' %}" alt="Foto do cliente">
-                    <div class="card-info">
-                        <h2 class="card-title">Barba</h2>
-                        <div class="card-meta">
-                            <span class="cliente-nome">Lwkas Carvalho</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-day-btn">
-                    <button class="botao-finalizar">Finalizar</button>
-                    <button class="botao-cancelar">Cancelar</button>
-                </div>
-            </article>
-
+            {% for agendamento in agendamentos %}
+                {% card_wonder 
+                    title=agendamento.servico.nome 
+                    img_url=agendamento.cliente.usuario.foto_perfil.url|default:"img/icones/icon_footer/user.svg" 
+                    subtitle=agendamento.cliente.usuario.first_name 
+                    buttons_preset="finish_cancel" 
+                %}
+            {% empty %}
+                <p>Não há agendamentos em aberto nesta data.</p>
+            {% endfor %}
         </div>
     
     </main>
 
     <nav class="app-navbar prestador-navbar">
-        <a href="{% url 'prestador-home' %}" class="nav-item">
+        <a href="{% url 'prestador-home' %}" class="nav-item active">
             <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" alt="Agendamentos" class="nav-icon">
             <span class="nav-label">Agendamentos</span>
         </a>
@@ -99,4 +71,20 @@
     </nav>
     
 </div>
+
+<!-- Calaendário Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+  const fp = flatpickr("#agenda-input", {
+    dateFormat: "Y-m-d",
+    defaultDate: "{{ data_escolhida|date:'Y-m-d' }}",
+    onChange: function(selectedDates, dateStr, instance) {
+      instance.input.form.submit();
+    }
+  });
+
+  function abrirCalendario() {
+    fp.open();
+  }
+</script>
 {% endblock %}

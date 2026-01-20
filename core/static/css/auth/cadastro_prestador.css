@@ -3,7 +3,6 @@
     --cor-fundo-input: #f2f2f2;
     --cor-texto-principal: #505050;
     --cor-texto-branco: #ffffff;
-    font-size: 16px;
 }
 
 * {
@@ -139,8 +138,8 @@
 
 .icone-input {
     position: absolute;
-    top: 50%;
-    right: 1rem;
+    top: 24px; 
+    right: 10px;
     transform: translateY(-50%);
     width: 1rem; 
     height: 1rem; 
@@ -176,6 +175,33 @@
     height: 1.25rem;
 }
 
+.mensagem-erro {
+    color: #dc3545;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    text-align: left;
+    display: block;
+}
+
+.link-login {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: var(--cor-texto-principal);
+    text-align: center;
+}
+
+.link-login a {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    color: var(--cor-texto-principal);
+    text-decoration: none;
+}
+
+.link-login a:hover {
+    text-decoration: underline;
+    color: var(--cor-principal);
+}
 
 @media (max-height: 900px) { 
     .main-container-auth {

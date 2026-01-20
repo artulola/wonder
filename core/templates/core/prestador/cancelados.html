@@ -1,10 +1,12 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{% load card_wonder %}
 
 {% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 {% endblock extra_css %}
 
 {% block header_extra %}
@@ -21,45 +23,34 @@
         
         <div class="nav-tabs-container">
             <a href="{% url 'prestador-home' %}"><button class="option-tab inactive left">Em Aberto</button></a>
-            <a href="{% url 'prestador-finalizados' %}"><button class="option-tab active right">Finalizados</button></a>
+            <a href="{% url 'prestador-finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
         </div>
 
         <div class="block-text-tag">
-            <a href="{% url 'prestador-finalizados' %}">
-                <div class="filtro-data inactive">
-                    <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" alt="Calendário">
-                    <span>08/10/2025</span>
-                </div>
-            </a>
-            <a href="{% url 'prestador-cancelados' %}" class="filtro-cancelados">
-                <span>Ver Cancelados</span>
-                <img src="{% static 'img/icones/icon_roxo/close.svg' %}" alt="close">
-            </a>
+            <span class="text-tag-day">Agendamentos Cancelados</span>
         </div>
 
         <div class="results-list">
-            
-            <article class="result-card">
-                <div class="card-details">
-                    <img src="{% static 'img/clientes/gustavo_cliente.svg' %}" alt="Foto do cliente">
-                    <div class="card-info">
-                        <h2 class="card-title">Corte de Cabelo Mas.</h2>
-                        <div class="card-meta">
-                            <span class="cliente-nome">Gustavo Emanuel</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-day-btn">
-                    <button class="btn-status-cancelado">Cancelado</button> 
-                </div>
-            </article>
-
+            {% for agendamento in agendamentos %}
+                {% card_wonder 
+                    title=agendamento.servico.nome 
+                    img_url=agendamento.cliente.usuario.foto_perfil.url|default:"img/icones/icon_footer/user.svg" 
+                    subtitle=agendamento.cliente.usuario.first_name 
+                    btn_text_conclude="Cancelado" 
+                    btn_color_conclude="red" 
+                %}
+                {% if agendamento.motivo_cancelamento %}
+                    <p><strong>Motivo:</strong> {{ agendamento.motivo_cancelamento }}</p>
+                {% endif %}
+            {% empty %}
+                <p>Não há agendamentos cancelados.</p>
+            {% endfor %}
         </div>
     
     </main>
 
     <nav class="app-navbar prestador-navbar">
-        <a href="{% url 'prestador-home' %}" class="nav-item active">
+        <a href="{% url 'prestador-home' %}" class="nav-item">
             <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" alt="Agendamentos" class="nav-icon">
             <span class="nav-label">Agendamentos</span>
         </a>

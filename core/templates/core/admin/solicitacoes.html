@@ -1,74 +1,86 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
-{% block title %}WONDER{% endblock title %}
+{% load card_wonder %}
+
+{% block title %}Solicitações | WONDER{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/admin/admin.css' %}">
-{% endblock extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
+{% endblock %}
 
 {% block header_extra %}
-<a href="{% url 'login' %}" class="header-logout-button">
+<a href="{% url 'logout' %}" class="header-logout-button">
     <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
     <span>Sair</span>
 </a>
 {% endblock header_extra %}
 
 {% block content %}
-
 <section class="home-content">
     <div class="nav-tabs-container">
-        <a href="{% url 'admin-solicitacoes' %}"><button class="option-tab active left">Solicitações</button></a>
-        <a href="{% url 'admin-categorias' %}"><button class="option-tab inactive right">Categorias</button></a>
-    </div>
-
-    <div class="block-text-tag">
-        <span class="text-tag">Estabelecimentos Pendentes</span>
-        <a href="#" class="nova-categoria-button">
-            <span class="text-tag-category">Visualizar Estabelecimentos cadastrados ></span>
+        <a href="{% url 'admin-solicitacoes' %}">
+            <button class="option-tab active left">Solicitações</button>
+        </a>
+        <a href="{% url 'admin-categorias' %}">
+            <button class="option-tab inactive right">Categorias</button>
         </a>
     </div>
 
-    <div class="results-list">
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/logo/Diego-BarberShop.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">Diego BarberShop</h2>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <a href="{% url 'admin-detalhes--solicitacao' %}"><button class="botao-visualizar">Visualizar</button></a>
-                <button class="botao-vermelho">Recusar</button>
-            </div>
-        </article>
+    <div class="results-list" id="lista-solicitacoes">
+        {% for prestador in pendentes %}
+            
+            <div class="card-link-wrapper" data-url="{% url 'admin-detalhes--solicitacao' prestador.id %}">
+                {% with avatar_url="https://ui-avatars.com/api/?background=random&color=fff&name="|add:prestador.usuario.get_full_name %}
 
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/logo/RD-Cabelos.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">RD Cabelos</h2>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-visualizar">Visualizar</button>
-                <button class="botao-vermelho">Recusar</button>
-            </div>
-        </article>
+                    {% card_wonder title=prestador.usuario.get_full_name subtitle=prestador.nome_estabelecimento img_url=avatar_url buttons_preset="view_refuse" %}
 
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/logo/SPA-da-gi.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">SPA da GI</h2>
-                </div>
+                {% endwith %}
             </div>
-            <div class="block-day-btn">
-                <button class="botao-visualizar">Visualizar</button>
-                <button class="botao-vermelho">Recusar</button>
+
+        {% empty %}
+            <div style="width: 100%; text-align: center; margin-top: 3rem; color: #666;">
+                <p>Nenhum prestador pendente.</p>
             </div>
-        </article>
+        {% endfor %}
     </div>
-
 </section>
 
-{% endblock content %}
+<form id="form-recusar" method="post" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="acao" value="rejeitar">
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const lista = document.getElementById('lista-solicitacoes');
+        const formRecusar = document.getElementById('form-recusar');
+
+        if (lista) {
+            lista.addEventListener('click', function(e) {
+                const botao = e.target.closest('button');
+                if (!botao) return;
+                
+                const wrapper = botao.closest('.card-link-wrapper');
+                if (!wrapper || !wrapper.dataset.url) return;
+
+                const textoBotao = botao.textContent.trim();
+
+                if (textoBotao === 'Ver detalhes') {
+                    e.preventDefault();
+                    window.location.href = wrapper.dataset.url;
+                }
+
+                else if (textoBotao === 'Recusar') {
+                    e.preventDefault();
+                    
+                    if (confirm('Tem certeza que deseja recusar esta solicitação?')) {
+                        formRecusar.action = wrapper.dataset.url;
+                        formRecusar.submit();
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

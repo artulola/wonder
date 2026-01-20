@@ -1,9 +1,11 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{% load card_wonder%}
 {% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/agendados.css' %}">
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 {% endblock extra_css %}
 
 
@@ -23,37 +25,93 @@
     </div>
 
     <div class="results-list">
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/logo/SPA-da-gi.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">SPA da Gi</h2>
-                    <div class="card-meta">
-                        <span>Massagem</span>
-                        <span class="time-value">Horário: 07:00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-avaliar">Avaliar</button>
-            </div>
-        </article>
+      {% card_wonder title="SPA da Gi" img_url="img/logo/SPA-da-gi.svg" subtitle="Massagem"  time_value="07:00" btn_text_conclude="Avaliar" %}
+      {% card_wonder title="Diva Nails" img_url="img/logo/Diva-nails.svg" subtitle="Unhas das Mãos"  time_value="09:00" btn_text_conclude="Avaliar" %}
 
-        <article class="result-card">
-            <div class="card-details">
-                <img src="{% static 'img/logo/Diva-nails.svg' %}" alt="">
-                <div class="card-info">
-                    <h2 class="card-title">Diva Nails</h2>
-                    <div class="card-meta">
-                        <span>Unhas das Mãos</span>
-                        <span class="time-value">Horário: 09:00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="block-day-btn">
-                <button class="botao-avaliar">Avaliar</button>
-            </div>
-        </article>
+<!-- Modal de Avaliação -->
+<div class="modal-overlay" id="modalAvaliacao">
+  <div class="modal-content">
+    <h2 class="modal-title">AVALIE O SERVIÇO</h2>
+
+    <div class="rating-stars">
+      <span class="star" data-value="1">★</span>
+      <span class="star" data-value="2">★</span>
+      <span class="star" data-value="3">★</span>
+      <span class="star" data-value="4">★</span>
+      <span class="star" data-value="5">★</span>
+    </div>
+
+    <p class="rating-hint">*As estrelas representam a qualidade do serviço. Ex: 1 = Péssimo | 5 = Ótimo</p>
+
+    <div class="modal-buttons">
+      <button class="modal-cancel" onclick="fecharModal('modalAvaliacao')">Cancelar</button>
+      <button class="modal-save" id="enviarAvaliacao">Enviar Avaliação</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Confirmação -->
+<div class="modal-overlay" id="modalConfirmacao">
+  <div class="modal-content">
+    <h2 class="modal-title" style="color: green;">Sucesso</h2>
+    <p>Avaliação enviada!</p>
+    <div class="modal-buttons" style="justify-content: center;">
+      <button class="modal-save" onclick="fecharModal('modalConfirmacao')">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let notaSelecionada = 0;
+
+  function abrirModal(id) {
+    document.getElementById(id).style.display = 'flex';
+  }
+
+  function fecharModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  // Abrir modal de avaliação
+  document.querySelectorAll('button').forEach(btn => {
+    if (btn.textContent.trim() === 'Avaliar') {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        notaSelecionada = 0;
+        document.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
+        abrirModal('modalAvaliacao');
+      });
+    }
+  });
+
+  // Selecionar estrelas
+  document.querySelectorAll('.star').forEach(star => {
+    star.addEventListener('click', function() {
+      notaSelecionada = parseInt(this.dataset.value);
+      document.querySelectorAll('.star').forEach(s => {
+        s.classList.toggle('selected', parseInt(s.dataset.value) <= notaSelecionada);
+      });
+    });
+  });
+
+  // Enviar avaliação
+  document.getElementById('enviarAvaliacao').addEventListener('click', function() {
+    if (notaSelecionada === 0) return alert('Selecione uma nota antes de enviar.');
+    fecharModal('modalAvaliacao');
+    abrirModal('modalConfirmacao');
+    // Aqui você pode enviar a nota via AJAX ou formulário
+  });
+
+  // Fechar ao clicar fora
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+</script>
+
 
     </div>
 </section>

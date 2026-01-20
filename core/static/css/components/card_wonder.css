@@ -21,6 +21,10 @@
     gap: 1rem;
 }
 
+.card-wonder-details img {
+    width: 3.125rem;
+}
+
 .card-wonder-subtitle {
     color: #9D7ABF;
     font-weight: 600;
@@ -37,7 +41,6 @@
 .card-wonder-meta {
     display: flex;
     align-items: center;
-    justify-content: center;
     font-size: 0.75rem;
     color: #8000ff9a;
 }
@@ -95,7 +98,6 @@
     cursor: pointer;
     font-size: 0.8rem;
     font-weight: bold;
-    text-transform: uppercase;
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
