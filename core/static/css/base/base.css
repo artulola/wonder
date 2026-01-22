@@ -270,6 +270,126 @@ body {
   white-space: nowrap;
 }
 
+/* MODAL DE SELEÇÃO DE CIDADE */
+.modal-cidade-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  background-color: transparent; 
+}
+
+.modal-cidade-content {
+  position: absolute;
+  top: 3.8rem; 
+  right: 1rem;
+  width: 320px;
+  max-width: 95vw;
+  max-height: 80vh;
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-cidade-header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-cidade-title {
+  color: #8000ff; 
+  font-weight: 700; 
+  font-size: 1rem; 
+  margin: 0;
+}
+
+.btn-fechar-modal {
+  background: none; 
+  border: none; 
+  font-size: 1.5rem; 
+  color: #999; 
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.btn-fechar-modal:hover {
+  color: #333;
+}
+
+.input-busca-cidade {
+  width: 100%; 
+  padding: 10px;
+  border: 1px solid #ddd; 
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  margin-bottom: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+}
+
+.input-busca-cidade:focus {
+  outline: 2px solid #8000ff;
+  background-color: #fff;
+}
+
+.lista-cidades-modal {
+  list-style: none; 
+  padding: 0; 
+  margin: 0;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.lista-cidades-modal li {
+  border-bottom: 1px solid #f9f9f9;
+}
+
+.lista-cidades-modal li:last-child {
+  border-bottom: none;  
+}
+
+.lista-cidades-modal a {
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+  padding: 10px 5px;
+  text-decoration: none; 
+  color: #505050;
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+  border-radius: 4px;
+}
+
+.lista-cidades-modal a:hover {
+  background-color: #f8f0ff; 
+  color: #8000ff;
+}
+
+.cidade-icone-modal { 
+  width: 16px; 
+  height: 16px;
+  opacity: 0.7;
+}
+
+.no-results-message {
+  padding: 15px;
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+  font-style: italic;
+  border-bottom: none !important;
+}
+
 
 /* MEDIA WEB */
 
@@ -280,6 +400,10 @@ body {
     max-width: 85rem;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .modal-cidade-content {
+    right: 2rem;
   }
   
   .app-header {
