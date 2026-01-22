@@ -70,9 +70,6 @@
 
             <div class="grupo-input grupo-input-select">
                 {{ prestador_form.tipo_documento }}
-                {% for error in prestador_form.tipo_documento.errors %}
-                    <span class="mensagem-erro">{{ error }}</span>
-                {% endfor %}
             </div>
 
             <div class="grupo-input">
@@ -83,10 +80,21 @@
             </div>
 
             <div class="grupo-input">
-                <label style="color: #666; font-size: 1rem; margin-bottom: 5px; display: block;">Selecione suas Categorias:</label>
-                <div style="border: 1px solid #ccc; padding: 10px; border-radius: 8px; background-color: #f9f9f9;">
-                    {{ prestador_form.categorias }}
+                
+                <div class="categorias-wrapper">
+                    <div class="categoria-trigger" id="categoryTrigger">
+                        Selecione suas áreas de atuação
+                    </div>
+                    
+                    <div class="categoria-dropdown" id="categoryDropdown">
+                        <input type="text" class="categoria-search" id="categorySearch" placeholder="Pesquisar categoria...">
+
+                        <div class="categoria-list" id="categoryList">
+                            {{ prestador_form.categorias }}
+                        </div>
+                    </div>
                 </div>
+
                 {% for error in prestador_form.categorias.errors %}
                     <span class="mensagem-erro">{{ error }}</span>
                 {% endfor %}
@@ -94,32 +102,14 @@
     
             <div class="grupo-input input-com-icone">
                 {{ user_form.password1 }}
-                <img 
-                    src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
-                    class="icone-input" 
-                    onclick="togglePassword(this)"
-                    data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
-                    data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
-                    alt="Ver senha"
-                >
-                {% for error in user_form.password1.errors %}
-                    <span class="mensagem-erro">{{ error }}</span>
-                {% endfor %}
+                <img src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" class="icone-input" onclick="togglePassword(this)" data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png">
+                {% for error in user_form.password1.errors %} <span class="mensagem-erro">{{ error }}</span> {% endfor %}
             </div>
 
             <div class="grupo-input input-com-icone">
                 {{ user_form.password2 }}
-                <img 
-                    src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" 
-                    class="icone-input" 
-                    onclick="togglePassword(this)"
-                    data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png"
-                    data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png"
-                    alt="Ver senha"
-                >
-                {% for error in user_form.password2.errors %}
-                    <span class="mensagem-erro">{{ error }}</span>
-                {% endfor %}
+                <img src="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" class="icone-input" onclick="togglePassword(this)" data-eye-open="https://img.icons8.com/fluency-systems-regular/48/visible--v1.png" data-eye-closed="https://img.icons8.com/fluency-systems-regular/48/invisible.png">
+                {% for error in user_form.password2.errors %} <span class="mensagem-erro">{{ error }}</span> {% endfor %}
             </div>
     
             <button type="submit" class="botao-prosseguir">Prosseguir</button>
@@ -130,35 +120,22 @@
 
 <script>
     function togglePassword(icon) {
-        const container = icon.parentElement;
-        const input = container.querySelector('input');
+        const input = icon.parentElement.querySelector('input');
         const eyeOpen = icon.getAttribute('data-eye-open');
         const eyeClosed = icon.getAttribute('data-eye-closed');
-        
-        if (input.type === "password") {
-            input.type = "text";
-            icon.src = eyeClosed;
-            icon.style.opacity = "1";
-        } else {
-            input.type = "password";
-            icon.src = eyeOpen;
-            icon.style.opacity = "0.6";
-        }
+        if (input.type === "password") { input.type = "text"; icon.src = eyeClosed; icon.style.opacity = "1"; } 
+        else { input.type = "password"; icon.src = eyeOpen; icon.style.opacity = "0.6"; }
     }
-
 </script>
 {% endblock %}
 
 {% block extra_js %}
+    <script src="{% static 'js/auth_ux.js' %}"></script>
+   
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            {% if user_form.non_field_errors %}
-                criarToast("{{ user_form.non_field_errors.0|escapejs }}", "error");
-            {% endif %}
-
-            {% if prestador_form.non_field_errors %}
-                criarToast("{{ prestador_form.non_field_errors.0|escapejs }}", "error");
-            {% endif %}
+            {% if user_form.non_field_errors %} criarToast("{{ user_form.non_field_errors.0|escapejs }}", "error"); {% endif %}
+            {% if prestador_form.non_field_errors %} criarToast("{{ prestador_form.non_field_errors.0|escapejs }}", "error"); {% endif %}
         });
     </script>
 {% endblock %}

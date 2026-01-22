@@ -101,6 +101,17 @@
     -moz-appearance: none;
 }
 
+.input-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23430b7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    cursor: pointer;
+}
+
 .input-campo::placeholder {
     color: #888;
 }
@@ -145,6 +156,83 @@
     height: 1rem; 
     cursor: pointer;
     opacity: 0.6;
+}
+
+.categorias-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.categoria-trigger {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: var(--cor-fundo-input);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem;
+    color: #888;
+    cursor: pointer;
+    text-align: left;
+    position: relative;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23430b7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+.categoria-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 50;
+    margin-top: 5px;
+    padding: 10px;
+}
+
+.categoria-search {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+}
+
+.categoria-list {
+    max-height: 200px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.categoria-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px;
+    font-size: 0.9rem;
+    color: #505050;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.categoria-list label:hover {
+    background-color: #f8f0ff;
+}
+
+.categoria-list input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--cor-principal);
 }
 
 .botao-prosseguir {

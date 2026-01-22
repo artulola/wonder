@@ -8,7 +8,7 @@ class ClienteRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'input-campo', 'placeholder': 'Email'}))
     first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Nome'}))
     last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Sobrenome'}))
-    telefone = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Telefone'}))
+    telefone = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Telefone', 'data-mask': 'phone'}))
     password1 = forms.CharField(label='Senha', widget=forms.PasswordInput(attrs={'class': 'input-campo', 'placeholder': 'Senha'}))
     password2 = forms.CharField(label='Confirmar Senha', widget=forms.PasswordInput(attrs={'class': 'input-campo', 'placeholder': 'Confirmar Senha'}))
 
@@ -50,7 +50,7 @@ class PrestadorRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'input-campo', 'placeholder': 'Email'}))
     first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Nome'}))
     last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Sobrenome'}))
-    telefone = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Telefone'}))
+    telefone = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Telefone', 'data-mask': 'phone'}))
     password1 = forms.CharField(label='Senha', widget=forms.PasswordInput(attrs={'class': 'input-campo', 'placeholder': 'Senha'}))
     password2 = forms.CharField(label='Confirmar Senha', widget=forms.PasswordInput(attrs={'class': 'input-campo', 'placeholder': 'Confirmar Senha'}))
 
@@ -92,10 +92,11 @@ class PrestadorProfileForm(forms.ModelForm):
         fields = ('nome_estabelecimento', 'tipo_documento', 'documento', 'endereco', 'cidade_atendimento', 'categorias')
         widgets = {
             'nome_estabelecimento': forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Nome do Estabelecimento'}),
-            'tipo_documento': forms.Select(attrs={'class': 'input-campo'}),
-            'documento': forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'CPF ou CNPJ'}),
-            'endereco': forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Endereço do Estabelecimento'}),
-            'cidade_atendimento': forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Cidade de Atendimento'}),
+            'tipo_documento': forms.Select(attrs={'class': 'input-campo input-select', 'id': 'id_tipo_documento'}),
+            'documento': forms.TextInput(attrs={'class': 'input-campo', 'placeholder': '000.000.000-00', 'id': 'id_documento'}),
+            'endereco': forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Rua, Número - Bairro'}),
+            'cidade_atendimento': forms.TextInput(attrs={'class': 'input-campo', 'placeholder': 'Cidade - UF'}),
+            'categorias': forms.CheckboxSelectMultiple(attrs={'class': 'checkbox-grid'}),
         }
 
 class CustomLoginForm(AuthenticationForm):
