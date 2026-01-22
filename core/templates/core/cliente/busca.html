@@ -1,32 +1,13 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{# IMPORTANTE: Carrega a biblioteca da tag que já funciona no Admin #}
+{% load card_wonder %} 
 
 {% block title %}WONDER - Busca{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/busca.css' %}?v=2">
-<style>
-    .provider-card {
-        background: white;
-        border-radius: 12px;
-        padding: 15px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        text-decoration: none;
-        color: #333;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        transition: transform 0.2s;
-    }
-    .provider-card:hover {
-        transform: translateY(-5px);
-    }
-    .provider-info h3 { margin: 0; font-size: 1.1rem; color: #4B0082; }
-    .provider-info p { margin: 5px 0; font-size: 0.9rem; color: #666; }
-    .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
-    .tag { background: #f0f0f0; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; }
-    .no-results { text-align: center; width: 100%; grid-column: 1 / -1; padding: 40px; }
-</style>
+<link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 {% endblock extra_css %}
 
 {% block content %}
@@ -45,33 +26,27 @@
         <div class="categories">
             <h2 class="section-title">Resultados para: "{{ query }}"</h2>
             
-            <div class="categories-grid">
+            <div class="search-results-list">
                 {% for prestador in prestadores %}
-                    <a href="#" class="provider-card">
-                        <div class="provider-img" style="height: 100px; background: #eee; border-radius: 8px; overflow: hidden;">
-                             {% if prestador.usuario.foto_perfil %}
-                                <img src="{{ prestador.usuario.foto_perfil.url }}" style="width: 100%; height: 100%; object-fit: cover;">
-                             {% else %}
-                                <div style="display:flex; align-items:center; justify-content:center; height:100%; color:#999;">Sem Foto</div>
-                             {% endif %}
-                        </div>
+                    
 
-                        <div class="provider-info">
-                            <h3>{{ prestador.nome_estabelecimento }}</h3>
-                            <p>Profissional: {{ prestador.usuario.get_full_name|default:prestador.usuario.username }}</p>
-                            <p class="cidade"><small>📍 {{ prestador.cidade_atendimento }}</small></p>
-                        </div>
+                    <a href="#" style="text-decoration: none;">
 
-                        <div class="tags">
-                            {% for cat in prestador.categorias.all|slice:":3" %}
-                                <span class="tag">{{ cat.nome }}</span>
-                            {% endfor %}
-                        </div>
+                        {% if prestador.usuario.foto_perfil %}
+                            
+                            {% card_wonder title=prestador.nome_estabelecimento subtitle=prestador.usuario.get_full_name img_url=prestador.usuario.foto_perfil.url time_rating=True rating_value="5.0" time_start="08:00" time_end="18:00" day_text=prestador.cidade_atendimento color_status="purple" btn_text_conclude="Ver Perfil" btn_color_conclude="purple" %}
+                            
+                        {% else %}
+                            
+                            {% card_wonder title=prestador.nome_estabelecimento subtitle=prestador.usuario.get_full_name img_url="img/icones/padrao_avatar.svg" time_rating=True rating_value="5.0" time_start="08:00" time_end="18:00" day_text=prestador.cidade_atendimento color_status="purple" btn_text_conclude="Ver Perfil" btn_color_conclude="purple" %}
+                            
+                        {% endif %}
+
                     </a>
 
                 {% empty %}
                     <div class="no-results">
-                        <h3>Nenhum resultado encontrado.</h3>
+                        <h3>Nenhum resultado encontrado...</h3>
                         <p>Tente buscar por termos mais gerais ou verifique a ortografia.</p>
                         <br>
                         <a href="{% url 'cliente-busca' %}" style="text-decoration: underline; color: #4B0082;">Limpar busca e ver categorias</a>
@@ -84,7 +59,7 @@
         <div class="categories">
             <h2 class="section-title">Categorias Populares</h2>
             
-            <div class = 'categories-grid'>
+            <div class="categories-grid">
                 {% for categoria in categorias %}
                     <a href="?q={{ categoria.nome }}" class="category-card">
 
@@ -92,7 +67,7 @@
                             {% if categoria.foto %}
                                 <img src="{{ categoria.foto.url }}" alt="{{ categoria.nome }}">
                             {% else %}
-                                <img src="{% static '' %}" alt="{{ categoria.nome }}">
+                                <img src="{% static 'img/icones/padrao_categoria.svg' %}" alt="{{ categoria.nome }}" style="opacity: 0.5;">
                             {% endif %}
                         </div>
 
@@ -103,9 +78,7 @@
                 {% empty %}
                     <p style="grid-column: 1/-1; text-align: center; color: #666;">Nenhuma categoria disponível.</p>
                 {% endfor %}
-            </div>
-                
-                
+            </div> 
         </div>
     {% endif %}
 

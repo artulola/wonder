@@ -49,7 +49,7 @@ def cliente_perfil_view(request: HttpRequest) -> HttpResponse:
     
     if not hasattr(user, 'perfil_cliente'):
         messages.error(request, 'Perfil de cliente não encontrado.')
-        return redirect('home-cliente')
+        return redirect('cliente-home')
 
     perfil_cliente = user.perfil_cliente
 
