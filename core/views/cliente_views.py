@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import cliente_required
 from core.forms import UserUpdateForm, ClienteEnderecoUpdateForm
+from accounts.models import Prestador
+from urllib.parse import unquote
 
 @cliente_required
 def cliente_home_view(request: HttpRequest) -> HttpResponse:
@@ -19,7 +21,30 @@ def cliente_resultado_busca_view(request: HttpRequest) -> HttpResponse:
 
 @cliente_required
 def cliente_cidade_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'core/cliente/cidade.html')
+    """Exibe lista de cidades onde há prestadores cadastrados."""
+    
+    cidades_query = Prestador.objects.values_list('cidade_atendimento', flat=True).distinct().order_by('cidade_atendimento')
+    
+    termo = request.GET.get('q')
+    if termo:
+        cidades_query = cidades_query.filter(cidade_atendimento__icontains=termo)
+
+    context = {
+        'cidades': cidades_query,
+        'termo_busca': termo
+    }
+    return render(request, 'core/cliente/cidade.html', context)
+
+def definir_cidade_view(request: HttpRequest, cidade: str) -> HttpResponse:
+    """
+    Salva a cidade escolhida na sessão e redireciona para a home.
+    """
+    cidade_limpa = unquote(cidade)
+    
+    request.session['cidade_atual'] = cidade_limpa
+    request.session.modified = True 
+    
+    return redirect('cliente-home')
 
 @cliente_required
 def cliente_perfil_view(request: HttpRequest) -> HttpResponse:
