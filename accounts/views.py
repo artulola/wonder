@@ -57,7 +57,7 @@ def auth_cadastro_view(request: HttpRequest) -> HttpResponse:
                 
                 login(request, user)
                 messages.success(request, 'Cadastro realizado com sucesso!')
-                return redirect('cliente-home')
+                return redirect('cliente-cidade')
             
             except Exception as e:
                 messages.error(request, f'Erro ao criar cadastro: {str(e)}')

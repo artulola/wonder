@@ -10,55 +10,31 @@
 {% block content %}
 <main class="main-container-cidade">
     <header class="cabecalho-cidade">
-        <a href="#" class="botao-voltar">
+        <a href="{% url 'cliente-home' %}" class="botao-voltar">
             <img src="{% static 'img/icones/icon_geral/arrow-left.svg' %}" alt="Voltar">
         </a>
         <h1 class="cabecalho-cidade__titulo">Onde você está?</h1>
     </header>
     
     <div class="conteudo-principal">
-        <div class="busca-container">
+        <form method="GET" class="busca-container">
             <img src="{% static 'img/icones/icon_roxo/busca-barra(1).svg' %}" class="busca-icone" alt="">
-            <input type="text" class="busca-input" placeholder="Buscar cidade">
-        </div>
+            <input type="text" name="q" class="busca-input" placeholder="Buscar cidade" value="{{ termo_busca|default:'' }}">
+        </form>
 
         <ul class="lista-cidades">
+            {% for cidade in cidades %}
             <li>
-                <a href="#">
+                <a href="{% url 'definir-cidade' cidade %}">
                     <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
-                    <span class="cidade-nome">Serrinha dos Pintos / RN</span>
+                    <span class="cidade-nome">{{ cidade }}</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
-                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
-                    <span class="cidade-nome">Mossoró / RN</span>
-                </a>
+            {% empty %}
+            <li style="list-style: none; text-align: center; padding: 20px; color: #666;">
+                <p>Nenhuma cidade encontrada com prestadores disponíveis.</p>
             </li>
-            <li>
-                <a href="#">
-                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
-                    <span class="cidade-nome">Rodolfo Fernandes / RN</span>
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'cliente-home' %}">
-                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
-                    <span class="cidade-nome">Pau dos Ferros / RN</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
-                    <span class="cidade-nome">Itaú / RN</span>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone" alt="">
-                    <span class="cidade-nome">São Miguel / RN</span>
-                </a>
-            </li>
+            {% endfor %}
         </ul>
     </div>
 </main>

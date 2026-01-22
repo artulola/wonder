@@ -43,8 +43,12 @@
     
         <div class="header-location">
             {% block header_extra %}
-                <span class="location-text">Pau dos Ferros/RN</span>
-                <img src="{% static 'img/icones/icon_roxo/arrow-down.svg' %}" alt="" class="location-icon-wrapper">
+                <button onclick="abrirModalCidade()" style="background:none; border:none; cursor:pointer; display: flex; align-items: center; gap: 5px; font-family: inherit; color: inherit;">
+                    <span class="location-text">
+                        {{ request.session.cidade_atual|default:"Selecionar Cidade" }}
+                    </span>
+                    <img src="{% static 'img/icones/icon_roxo/arrow-down.svg' %}" alt="" class="location-icon-wrapper">
+                </button>
             {% endblock header_extra %}
         </div>
     </header>
@@ -65,9 +69,85 @@
     </footer>
 
     {% include 'components/sidebar.html' %}
+    
+    <div class="modal-cidade-overlay" id="modalCidade">
+        <div class="modal-cidade-content">
+            <div class="modal-cidade-header">
+                <h2 class="modal-cidade-title">Onde você está?</h2>
+                <button class="btn-fechar-modal" onclick="fecharModalCidade()">&times;</button>
+            </div>
+            
+            <input type="text" id="buscaCidadeInput" class="input-busca-cidade" placeholder="Buscar cidade..." onkeyup="filtrarCidades()">
+            
+            <ul class="lista-cidades-modal" id="listaCidadesUl">
+                {% for cidade in cidades_disponiveis %}
+                <li>
+                    <a href="{% url 'definir-cidade' cidade %}">
+                        <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" class="cidade-icone-modal" alt="">
+                        <span>{{ cidade }}</span>
+                    </a>
+                </li>
+                {% empty %}
+                <li class="no-results-message">Nenhuma cidade cadastrada no sistema.</li>
+                {% endfor %}
+                
+                <li id="noResultsFound" class="no-results-message" style="display: none;">
+                    Nenhuma cidade encontrada.
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <script src="{% static 'js/base/sidebar.js' %}"></script>
     <script src="{% static 'js/validacao_toasts.js' %}"></script>
+
+    <script>
+        function abrirModalCidade() {
+            document.getElementById('modalCidade').style.display = 'block'; 
+            document.getElementById('buscaCidadeInput').focus();
+        }
+
+        function fecharModalCidade() {
+            document.getElementById('modalCidade').style.display = 'none';
+        }
+
+        function filtrarCidades() {
+            var input, filter, ul, li, a, i, txtValue;
+            var visibleCount = 0;
+            
+            input = document.getElementById('buscaCidadeInput');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById('listaCidadesUl');
+            li = ul.getElementsByTagName('li');
+            var noResultsMsg = document.getElementById('noResultsFound');
+
+            for (i = 0; i < li.length; i++) {
+                if (li[i] === noResultsMsg) continue;
+
+                a = li[i].getElementsByTagName("a")[0];
+                if (a) {
+                    txtValue = a.textContent || a.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        li[i].style.display = "";
+                        visibleCount++;
+                    } else {
+                        li[i].style.display = "none";
+                    }
+                }
+            }
+
+            if (visibleCount === 0 && filter !== "") {
+                noResultsMsg.style.display = "block";
+                noResultsMsg.innerText = 'Nenhuma cidade encontrada para "' + input.value + '"';
+            } else {
+                noResultsMsg.style.display = "none";
+            }
+        }
+
+        document.getElementById('modalCidade').addEventListener('click', function(e) {
+            if (e.target === this) fecharModalCidade();
+        });
+    </script>
 
     {% block extra_js %}{% endblock extra_js %}
 
