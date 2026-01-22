@@ -9,7 +9,7 @@
 {% endblock extra_css %}
 
 {% block header_extra %}
-<a href="{% url 'login' %}" class="header-logout-button">
+<a href="{% url 'logout' %}" class="header-logout-button">
     <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
     <span>Sair</span>
 </a>
@@ -67,19 +67,19 @@
     </div>
 
     <div class="modal-overlay" id="modalExcluirCategoria">
-      <div class="modal-content">
-        <h2 class="modal-title">Excluir Categoria</h2>
-        <p>Tem certeza que deseja excluir a categoria <strong id="nomeCategoriaExcluir"></strong>?</p>
-        <form method="post">
-          {% csrf_token %}
-          <input type="hidden" name="acao" value="excluir">
-          <input type="hidden" name="categoria_id" id="categoriaIdExcluir">
-          <div class="modal-buttons">
-            <button type="button" class="modal-cancel" onclick="fecharModalExcluir()">Cancelar</button>
-            <button type="submit" class="modal-save">Confirmar Exclusão</button>
-          </div>
-        </form>
-      </div>
+        <div class="modal-content">
+            <h2 class="modal-title" style="color: #dc3545;">Excluir Categoria</h2>
+            <p style="text-align: center; margin-bottom: 20px;">Tem certeza que deseja excluir a categoria <strong id="nomeCategoriaExcluir"></strong>?</p>
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="acao" value="excluir">
+                <input type="hidden" name="categoria_id" id="deleteCategoriaId">
+                <div class="modal-buttons">
+                    <button type="button" class="modal-cancel" onclick="fecharModalExcluir()">Cancelar</button>
+                    <button type="submit" class="modal-save" style="background-color: #dc3545;">Excluir</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="block-text-tag">
@@ -90,77 +90,87 @@
         </a>
     </div>
 
-    <div class="results-list">
+    <div class="results-list" id="lista-categorias">
+      
+      {% for categoria in categorias %}
+        
+        <div class="card-wrapper" data-id="{{ categoria.id }}" data-nome="{{ categoria.nome }}">
+            
+            {% if categoria.foto %}
+                {% card_wonder title=categoria.nome img_url=categoria.foto.url buttons_preset="edit_delete" %}
+            {% else %}
+                {% with avatar_url="https://ui-avatars.com/api/?background=random&color=fff&name="|add:categoria.nome %}
+                    {% card_wonder title=categoria.nome img_url=avatar_url buttons_preset="edit_delete" %}
+                {% endwith %}
+            {% endif %}
+            
+        </div>
 
-      {% card_wonder title="Unha" img_url="img/categorias/servicos/cat-unha.svg" buttons_preset="edit_delete" %}
-      {% card_wonder title="Cabeleireira" img_url="img/categorias/servicos/cat-cabeleireira.svg" buttons_preset="edit_delete" %}
-      {% card_wonder title="SPA" img_url="img/categorias/servicos/cat-spa.svg" buttons_preset="edit_delete" %}
+      {% empty %}
+        <div style="width: 100%; text-align: center; padding: 2rem; color: #666;">
+            <p>Nenhuma categoria cadastrada.</p>
+        </div>
+      {% endfor %}
 
     </div>
 
 </section>
 
 <script>
-  // Modal Criar
-  const botaoNovaCategoria = document.querySelector('.nova-categoria-button');
-  const modal = document.getElementById('modalCategoria');
-  botaoNovaCategoria.addEventListener('click', function(e) {
-    e.preventDefault();
-    modal.style.display = 'flex';
-  });
-  function fecharModal() { modal.style.display = 'none'; }
-
-  function fecharModal() {
-    modal.style.display = 'none';
-  }
-
-
+  const modalCriar = document.getElementById('modalCategoria');
   const modalEditar = document.getElementById('modalEditarCategoria');
-  const campoNomeCategoria = document.getElementById('editNomeCategoria');
-  const campoIdCategoria = document.getElementById('editCategoriaId');
+  const modalExcluir = document.getElementById('modalExcluirCategoria');
+  
+  const inputEditNome = document.getElementById('editNomeCategoria');
+  const inputEditId = document.getElementById('editCategoriaId');
+  const inputDeleteId = document.getElementById('deleteCategoriaId');
+  const spanDeleteNome = document.getElementById('nomeCategoriaExcluir');
 
-  const resultsList = document.querySelector('.results-list');
+  document.querySelector('.nova-categoria-button').addEventListener('click', function(e) {
+    e.preventDefault();
+    modalCriar.style.display = 'flex';
+  });
 
-  if (resultsList) {
-      resultsList.addEventListener('click', function(e) {
+  function fecharModal() { modalCriar.style.display = 'none'; }
+  function fecharModalEditar() { modalEditar.style.display = 'none'; }
+  function fecharModalExcluir() { modalExcluir.style.display = 'none'; }
+
+  const lista = document.getElementById('lista-categorias');
+
+  if (lista) {
+      lista.addEventListener('click', function(e) {
           const botao = e.target.closest('button');
+          if (!botao) return;
+
+          e.preventDefault();
           
-          if (botao && botao.textContent.trim() === 'Editar') {
-              e.preventDefault();
+          const wrapper = botao.closest('.card-wrapper');
+          if (!wrapper) return;
 
-              let card = botao.closest('.result-card-wonder'); 
+          const id = wrapper.dataset.id;
+          const nome = wrapper.dataset.nome;
+          const textoBotao = botao.textContent.trim();
 
-              if (card) {
-                  const tituloEl = card.querySelector('.card-title');
-                  
-                  if (tituloEl) {
-                      campoNomeCategoria.value = tituloEl.innerText.trim();
-                  }
-                  
-                  modalEditar.style.display = 'flex';
-              }
+
+          if (textoBotao === 'Editar') {
+              inputEditId.value = id;
+              inputEditNome.value = nome;
+              modalEditar.style.display = 'flex';
+          }
+          
+          else if (textoBotao === 'Excluir') {
+              inputDeleteId.value = id;
+              spanDeleteNome.textContent = nome;
+              modalExcluir.style.display = 'flex';
           }
       });
   }
 
-  // Modal Excluir
-  const botoesExcluir = document.querySelectorAll('.botao-vermelho');
-  const modalExcluir = document.getElementById('modalExcluirCategoria');
-  const nomeCategoriaExcluir = document.getElementById('nomeCategoriaExcluir');
-  const categoriaIdExcluir = document.getElementById('categoriaIdExcluir');
-
-  botoesExcluir.forEach(botao => {
-    botao.addEventListener('click', function(e) {
-      e.preventDefault();
-      const card = this.closest('.result-card');
-      const nomeCategoria = card.querySelector('.card-title').innerText;
-      const categoriaId = card.getAttribute('data-id');
-      nomeCategoriaExcluir.innerText = nomeCategoria;
-      categoriaIdExcluir.value = categoriaId;
-      modalExcluir.style.display = 'flex';
-    });
+  window.addEventListener('click', function(e) {
+      if (e.target === modalCriar) fecharModal();
+      if (e.target === modalEditar) fecharModalEditar();
+      if (e.target === modalExcluir) fecharModalExcluir();
   });
-  function fecharModalExcluir() { modalExcluir.style.display = 'none'; }
 </script>
 
 {% endblock content %}
