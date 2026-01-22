@@ -32,28 +32,43 @@ def admin_detalhes_solicitacoes_view(request: HttpRequest, prestador_id: int) ->
 
 @admin_required
 def admin_categorias_view(request: HttpRequest) -> HttpResponse:
-    categorias = Categoria.objects.all()
+    # Ordena por nome para a lista ficar organizada
+    categorias = Categoria.objects.all().order_by('nome')
 
     if request.method == 'POST':
         acao = request.POST.get('acao')
 
+        # 1. CRIAR
         if acao == 'criar':
             nome = request.POST.get('nome')
             foto = request.FILES.get('foto')
-            Categoria.objects.create(nome=nome, foto=foto)
-            messages.success(request, 'Categoria criada com sucesso!')
+            
+            # Validação simples para não criar categoria sem nome
+            if nome:
+                Categoria.objects.create(nome=nome, foto=foto)
+                messages.success(request, 'Categoria criada com sucesso!')
+            else:
+                messages.error(request, 'O nome da categoria é obrigatório.')
+            
             return redirect('admin-categorias')
 
+        # 2. EDITAR
         elif acao == 'editar':
             categoria_id = request.POST.get('categoria_id')
             categoria = get_object_or_404(Categoria, id=categoria_id)
-            categoria.nome = request.POST.get('nome')
+            
+            novo_nome = request.POST.get('nome')
+            if novo_nome:
+                categoria.nome = novo_nome
+                
             if 'foto' in request.FILES:
                 categoria.foto = request.FILES['foto']
+                
             categoria.save()
             messages.success(request, 'Categoria atualizada com sucesso!')
             return redirect('admin-categorias')
 
+        # 3. EXCLUIR
         elif acao == 'excluir':
             categoria_id = request.POST.get('categoria_id')
             categoria = get_object_or_404(Categoria, id=categoria_id)

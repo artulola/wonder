@@ -2,13 +2,14 @@
 
 <div class="result-card-wonder">
     <div class="card-wonder-details">
-        {% if "http" in img_url %}
+        {% if "http" in img_url or "/media/" in img_url %}
             <img src="{{ img_url }}" alt="Imagem do Card">
         {% else %}
             <img src="{% static img_url %}" alt="Imagem do Card">
         {% endif %}
+        
         <div class="card-wonder-info">
-            <p class="card-title">{{ title }}</h3>
+            <p class="card-title">{{ title }}</p>
             <div class="card-wonder-meta card-wonder-meta-info">
                 {% if subtitle %}
                     <span class="card-wonder-subtitle">{{ subtitle }}</span>
