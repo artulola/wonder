@@ -10,8 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', cliente_views.cliente_home_view, name='cliente-home'),
-    path('busca/', cliente_views.cliente_busca_view, name= 'cliente-busca'),
-    path('busca/resultado-busca/', cliente_views.cliente_resultado_busca_view, name='cliente-resultado--busca'),
+    path('busca/', cliente_views.cliente_busca_view, name='cliente-busca'),
     path('cidade/', cliente_views.cliente_cidade_view, name='cliente-cidade'),
     path('perfil/', cliente_views.cliente_perfil_view, name='cliente-perfil'),
     path('estabelecimento/detalhes', cliente_views.cliente_detalhe_estabelecimento_view, name='cliente-estabelecimento--detalhe'),
