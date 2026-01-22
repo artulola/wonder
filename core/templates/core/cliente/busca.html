@@ -34,11 +34,11 @@
 
                         {% if prestador.usuario.foto_perfil %}
                             
-                            {% card_wonder title=prestador.nome_estabelecimento subtitle=prestador.usuario.get_full_name img_url=prestador.usuario.foto_perfil.url time_rating=True rating_value="5.0" time_start="08:00" time_end="18:00" day_text=prestador.cidade_atendimento color_status="purple" btn_text_conclude="Ver Perfil" btn_color_conclude="purple" %}
+                            {% card_wonder title=prestador.nome_estabelecimento subtitle=prestador.usuario.get_full_name img_url=prestador.usuario.foto_perfil.url time_rating=True rating_value="5.0" time_start="08:00" time_end="18:00" day_text="Disponível hoje" color_status="green" %}
                             
                         {% else %}
                             
-                            {% card_wonder title=prestador.nome_estabelecimento subtitle=prestador.usuario.get_full_name img_url="img/icones/padrao_avatar.svg" time_rating=True rating_value="5.0" time_start="08:00" time_end="18:00" day_text=prestador.cidade_atendimento color_status="purple" btn_text_conclude="Ver Perfil" btn_color_conclude="purple" %}
+                            {% card_wonder title=prestador.nome_estabelecimento subtitle=prestador.usuario.get_full_name img_url="img/icones/padrao_avatar.svg" time_rating=True rating_value="5.0" time_start="08:00" time_end="18:00" day_text="Disponível hoje" color_status="green" %}
                             
                         {% endif %}
 
