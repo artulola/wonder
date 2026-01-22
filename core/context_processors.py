@@ -1,3 +1,5 @@
+from accounts.models import Prestador
+
 def tipo_usuario_simulado(request):
     """
     Para protótipo estático: deduz 'tipo' a partir do path.
@@ -13,3 +15,10 @@ def tipo_usuario_simulado(request):
     else:
         tipo = None
     return {"tipo": tipo}
+
+def lista_cidades(request):
+    """
+    Disponibiliza a lista de cidades com prestadores ativos em todos os templates.
+    """
+    cidades = Prestador.objects.values_list('cidade_atendimento', flat=True).distinct().order_by('cidade_atendimento')
+    return {'cidades_disponiveis': cidades}

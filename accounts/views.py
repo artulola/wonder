@@ -7,7 +7,6 @@ from accounts.models import Cliente, Prestador, Categoria
 from accounts.forms import CustomLoginForm, PrestadorProfileForm, ClienteEnderecoForm, ClienteRegistrationForm, PrestadorRegistrationForm
 
 
-
 def auth_login_view(request):
     if request.method == 'POST':
         form = CustomLoginForm(request, data=request.POST)
@@ -58,17 +57,13 @@ def auth_cadastro_view(request: HttpRequest) -> HttpResponse:
                 
                 login(request, user)
                 messages.success(request, 'Cadastro realizado com sucesso!')
-                return redirect('cliente-home')
+                return redirect('cliente-cidade')
             
             except Exception as e:
                 messages.error(request, f'Erro ao criar cadastro: {str(e)}')
         else:
-            for field, errors in form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
-            for field, errors in endereco_form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
+            messages.error(request, 'Erro no cadastro. Verifique os campos destacados em vermelho.')
+
     else:
         form = ClienteRegistrationForm()
         endereco_form = ClienteEnderecoForm()
@@ -111,12 +106,7 @@ def auth_cadastro_prestador_view(request: HttpRequest) -> HttpResponse:
             except Exception as e:
                 messages.error(request, f'Erro ao criar cadastro: {str(e)}')
         else:
-            for field, errors in user_form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
-            for field, errors in prestador_form.errors.items():
-                for error in errors:
-                    messages.error(request, f'{field}: {error}')
+            messages.error(request, 'Erro no cadastro. Verifique os campos destacados em vermelho.')
     else:
         user_form = PrestadorRegistrationForm()
         prestador_form = PrestadorProfileForm()
@@ -131,4 +121,3 @@ def auth_cadastro_prestador_view(request: HttpRequest) -> HttpResponse:
 
 def auth_aguardando_aprovacao_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/auth/aguardando_aprovacao.html')
-
