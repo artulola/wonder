@@ -10,7 +10,7 @@
 {% endblock extra_css %}
 
 {% block header_extra %}
-<a href="{% url 'login' %}" class="header-logout-button">
+<a href="{% url 'logout' %}" class="header-logout-button">
     <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
     <span>Sair</span>
 </a>
@@ -23,11 +23,15 @@
         
         <div class="nav-tabs-container">
             <a href="{% url 'prestador-home' %}"><button class="option-tab inactive left">Em Aberto</button></a>
-            <a href="{% url 'prestador-finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
+            <a href="{% url 'prestador-finalizados' %}"><button class="option-tab active right">Finalizados</button></a> 
         </div>
 
         <div class="block-text-tag">
             <span class="text-tag-day">Agendamentos Cancelados</span>
+
+            <a href="{% url 'prestador-finalizados' %}" class="filtro-toggle">
+                <span>Ver Finalizados</span>
+            </a>
         </div>
 
         <div class="results-list">
@@ -40,17 +44,21 @@
                     btn_color_conclude="red" 
                 %}
                 {% if agendamento.motivo_cancelamento %}
-                    <p><strong>Motivo:</strong> {{ agendamento.motivo_cancelamento }}</p>
+                    <p style="font-size: 0.8rem; color: #dc3545; padding: 0 0.5rem;">
+                        <strong>Motivo:</strong> {{ agendamento.motivo_cancelamento }}
+                    </p>
                 {% endif %}
             {% empty %}
-                <p>Não há agendamentos cancelados.</p>
+                <div style="text-align: center; margin-top: 2rem; color: #999;">
+                    <p>Não há agendamentos cancelados.</p>
+                </div>
             {% endfor %}
         </div>
     
     </main>
 
     <nav class="app-navbar prestador-navbar">
-        <a href="{% url 'prestador-home' %}" class="nav-item">
+        <a href="{% url 'prestador-home' %}" class="nav-item active">
             <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" alt="Agendamentos" class="nav-icon">
             <span class="nav-label">Agendamentos</span>
         </a>

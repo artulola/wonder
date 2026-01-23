@@ -13,7 +13,7 @@
 {% endblock extra_css %}
 
 {% block header_extra %}
-<a href="{% url 'login' %}" class="header-logout-button">
+<a href="{% url 'logout' %}" class="header-logout-button">
     <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
     <span>Sair</span>
 </a>
@@ -29,18 +29,15 @@
             <a href="{% url 'prestador-finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
         </div>
 
-        <div class="block-text-tag" style="display: flex; justify-content: space-between; align-items: center;">
+        <div class="block-text-tag">
             <span class="text-tag-day">Agendamentos em {{ data_escolhida|date:"d/m/Y" }}</span>
 
-            <div>
-                <button type="button" class="agenda-button" onclick="abrirCalendario()">
+            <div style="position: relative;">
+                <button type="button" class="agenda-button" id="btn-abrir-calendario">
                     <span class="text-tag">Ver agenda</span>
                     <img src="{% static 'img/icones/icon_geral/calendar(1).svg' %}" alt="Calendário">
                 </button>
-
-                <form method="get" action="{% url 'prestador-home' %}">
-                    <input type="text" id="agenda-input" name="data" value="{{ data_escolhida|date:'Y-m-d' }}" style="display:none;">
-                </form>
+                <input type="text" id="agenda-input" style="display: none;">
             </div>
         </div>
 
@@ -53,7 +50,9 @@
                     buttons_preset="finish_cancel" 
                 %}
             {% empty %}
-                <p>Não há agendamentos em aberto nesta data.</p>
+                <div style="text-align: center; margin-top: 2rem; color: #999;">
+                    <p>Não há agendamentos em aberto nesta data.</p>
+                </div>
             {% endfor %}
         </div>
     
@@ -74,17 +73,27 @@
 
 <!-- Calaendário Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
 <script>
-  const fp = flatpickr("#agenda-input", {
-    dateFormat: "Y-m-d",
-    defaultDate: "{{ data_escolhida|date:'Y-m-d' }}",
-    onChange: function(selectedDates, dateStr, instance) {
-      instance.input.form.submit();
-    }
-  });
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnCalendario = document.getElementById('btn-abrir-calendario');
+        
+        const fp = flatpickr("#agenda-input", {
+            locale: "pt",
+            dateFormat: "Y-m-d",
+            defaultDate: "{{ data_escolhida|date:'Y-m-d' }}",
+            positionElement: btnCalendario,
+            disableMobile: "true",
+            onChange: function(selectedDates, dateStr, instance) {
+                const url = new URL(window.location.href);
+                url.searchParams.set('data', dateStr);
+                window.location.href = url.toString();
+            }
+        });
 
-  function abrirCalendario() {
-    fp.open();
-  }
+        btnCalendario.addEventListener('click', function() {
+            fp.toggle();
+        });
+    });
 </script>
 {% endblock %}
