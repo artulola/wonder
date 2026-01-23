@@ -69,12 +69,6 @@
 
 /* --- Cabeçalho --- */
 
-.header-saudacao {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--cor-principal);
-}
 .header-logout-button {
     display: flex;
     align-items: center;
@@ -109,9 +103,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.nav-tabs-container a {
-    text-decoration: none;
+    margin-bottom: 0.5rem;
 }
 
 .option-tab {
@@ -139,7 +131,7 @@
     background-color: #ffffff;
     color: var(--cor-principal);
     border: 1px solid #00000033;
-    border-left: none; /* Linha que "gruda" */
+    border-left: none;
 }
 
 .option-tab.left {
@@ -162,12 +154,15 @@
     font-size: 0.8rem;
     flex-wrap: wrap;
     gap: 0.8rem;
-    padding: 0.8rem 0 ;
+    padding: 0.5rem 0;
+    min-height: 3rem;
 }
 
-.text-tag-day{
+.text-tag-day {
     color: #430b7a;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
 }
 
 .text-tag {
@@ -183,19 +178,39 @@
     border-radius: 0.8rem;
     font-size: 0.8rem;
     align-items: center;
+    cursor: pointer;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    transition: background-color 0.2s;
 }
 
-.agenda-button:hover {
-    background-color: #430b7a;
+.agenda-button:hover { background-color: #5D14A6; }
+.agenda-button img { width: 1.25rem; filter: brightness(0) invert(1); }
+
+.filtro-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--cor-principal);
+    padding: 0.6rem 0.8rem;
+    border-radius: 0.8rem;
+    font-size: 0.8rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.2s;
 }
 
-.agenda-button:active {
-    background-color: #5D14A6;
-    transform: translateY(1px);
+.filtro-toggle:hover {
+    background-color: #5D14A6;;
 }
 
-.agenda-button img {
-    width: 1.2.5rem;
+.filtro-toggle img {
+    width: 1rem;
+    height: 1rem;
+    width: 1.25rem; 
+    filter: brightness(0) invert(1);
 }
 
 /* --- Lista de Cards --- */
@@ -205,251 +220,8 @@
     gap: 0.75rem;
     padding-bottom: 1rem;
 }
-.result-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.5rem;
-    background-color: #F9F9F9;
-    border-radius: 0.3125rem;
-    min-height: 4.5rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-.result-card:hover {
-    background-color: #efefef;
-}
-.card-details {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-.card-details img {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    object-fit: cover;
-}
-.card-info {
-    display: flex;
-    flex-direction: column;
-}
-.card-title {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    color: #000000;
-    font-size: 0.8rem;
-    margin-bottom: 0.25rem;
-}
-.card-meta {
-    display: flex;
-    font-size: 0.75rem;
-    color: #8000ff9a;
-    flex-direction: column;
-}
-.cliente-nome {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    color: #5f5a5a; 
-    font-size: 0.75rem;
-}
 
-/* --- Botões de Ação (Finalizar/Cancelar) --- */
-.block-day-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.3rem;
-    width: 110px; 
-}
-.botao-cancelar {
-    background-color: #ffffff;
-    color: var(--cor-vermelho);
-    border: 1px solid #e0e0e0;
-    border-radius: 0.3rem;
-    padding: 0.5rem;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.1s ease, border-color 0.3s ease;
-    width: 100%;
-    text-align: center;
-}
-
-.botao-cancelar:hover {
-    background-color: #c82333;
-    color: white;
-}
-
-.botao-cancelar:active {
-    background-color: #bd2130;
-    transform: translateY(1px);
-}
-
-.botao-finalizar {
-    background-color: #ffffff;
-    color: var(--cor-azul);
-    border: 1px solid #e0e0e0;
-    border-radius: 0.3rem;
-    padding: 0.5rem;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.1s ease, border-color 0.3s ease;
-    width: 100%;
-    text-align: center;
-}
-
-.botao-finalizar:hover {
-    background-color: #255aaa;
-    color: white;
-}
-
-.botao-finalizar:active {
-    background-color: #2A6CCF;
-    transform: translateY(1px);
-}
-
-/* --- Rodapé do Prestador --- */
-.prestador-navbar {
-    display: flex;
-    justify-content: space-around; 
-    align-items: center;
-    padding-top: 0.5rem; 
-    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
-}
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    text-decoration: none;
-    color: var(--cor-texto-principal); 
-}
-.nav-item .nav-icon {
-    width: 20px;
-    height: 20px;
-    transition: filter 0.2s ease;
-}
-
-.nav-label {
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    font-size: 0.625rem;
-}
-
-/* =================================================== */
-/* === ESTILOS PARA 'FINALIZADOS' E 'CANCELADOS' === */
-/* =================================================== */
-
-.filtro-data {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    gap: 0.5rem;
-    background-color: #430b7a;
-    padding: 0.6rem 0.8rem;
-    border-radius: 0.8rem;
-    font-size: 0.8rem;
-    color: #fff;
-}
-
-.filtro-data img {
-    width: 1,25rem;
-    filter: brightness(0) invert(1); 
-}
-
-.filtro-cancelados {
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
-    gap: 0.5rem;
-    background-color: #430b7a;
-    padding: 0.6rem 0.8rem;
-    border-radius: 0.8rem;
-    font-size: 0.8rem;
-    color: #fff;
-}
-
-.filtro-cancelados img {
-    width: 1.25rem;
-    filter: brightness(0) invert(100); 
-}
-
-.filtro-cancelados:hover {
-    background-color: #430b7a;
-}
-
-.filtro-cancelados:active {
-    background-color: #5D14A6;
-    transform: translateY(1px);
-}
-
-.filtro-data:hover {
-    background-color: #430b7a;
-}
-
-.filtro-data:active {
-    background-color: #5D14A6;
-    transform: translateY(1px);
-}
-
-/* Estilos de Ativo/Inativo para Filtros */
-.filtro-data.inactive {
-    background-color: #f0f0f0; 
-
-}
-.filtro-data.inactive img {
-    filter: brightness(0) invert(0.5); 
-}
-.filtro-data.inactive span {
-    color: var(--cor-principal-fundo); 
-}
-.filtro-cancelados.inactive {
-    background-color: #f0f0f0; ;
-}
-.filtro-cancelados.inactive span {
-    color: var(--cor-principal);
-}
-
-.filtro-cancelados.inactive img {
-    filter: none;
-}
-
-.botao-concluido {
-    background-color: var(--cor-verde);
-    color: white;
-    border: none;
-    border-radius: 0.3rem;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600; 
-    width: 100%;
-    text-align: center;
-    transition: background-color 0.3s ease;
-}
-.botao-concluido:hover {
-    background-color: var(--cor-verde-hover);
-}
-
-.btn-status-cancelado {
-    background-color: var(--cor-vermelho);
-    color: white;
-    border: none;
-    border-radius: 0.3rem;
-    padding: 0.5rem 1rem;
-    cursor: default; 
-    font-size: 0.8rem;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    width: 100%;
-    text-align: center;
-}
-
+/* --- Media Queries --- */
 @media (min-width: 30rem){
     .option-tab {
         width: 15.625rem;
@@ -464,104 +236,54 @@
         margin-left: auto;
         margin-right: auto;
     }
-    
+
     .app-header {
         padding-left: calc(1rem + var(--desktop-padding));
         padding-right: calc(1rem + var(--desktop-padding));
     }
-
-    .nav-tabs-container {
-        display: none;
-    }
-    
-    .nav-item {
-        display: none;
-    }
-
-    .block-text-tag {
-        font-size: 1rem;
-    }
-
-    .prestador-navbar {
-        display: none;
-    }
-
-    .option-tab {
-        min-width: 300px;
-    }
-
-    .block-day-btn {
-        width: 110px;
-    }
+    .nav-tabs-container, .nav-item, .prestador-navbar { display: none; }
+    .option-tab { min-width: 300px; }
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.4);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+/* CUSTOMIZAÇÃO DO FLATPICKR (CALENDÁRIO) */
+
+.flatpickr-calendar {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 0.85rem !important; 
+    width: 305px !important;       
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+    border-radius: 12px !important;
+    margin-top: 5px !important;
+    z-index: 9999 !important; 
 }
 
-.modal-content {
-  background-color: #fff;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-height: 90vh;
-  overflow-y: auto;
+.flatpickr-months {
+    background: var(--cor-principal) !important;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 5px 0;
 }
+.flatpickr-current-month span.cur-month, 
+.flatpickr-current-month input.cur-year {
+    color: #fff !important;
+    font-weight: 600;
+}
+.flatpickr-month { color: #fff !important; fill: #fff !important; }
+.flatpickr-prev-month svg, .flatpickr-next-month svg { fill: #fff !important; }
 
-.modal-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #430b7a;
-  text-align: center;
-}
+.flatpickr-weekdays { background: var(--cor-principal) !important; }
+span.flatpickr-weekday { color: rgba(255, 255, 255, 0.8) !important; font-weight: 500; }
 
-.modal-label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #333;
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, 
+.flatpickr-day.selected.inRange, .flatpickr-day.startRange.inRange, 
+.flatpickr-day.endRange.inRange, .flatpickr-day.selected:focus, 
+.flatpickr-day.startRange:focus, .flatpickr-day.endRange:focus, 
+.flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, 
+.flatpickr-day.endRange:hover {
+    background: var(--cor-principal) !important;
+    border-color: var(--cor-principal) !important;
+    color: #fff;
 }
-
-.modal-input {
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-  width: 100%;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-.modal-cancel {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  color: #555;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.modal-save {
-  background-color: #430b7a;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-}
+.flatpickr-day.today { border-color: var(--cor-principal) !important; color: #333; }
+.flatpickr-day.today:hover { background: #f0e6ff !important; color: var(--cor-principal) !important; }

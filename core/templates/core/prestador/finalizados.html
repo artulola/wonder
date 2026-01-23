@@ -10,7 +10,7 @@
 {% endblock extra_css %}
 
 {% block header_extra %}
-<a href="{% url 'login' %}" class="header-logout-button">
+<a href="{% url 'logout' %}" class="header-logout-button">
     <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
     <span>Sair</span>
 </a>
@@ -28,9 +28,10 @@
 
         <div class="block-text-tag">
             <span class="text-tag-day">Agendamentos Finalizados</span>
-            <a href="{% url 'prestador-cancelados' %}" class="filtro-cancelados inactive">
+            
+            <a href="{% url 'prestador-cancelados' %}" class="filtro-toggle">
                 <span>Ver Cancelados</span>
-                <img src="{% static 'img/icones/icon_roxo/close.svg' %}" alt="close">
+                <img src="{% static 'img/icones/icon_roxo/close.svg' %}" alt="Ver Cancelados">
             </a>
         </div>
 
@@ -43,14 +44,16 @@
                     btn_text_conclude="Concluído" 
                 %}
             {% empty %}
-                <p>Não há agendamentos finalizados.</p>
+                <div style="text-align: center; margin-top: 2rem; color: #999;">
+                    <p>Não há agendamentos finalizados.</p>
+                </div>
             {% endfor %}
         </div>
     
     </main>
 
     <nav class="app-navbar prestador-navbar">
-        <a href="{% url 'prestador-home' %}" class="nav-item">
+        <a href="{% url 'prestador-home' %}" class="nav-item active">
             <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" alt="Agendamentos" class="nav-icon">
             <span class="nav-label">Agendamentos</span>
         </a>
