@@ -74,6 +74,8 @@
 {% endblock content %}
 
 {% block extra_js %}
+    <script src="{% static 'js/auth_ux.js' %}"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             {% if form.non_field_errors %}

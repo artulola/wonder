@@ -1,5 +1,32 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 1. MÁSCARAS DE INPUT (TELEFONE, CPF, CNPJ)
+    console.log("Auth UX Script carregado.");
+
+    // 1. LIMPAR ERROS AO DIGITAR (EXCETO SENHAS)
+    
+    const allInputs = document.querySelectorAll('input, select, textarea');
+
+    allInputs.forEach(input => {
+        input.addEventListener('input', function() {
+            if (this.name === 'password1' || this.name === 'password2' || this.type === 'password') {
+                return;
+            }
+
+            this.classList.remove('input-erro');
+
+            const parent = this.closest('.grupo-input');
+            if (parent) {
+                const errorMessages = parent.querySelectorAll('.mensagem-erro');
+                errorMessages.forEach(msg => {
+                    if (!msg.classList.contains('mensagem-erro-js')) {
+                        msg.style.display = 'none';
+                        msg.remove(); 
+                    }
+                });
+            }
+        });
+    });
+
+    // 2. MÁSCARAS DE INPUT (TELEFONE, CPF, CNPJ)
     
     function aplicarMascaraTelefone(valor) {
         if (!valor) return "";
@@ -75,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         atualizarMascaraDocumento();
     }
 
-    // 2. DROPDOWN DE CATEGORIAS
+    // 3. DROPDOWN DE CATEGORIAS
     
     const categoryTrigger = document.getElementById('categoryTrigger');
     const categoryDropdown = document.getElementById('categoryDropdown');
