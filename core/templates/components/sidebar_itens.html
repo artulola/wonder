@@ -43,8 +43,11 @@
 
     <li class="nav-item {% if request.path|startswith:'/prestador/home' or request.path|startswith:'/prestador/finalizados' or request.path|startswith:'/prestador/cancelados' %} nav-item--active {% endif %}">
         <a href="{% url 'prestador-home' %}">
-            <img class="nav-icon" 
-                src="{% static request.path|startswith:'/prestador/home'|yesno:'img/icones/icon_footer/calendar-ativo.svg,img/icones/icon_footer/calendar.svg' %}">
+            {% if request.path|startswith:'/prestador/home' or request.path|startswith:'/prestador/finalizados' or request.path|startswith:'/prestador/cancelados' %}
+                <img class="nav-icon" src="{% static 'img/icones/icon_footer/calendar-ativo.svg' %}">
+            {% else %}
+                <img class="nav-icon" src="{% static 'img/icones/icon_footer/calendar.svg' %}">
+            {% endif %}
             <span class="nav-text">Agendamentos</span>
         </a>
     </li>

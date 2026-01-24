@@ -4,7 +4,15 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/perfil_usuario.css' %}?v=2">
+<link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
 {% endblock extra_css %}
+
+{% block header_extra %}
+<a href="{% url 'logout' %}" class="header-logout-button">
+    <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
+    <span>Sair</span>
+</a>
+{% endblock header_extra %}
 
 {% block content %}
 <main class="profile-page-content">

@@ -4,8 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from accounts.decorators import cliente_required
 from core.forms import UserUpdateForm, ClienteEnderecoUpdateForm
-from accounts.models import Prestador
-from urllib.parse import unquote
+from django.db.models import Q
+from accounts.models import Prestador, Categoria
 
 @cliente_required
 def cliente_home_view(request: HttpRequest) -> HttpResponse:
@@ -15,9 +15,6 @@ def cliente_home_view(request: HttpRequest) -> HttpResponse:
 def cliente_busca_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/busca.html')
 
-@cliente_required
-def cliente_resultado_busca_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'core/cliente/resultado_busca.html')
 
 @cliente_required
 def cliente_cidade_view(request: HttpRequest) -> HttpResponse:
@@ -52,7 +49,7 @@ def cliente_perfil_view(request: HttpRequest) -> HttpResponse:
     
     if not hasattr(user, 'perfil_cliente'):
         messages.error(request, 'Perfil de cliente não encontrado.')
-        return redirect('home-cliente')
+        return redirect('cliente-home')
 
     perfil_cliente = user.perfil_cliente
 
@@ -100,3 +97,28 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
 @cliente_required
 def cliente_estabelecimento_horarios_calendario_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/estabelecimento_calendario.html')
+
+@cliente_required
+def cliente_busca_view(request: HttpRequest) -> HttpResponse:
+    query = request.GET.get('q', '')
+
+    prestadores = Prestador.objects.filter(status = Prestador.StatusPrestador.APROVADO)
+
+    if query:
+        prestadores = prestadores.filter(
+            Q(nome_estabelecimento__icontains=query) |
+            Q(usuario__first_name__icontains=query) |
+            Q(categorias__nome__icontains=query)
+        ).distinct()
+
+    categorias = Categoria.objects.all().order_by('nome')
+
+    context = {
+        'prestadores': prestadores,
+        'categorias': categorias,
+        'query': query
+    }
+
+    return render(request, 'core/cliente/busca.html', context)
+
+    
