@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -75,8 +75,17 @@ def cliente_perfil_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/perfil.html', context)
 
 @cliente_required
-def cliente_detalhe_estabelecimento_view(request: HttpRequest) -> HttpResponse:
-    return render(request, 'core/cliente/detalhe_estabelecimento.html')
+def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int) -> HttpResponse:
+    """Exibe os detalhes do estabelecimento, incluindo fotos e informações de contato."""
+
+    prestador = get_object_or_404(Prestador, id = prestador_id)
+
+    context = {
+
+        'prestador': prestador,
+    }
+
+    return render(request, 'core/cliente/detalhe_estabelecimento.html', context)
 
 @cliente_required
 def cliente_agendamentos_view(request: HttpRequest) -> HttpResponse:

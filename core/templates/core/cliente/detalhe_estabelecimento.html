@@ -1,13 +1,13 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
 {% load card_wonder %}
-{% block title %}WONDER{% endblock title %}
+
+{% block title %}{{ prestador.nome_estabelecimento }} | WONDER{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/detalhe_estabelecimento.css' %}">
 <link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 <link rel="stylesheet" href="{% static 'css/cliente/home.css' %}">
-
 {% endblock extra_css %}
 
 
@@ -15,7 +15,7 @@
 <section class="establishment-detail-content">
     <h4 class="section-title">Sobre o Estabelecimento</h4>
 
-    {% card_wonder title="Diego BarberShop" img_url="img/logo/Diego-BarberShop.svg" time_rating=True rating_value="5.0" time_start="8:00" time_end="18:00" day_text="Disponível hoje" %}
+    {% card_wonder title=prestador.nome_estabelecimento img_url=prestador.usuario.foto_perfil.url|default:"/static/img/icones/avatar_padrao.svg" time_rating=True rating_value="5.0" time_start="8:00" time_end="18:00" day_text="Disponível hoje" %}
 
     <div class="main-detail-sections">
 
@@ -25,29 +25,33 @@
                     <img src="{% static 'img/icones/icon_roxo/icon-park-solid_local-two.svg' %}" alt="Ícone de Localização" class="data-icon">
                     <span class="data-label">Localização</span>
                 </div>
-                <p class="data-value">Rua: Frei Damião, 25 - Centro</p>
+                <p class="data-value">{{ prestador.endereco }} - {{ prestador.cidade_atendimento }}</p>
             </div>
             <div class="data-item">
                 <div class="data-label-group">
                     <img src="{% static 'img/icones/icon_roxo/phone(1).svg' %}" alt="Ícone de Telefone" class="data-icon">
                     <span class="data-label">Telefone</span>
                 </div>
-                <p class="data-value">(84) 99485-9785</p>
+                <p class="data-value">{{ prestador.usuario.telefone|default:"Não informado" }}</p>
             </div>
         </div>
 
         <div class="photos-section">
             <h4 class="section-title">Fotos do Local</h4>
             <div class="photo-gallery">
-                <img class="photo-item" src="{% static 'img/detalhes_est/logo-details-diego.svg' %}" alt="Logo do Estabelecimento">
-                <img class="photo-item" src="{% static 'img/detalhes_est/logo-details-diego-barber.svg' %}"
-                    alt="Ambiente do Estabelecimento">
+                {% for foto in prestador.fotos_estabelecimento.all %}
+                    <img class="photo-item" src="{{ foto.imagem.url }}" alt="Ambiente {{ prestador.nome_estabelecimento }}">
+                {% empty %}
+                    <p class="data-value" style="padding: 10px;">O prestador ainda não adicionou fotos do local.</p>
+                {% endfor %}
             </div>
         </div>
     </div>
 
     <div class="action-btn-wrapper">
-        <a href="{% url 'cliente-estabelecimento--oferece' %}"><button class="schedule-btn">Agendar Serviço</button></a>
+        <a href="#">
+            <button class="schedule-btn">Agendar Serviço</button>
+        </a>
     </div>
 
     <div class="reviews-section">
@@ -56,7 +60,7 @@
             <article class="review-card">
                 <div class="card-details-group">
                     <div class="reviewer-avatar">
-                        <img src="{% static 'img/clientes/foto-arthur.svg' %}" alt="Avatar do Revisor">
+                        <img src="{% static 'img/clientes/foto-arthur.svg' %}" alt="Avatar">
                     </div>
                     <div class="reviewer-details">
                         <h5 class="reviewer-name">Arthur Lola</h5>
