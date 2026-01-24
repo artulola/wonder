@@ -3,19 +3,18 @@
 {% block title %}Meu Perfil | WONDER{% endblock title %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/cliente/perfil_usuario.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/perfil_usuario.css' %}?v=2">
 {% endblock extra_css %}
 
 {% block content %}
 <main class="profile-page-content">
 
   <div class="profile-card">
-    <!-- Cabeçalho -->
     <header class="profile-header">
       {% if user.foto_perfil %}
-        <img class="profile-avatar" src="{{ user.foto_perfil.url }}" alt="Foto de perfil">
+        <img class="profile-avatar" src="{{ user.foto_perfil.url }}" alt="Foto">
       {% else %}
-        <img class="profile-avatar" src="https://placehold.co/80x80/8000ff/ffffff?text={{ user.first_name|slice:':1' }}" alt="Foto padrão">
+        <img class="profile-avatar" src="https://placehold.co/80x80/8000ff/ffffff?text={{ user.first_name|slice:':1' }}" alt="Foto">
       {% endif %}
       <a href="#" class="edit-profile-link" onclick="abrirModal('modalEditarPerfil'); return false;">
         <img src="{% static 'img/icones/icon_roxo/pencil(1).svg' %}" alt="Editar">
@@ -23,16 +22,48 @@
       </a>
     </header>
 
-    <!-- Informações -->
     <section class="user-info-list">
-      <div class="info-item"><span class="info-label">Estabelecimento</span><span class="info-value">{{ prestador.nome_estabelecimento }}</span></div>
-      <div class="info-item"><span class="info-label">CPF/CNPJ</span><span class="info-value">{{ prestador.documento }}</span></div>
-      <div class="info-item"><span class="info-label">Email</span><span class="info-value">{{ user.email }}</span></div>
-      <div class="info-item"><span class="info-label">Telefone</span><span class="info-value">{{ user.telefone|default:"Não informado" }}</span></div>
-      <div class="info-item"><span class="info-label">Endereço</span><span class="info-value">{{ prestador.endereco }} - {{ prestador.cidade_atendimento }}</span></div>
+      <div class="info-item">
+        <span class="info-label">Estabelecimento</span>
+        <span class="info-value">{{ prestador.nome_estabelecimento }}</span>
+      </div>
+      
+      <div class="info-item">
+        <span class="info-label">CPF/CNPJ</span>
+        <span class="info-value">{{ prestador.documento }}</span>
+      </div>
+      
+      <div class="info-item">
+        <span class="info-label">Email</span>
+        <span class="info-value">{{ user.email }}</span>
+      </div>
+      
+      <div class="info-item">
+        <span class="info-label">Telefone</span>
+        <span class="info-value">{{ user.telefone|default:"-" }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="info-label">Endereço</span>
+        <span class="info-value">{{ prestador.endereco|default:"Não informado" }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="info-label">Cidade</span>
+        <span class="info-value">{{ prestador.cidade_atendimento|default:"Não informado" }}</span>
+      </div>
+
+      <div class="info-item" style="align-items: flex-start;">
+        <span class="info-label" style="margin-top: 4px;">Horários de funcionamento</span>
+        <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end;">
+          
+          <span id="txtHorariosResumo" style="font-weight: 600; color: #333; font-size: 1rem;">Carregando...</span>
+          
+          <a href="#" onclick="abrirModal('modalHorarios'); return false;" style="color:#430b7a; font-size: 0.85rem; margin-top: 4px;">Configurar horários</a>
+        </div>
+      </div>
     </section>
 
-    <!-- Serviços -->
     <section class="user-info-list" style="margin-top: 1rem;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <span style="font-weight:600;">Meus Serviços</span>
@@ -40,10 +71,10 @@
       </div>
 
       {% for servico in servicos %}
-      <div class="info-item" data-id="{{ servico.id }}">
+      <div class="info-item">
         <div class="info-label-group">
           {% if servico.foto %}
-            <img src="{{ servico.foto.url }}" alt="{{ servico.nome }}" style="width:40px; height:40px; border-radius:4px; object-fit:cover; margin-right:8px;">
+            <img src="{{ servico.foto.url }}" alt="S" style="width:40px; height:40px; border-radius:4px; object-fit:cover; margin-right:8px;">
           {% endif %}
           <div>
             <span class="info-label">{{ servico.nome }}</span>
@@ -51,20 +82,20 @@
           </div>
         </div>
         <div style="display:flex; gap:10px;">
-          <a href="#" onclick="abrirModalEditarServico({{ servico.id }}, '{{ servico.nome }}', '{{ servico.descricao }}', '{{ servico.preco }}', '{{ servico.duracao_minutos }}'); return false;">
+          <a href="#" onclick="abrirModalEditarServico('{{ servico.id }}', '{{ servico.nome }}', '{{ servico.descricao|default:'' }}', '{{ servico.preco }}', '{{ servico.duracao_minutos }}'); return false;">
             <img src="{% static 'img/icones/icon_geral/editar_cinza.svg' %}" style="width:16px; opacity:0.5;">
           </a>
-          <a href="#" onclick="abrirModalExcluirServico({{ servico.id }}, '{{ servico.nome }}'); return false;">
+          <a href="#" onclick="abrirModalExcluirServico('{{ servico.id }}', '{{ servico.nome }}'); return false;">
             <img src="{% static 'img/icones/icon_geral/delete.svg' %}" style="width:16px; opacity:0.5;">
           </a>
         </div>
       </div>
       {% empty %}
-      <p>Nenhum serviço cadastrado ainda.</p>
+      <p style="color:#777; font-size:0.9rem;">Nenhum serviço cadastrado.</p>
       {% endfor %}
     </section>
 
-        <a href="{% url 'logout' %}" class="logout-button" style="margin-top: 1.5rem;">
+    <a href="{% url 'logout' %}" class="logout-button" style="margin-top: 1.5rem;">
       <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="">
       <span>Sair</span>
     </a>
@@ -88,28 +119,13 @@
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <input type="hidden" name="acao" value="atualizar_perfil">
-
-      <label class="modal-label">Foto de Perfil</label>
-      {{ u_form.foto_perfil }}
-
-      <label class="modal-label">Nome do Estabelecimento</label>
-      {{ p_form.nome_estabelecimento }}
-
-      <label class="modal-label">Email</label>
-      {{ u_form.email }}
-
-      <label class="modal-label">Telefone</label>
-      {{ u_form.telefone }}
-
-      <label class="modal-label">Endereço</label>
-      {{ p_form.endereco }}
-
-      <label class="modal-label">Cidade</label>
-      {{ p_form.cidade_atendimento }}
+      
+      {{ u_form.as_p }}
+      {{ p_form.as_p }}
 
       <div class="modal-buttons">
         <button type="button" class="modal-cancel" onclick="fecharModal('modalEditarPerfil')">Cancelar</button>
-        <button type="submit" class="modal-save">Salvar Alterações</button>
+        <button type="submit" class="modal-save">Salvar</button>
       </div>
     </form>
   </div>
@@ -121,36 +137,12 @@
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <input type="hidden" name="acao" value="criar_servico">
-
-      <label class="modal-label">Foto do Serviço</label>
-      <input type="file" name="foto" class="modal-input" accept="image/*">
-
-      <label class="modal-label">Nome</label>
-      <input type="text" name="nome" class="modal-input" required>
-
-      <label class="modal-label">Descrição</label>
-      <textarea name="descricao" class="modal-input"></textarea>
-
-      <label class="modal-label">Preço</label>
-      <input type="number" step="0.01" name="preco" class="modal-input" required>
-
-      <label class="modal-label">Duração (minutos)</label>
-      <input type="number" name="duracao" class="modal-input" required>
-
-      <label class="modal-label">Categorias</label>
-      <div style="display:flex; flex-direction:column; gap:5px;">
-        {% for categoria in categorias %}
-          <label>
-            <input type="checkbox" name="categorias" value="{{ categoria.id }}">
-            {{ categoria.nome }}
-          </label>
-        {% endfor %}
-      </div>
-
-      <div class="modal-buttons">
-        <button type="button" class="modal-cancel" onclick="fecharModal('modalAdicionarServico')">Cancelar</button>
-        <button type="submit" class="modal-save">Salvar Serviço</button>
-      </div>
+      <label class="modal-label">Foto</label><input type="file" name="foto" class="modal-input">
+      <label class="modal-label">Nome</label><input type="text" name="nome" class="modal-input" required>
+      <label class="modal-label">Preço</label><input type="number" step="0.01" name="preco" class="modal-input" required>
+      <label class="modal-label">Duração (min)</label><input type="number" name="duracao" class="modal-input" required>
+      <label class="modal-label">Descrição</label><input type="text" name="descricao" class="modal-input">
+      <div class="modal-buttons"><button type="button" class="modal-cancel" onclick="fecharModal('modalAdicionarServico')">Cancelar</button><button type="submit" class="modal-save">Salvar</button></div>
     </form>
   </div>
 </div>
@@ -162,36 +154,12 @@
       {% csrf_token %}
       <input type="hidden" name="acao" value="editar_servico">
       <input type="hidden" name="servico_id" id="editServicoId">
-
-      <label class="modal-label">Foto do Serviço</label>
-      <input type="file" name="foto" class="modal-input" accept="image/*">
-
-      <label class="modal-label">Nome</label>
-      <input type="text" name="nome" id="editNomeServico" class="modal-input" required>
-
-      <label class="modal-label">Descrição</label>
-      <textarea name="descricao" id="editDescricaoServico" class="modal-input"></textarea>
-
-      <label class="modal-label">Preço</label>
-      <input type="number" step="0.01" name="preco" id="editPrecoServico" class="modal-input" required>
-
-      <label class="modal-label">Duração (minutos)</label>
-      <input type="number" name="duracao" id="editDuracaoServico" class="modal-input" required>
-
-      <label class="modal-label">Categorias</label>
-      <div style="display:flex; flex-direction:column; gap:5px;">
-        {% for categoria in categorias %}
-          <label>
-            <input type="checkbox" name="categorias" value="{{ categoria.id }}" class="editCategoriaCheckbox">
-            {{ categoria.nome }}
-          </label>
-        {% endfor %}
-      </div>
-
-      <div class="modal-buttons">
-        <button type="button" class="modal-cancel" onclick="fecharModal('modalEditarServico')">Cancelar</button>
-        <button type="submit" class="modal-save">Salvar Alterações</button>
-      </div>
+      <label class="modal-label">Foto</label><input type="file" name="foto" class="modal-input">
+      <label class="modal-label">Nome</label><input type="text" name="nome" id="editServicoNome" class="modal-input" required>
+      <label class="modal-label">Preço</label><input type="number" step="0.01" name="preco" id="editServicoPreco" class="modal-input" required>
+      <label class="modal-label">Duração (min)</label><input type="number" name="duracao" id="editServicoDuracao" class="modal-input" required>
+      <label class="modal-label">Descrição</label><input type="text" name="descricao" id="editServicoDescricao" class="modal-input">
+      <div class="modal-buttons"><button type="button" class="modal-cancel" onclick="fecharModal('modalEditarServico')">Cancelar</button><button type="submit" class="modal-save">Salvar</button></div>
     </form>
   </div>
 </div>
@@ -199,58 +167,243 @@
 <div class="modal-overlay" id="modalExcluirServico">
   <div class="modal-content">
     <h2 class="modal-title">Excluir Serviço</h2>
-    <p>Tem certeza que deseja excluir o serviço <strong id="nomeServicoExcluir"></strong>?</p>
+    <p>Tem certeza que deseja excluir <b id="deleteServicoNome"></b>?</p>
     <form method="POST">
       {% csrf_token %}
       <input type="hidden" name="acao" value="excluir_servico">
-      <input type="hidden" name="servico_id" id="servicoIdExcluir">
-
+      <input type="hidden" name="servico_id" id="deleteServicoId">
       <div class="modal-buttons">
         <button type="button" class="modal-cancel" onclick="fecharModal('modalExcluirServico')">Cancelar</button>
-        <button type="submit" class="modal-save">Confirmar Exclusão</button>
+        <button type="submit" class="modal-save" style="background-color: #d9534f;">Excluir</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalHorarios">
+  <div class="modal-content" style="max-width: 450px;">
+    
+    <h2 class="modal-title">Configurar Horários</h2>
+    <p class="modal-subtitle">Selecione os dias e defina o horário para eles.</p>
+    
+    <form method="POST" id="formHorarios" onsubmit="prepararEnvioHorarios(event)">
+      {% csrf_token %}
+      <input type="hidden" name="acao" value="atualizar_horarios">
+      <input type="hidden" name="horarios_json_completo" id="inputJsonCompleto">
+
+      <div class="day-selector-container">
+        {% for dia_idx, dia_nome in dias_semana %}
+          <label>
+            <input type="checkbox" name="dias_ui_selecionados" value="{{ dia_idx }}">
+            <div class="day-circle">{{ dia_nome|slice:":1" }}</div>
+          </label>
+        {% endfor %}
+      </div>
+
+      <div class="options-row">
+        <label class="custom-checkbox-label">
+          <input type="checkbox" name="aberto_24h" id="chk24h"> Aberto 24 horas
+        </label>
+        <label class="custom-checkbox-label">
+          <input type="checkbox" name="fechado" id="chkFechado"> Fechado (Não atendo nestes dias)
+        </label>
+      </div>
+
+      <div id="intervalos-container"></div>
+
+      <button type="button" class="btn-add-text" onclick="adicionarNovoHorario()">+ Adicionar intervalo</button>
+
+      <div class="material-footer">
+        <button type="button" class="btn-text-action" onclick="fecharModal('modalHorarios')">Cancelar</button>
+        <button type="submit" class="btn-text-action">Salvar Configuração</button>
       </div>
     </form>
   </div>
 </div>
 
 <script>
-  function abrirModal(id) {
+  let horariosSalvos = {{ horarios_json|default:"{}"|safe }};
+  if(typeof horariosSalvos !== 'object' || horariosSalvos === null) horariosSalvos = {};
+
+  const containerIntervalos = document.getElementById('intervalos-container');
+  const chkAberto24 = document.getElementById('chk24h');
+  const chkFechado = document.getElementById('chkFechado');
+  const btnAdd = document.querySelector('.btn-add-text');
+  
+  window.abrirModal = function(id) {
     const modal = document.getElementById(id);
-    if(modal) modal.style.display = 'flex';
+    if(modal) {
+        modal.style.display = 'flex';
+        // Limpa os inputs visuais para o usuário começar "limpo" ao editar horários
+        if(id === 'modalHorarios') resetarInputsModal();
+    }
   }
 
-  function fecharModal(id) {
-    const modal = document.getElementById(id);
-    if(modal) modal.style.display = 'none';
+  window.fecharModal = function(id) {
+    document.getElementById(id).style.display = 'none';
   }
 
-  function abrirModalEditarServico(id, nome, descricao, preco, duracao) {
-    document.getElementById('editServicoId').value = id;
-    document.getElementById('editNomeServico').value = nome;
-    document.getElementById('editDescricaoServico').value = descricao;
-    document.getElementById('editPrecoServico').value = preco;
-    document.getElementById('editDuracaoServico').value = duracao;
-    abrirModal('modalEditarServico');
+  window.abrirModalEditarServico = function(id, nome, descricao, preco, duracao) {
+      document.getElementById('editServicoId').value = id;
+      document.getElementById('editServicoNome').value = nome;
+      document.getElementById('editServicoPreco').value = preco.replace(',', '.');
+      document.getElementById('editServicoDuracao').value = duracao;
+      document.getElementById('editServicoDescricao').value = descricao;
+      abrirModal('modalEditarServico');
   }
 
-  function abrirModalExcluirServico(id, nome) {
-    document.getElementById('servicoIdExcluir').value = id;
-    document.getElementById('nomeServicoExcluir').innerText = nome;
-    abrirModal('modalExcluirServico');
+  window.abrirModalExcluirServico = function(id, nome) {
+      document.getElementById('deleteServicoId').value = id;
+      document.getElementById('deleteServicoNome').innerText = nome;
+      abrirModal('modalExcluirServico');
+  }
+  
+  // --- LÓGICA DE HORÁRIOS ---
+
+  function resetarInputsModal() {
+    document.querySelectorAll('input[name="dias_ui_selecionados"]').forEach(chk => chk.checked = false);
+    chkAberto24.checked = false;
+    chkFechado.checked = false;
+    containerIntervalos.innerHTML = '';
+    criarLinhaIntervalo('08:00', '18:00');
+    atualizarEstadoInputs();
   }
 
-  document.querySelectorAll('.modal-overlay').forEach(modal => {
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
+  function criarLinhaIntervalo(inicio = '', fim = '') {
+    const div = document.createElement('div');
+    div.classList.add('time-row');
+    div.innerHTML = `
+      <div class="material-input-wrapper">
+        <input type="time" name="inicio_ui[]" value="${inicio}" required>
+        <label>Início</label>
+      </div>
+      <div class="material-input-wrapper">
+        <input type="time" name="fim_ui[]" value="${fim}" required>
+        <label>Fim</label>
+      </div>
+      <button type="button" class="btn-remove-time" onclick="this.closest('.time-row').remove()">✕</button>
+    `;
+    containerIntervalos.appendChild(div);
+  }
+
+  window.adicionarNovoHorario = function() { criarLinhaIntervalo(); }
+
+  function atualizarEstadoInputs() {
+    const bloqueado = chkAberto24.checked || chkFechado.checked;
+    const inputs = containerIntervalos.querySelectorAll('input');
+    inputs.forEach(i => i.disabled = bloqueado);
+    
+    if(bloqueado) {
+        containerIntervalos.style.opacity = '0.5';
+        btnAdd.style.display = 'none';
+    } else {
+        containerIntervalos.style.opacity = '1';
+        btnAdd.style.display = 'block';
+    }
+  }
+
+  chkAberto24.addEventListener('change', () => { if(chkAberto24.checked) chkFechado.checked=false; atualizarEstadoInputs(); });
+  chkFechado.addEventListener('change', () => { if(chkFechado.checked) chkAberto24.checked=false; atualizarEstadoInputs(); });
+
+  window.prepararEnvioHorarios = function(e) {
+    const diasMarcados = Array.from(document.querySelectorAll('input[name="dias_ui_selecionados"]:checked')).map(el => el.value);
+
+    if (diasMarcados.length === 0) {
+        e.preventDefault();
+        alert("Selecione pelo menos um dia da semana.");
+        return false;
+    }
+
+    let configDoDia = {
+        aberto_24h: chkAberto24.checked,
+        fechado: chkFechado.checked,
+        intervalos: []
+    };
+
+    if (!configDoDia.aberto_24h && !configDoDia.fechado) {
+        const inicios = document.querySelectorAll('input[name="inicio_ui[]"]');
+        const fins = document.querySelectorAll('input[name="fim_ui[]"]');
+        
+        for(let i=0; i<inicios.length; i++) {
+            if(inicios[i].value && fins[i].value) {
+                configDoDia.intervalos.push({
+                    inicio: inicios[i].value,
+                    fim: fins[i].value
+                });
+            }
+        }
+    }
+
+    diasMarcados.forEach(diaIndex => {
+        horariosSalvos[diaIndex] = JSON.parse(JSON.stringify(configDoDia));
     });
+
+    document.getElementById('inputJsonCompleto').value = JSON.stringify(horariosSalvos);
+  }
+
+  function atualizarResumoTela() {
+    const el = document.getElementById('txtHorariosResumo');
+    if(!el) return;
+
+    const nomesDias = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"]; 
+    let grupos = {}; 
+
+    for(let i=0; i<7; i++) {
+        const diaStr = i.toString();
+        const dados = horariosSalvos[diaStr];
+
+        if(dados && !dados.fechado) {
+            let assinatura = "";
+            if(dados.aberto_24h) assinatura = "24h";
+            else if(dados.intervalos && dados.intervalos.length > 0) {
+                assinatura = dados.intervalos.map(int => `${int.inicio} - ${int.fim}`).join(" / ");
+            } else {
+                continue; 
+            }
+            if(!grupos[assinatura]) grupos[assinatura] = [];
+            grupos[assinatura].push(i);
+        }
+    }
+
+    const chaves = Object.keys(grupos);
+    if(chaves.length === 0) {
+        el.innerText = "Fechado temporariamente";
+        el.style.color = "#d9534f";
+        return;
+    }
+
+    let melhorHorario = chaves[0]; 
+    let diasDoMelhor = grupos[melhorHorario];
+    diasDoMelhor.sort((a,b) => a-b);
+
+    let sequencias = [];
+    let tempSeq = [diasDoMelhor[0]];
+    for (let k = 1; k < diasDoMelhor.length; k++) {
+        if (diasDoMelhor[k] === diasDoMelhor[k-1] + 1) {
+            tempSeq.push(diasDoMelhor[k]);
+        } else {
+            sequencias.push(tempSeq);
+            tempSeq = [diasDoMelhor[k]];
+        }
+    }
+    sequencias.push(tempSeq);
+
+    let textoDias = sequencias.map(seq => {
+        if(seq.length === 1) return nomesDias[seq[0]];
+        return `${nomesDias[seq[0]]} - ${nomesDias[seq[seq.length-1]]}`;
+    }).join(", ");
+
+    if(diasDoMelhor.length === 7) textoDias = "Todos os dias";
+
+    el.innerText = `${textoDias} • ${melhorHorario}`;
+    el.style.color = "#333";
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+        m.addEventListener('click', e => { if(e.target===m) m.style.display='none'; });
+    });
+    atualizarResumoTela();
   });
-
-  {% if u_form.errors or p_form.errors %}
-    document.addEventListener('DOMContentLoaded', function() {
-        abrirModal('modalEditarPerfil');
-    });
-  {% endif %}
 </script>
 {% endblock content %}

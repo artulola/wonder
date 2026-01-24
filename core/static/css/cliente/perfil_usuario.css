@@ -365,3 +365,231 @@ body {
   max-height: 90vh;
   overflow-y: auto;
 }
+
+#modalHorarios .modal-title {
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #000;
+  font-weight: 700;
+}
+
+.modal-subtitle {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.day-selector-container {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.day-selector-container label {
+  width: auto !important;
+  display: inline-block !important;
+  margin: 0 !important;
+  position: relative;
+}
+
+.day-selector-container input[type="checkbox"] {
+  display: none;
+}
+
+.day-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #F0F0F0;
+  color: #49454F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.day-selector-container input[type="checkbox"]:checked + .day-circle {
+  background-color: #430b7a;
+  color: #fff;
+  border-color: #430b7a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(67, 11, 122, 0.3);
+}
+
+.options-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-left: 5px;
+}
+
+.custom-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #333;
+}
+
+.custom-checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #430b7a;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.time-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px; 
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.material-input-wrapper {
+  position: relative;
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
+.material-input-wrapper input {
+  width: 100% !important;
+  padding: 12px 10px;
+  border: 1px solid #79747E;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 16px;
+  color: #1D1B20;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  height: 45px !important;
+  box-sizing: border-box;
+}
+
+.material-input-wrapper input:focus {
+  border-color: #6A00F4;
+  border-width: 2px;
+  padding: 11px 9px;
+  outline: none;
+}
+
+.material-input-wrapper label {
+  position: absolute;
+  top: -9px;
+  left: 12px;
+  background-color: #fff;
+  padding: 0 5px;
+  font-size: 12px;
+  color: #49454F;
+  pointer-events: none;
+  z-index: 10;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.btn-remove-time {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0 5px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+}
+.btn-remove-time:hover { color: #FF5A5A; }
+
+.btn-add-text {
+  background: none;
+  border: none;
+  color: #555;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 0;
+  cursor: pointer;
+  margin-top: 5px;
+  display: block;
+}
+.btn-add-text:hover { color: #000; text-decoration: underline; }
+
+.material-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 30px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.btn-text-action {
+  background: none;
+  border: none;
+  color: #6A00F4;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.btn-text-action:hover { background-color: rgba(106, 0, 244, 0.08); }
+
+.modal-buttons { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem; }
+.modal-cancel { background: #ccc; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+.modal-save { background: #430b7a; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
+
+#modalEditarPerfil form p {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+#modalEditarPerfil form label {
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+#modalEditarPerfil form input[type="text"],
+#modalEditarPerfil form input[type="email"],
+#modalEditarPerfil form input[type="number"],
+#modalEditarPerfil form input[type="tel"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #79747E;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+#modalEditarPerfil form input:focus {
+  border-color: #6A00F4;
+  outline: none;
+  border-width: 2px;
+  padding: 11px;
+}
+
+.helptext {
+  font-size: 0.8rem;
+  color: #888;
+  margin-top: 2px;
+  display: block;
+}
