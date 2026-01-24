@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from accounts.decorators import prestador_required
 from core.forms import UserUpdateForm, PrestadorEstabelecimentoUpdateForm
-from accounts.models import Servico, Categoria, Agendamento, HorarioFuncionamento
+from accounts.models import Servico, Categoria, Agendamento, HorarioFuncionamento, FotoEstabelecimento
 
 
 @prestador_required
@@ -80,6 +80,7 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
 
     perfil_prestador = user.perfil_prestador
     servicos = Servico.objects.filter(prestador=perfil_prestador)
+    fotos_estabelecimento = FotoEstabelecimento.objects.filter(prestador=perfil_prestador)
     categorias = Categoria.objects.all()
 
     if request.method == 'POST':
@@ -142,6 +143,28 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             servico.delete()
             messages.success(request, 'Serviço excluído com sucesso!')
             return redirect('prestador-perfil')
+        
+        # --- ADICIONAR FOTO DO LOCAL ---
+        elif acao == 'adicionar_foto_local':
+            if 'foto_local' in request.FILES:
+                imagem = request.FILES['foto_local']
+                try:
+                    FotoEstabelecimento.objects.create(prestador=perfil_prestador, imagem=imagem)
+                    messages.success(request, 'Foto adicionada com sucesso!')
+                except Exception as e:
+                    messages.error(request, f'Erro ao salvar foto: {e}')
+            else:
+                messages.error(request, 'Nenhuma imagem selecionada.')
+            return redirect('prestador-perfil')   
+
+        # --- ADICIONAR FOTO DO LOCAL ---
+        elif acao == 'excluir_foto_local':
+            foto_id = request.POST.get('foto_id')
+            foto = get_object_or_404(FotoEstabelecimento, id=foto_id, prestador=perfil_prestador)
+            foto.delete()
+            messages.success(request, 'Foto removida com sucesso!')
+            return redirect('prestador-perfil')
+
 
         # --- 5. ATUALIZAR HORÁRIOS (Lógica Nova JSON) ---
         elif acao == 'atualizar_horarios':
@@ -236,7 +259,9 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
         'prestador': perfil_prestador,
         'servicos': servicos,
         'categorias': categorias,
+        'fotos_estabelecimento': fotos_estabelecimento,
         'dias_semana': dias_semana,
         'horarios_json': horarios_json # Variável chave para o template
+
     }
     return render(request, 'core/prestador/perfil.html', context)

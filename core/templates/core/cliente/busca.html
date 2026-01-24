@@ -30,7 +30,7 @@
                 {% for prestador in prestadores %}
                     
 
-                    <a href="#" style="text-decoration: none;">
+                    <a href="{% url 'cliente-estabelecimento--detalhe' prestador.id %}" style="text-decoration: none;">
 
                         {% if prestador.usuario.foto_perfil %}
                             

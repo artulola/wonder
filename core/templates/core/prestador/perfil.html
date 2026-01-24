@@ -103,6 +103,23 @@
       {% endfor %}
     </section>
 
+    <section class="user-info-list" style="margin-top: 1rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:600;">Fotos do Local</span>
+        <a href="#" onclick="abrirModal('modalFotosLocal'); return false;" style="color:#430b7a;">Gerenciar</a>
+      </div>
+
+      <div style="display: flex; gap: 10px; overflow-x: auto; padding-top: 10px; padding-bottom: 5px;">
+        {% for foto in fotos_estabelecimento %}
+            <div style="flex: 0 0 auto; width: 80px; height: 80px; border-radius: 8px; overflow: hidden; border: 1px solid #eee;">
+                <img src="{{ foto.imagem.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        {% empty %}
+            <p style="color:#777; font-size:0.9rem;">Nenhuma foto adicionada.</p>
+        {% endfor %}
+      </div>
+    </section>
+
     <a href="{% url 'logout' %}" class="logout-button" style="margin-top: 1.5rem;">
       <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="">
       <span>Sair</span>
@@ -226,6 +243,53 @@
         <button type="submit" class="btn-text-action">Salvar Configuração</button>
       </div>
     </form>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalFotosLocal">
+  <div class="modal-content">
+    <h2 class="modal-title">Fotos do Estabelecimento</h2>
+    
+    <form method="POST" enctype="multipart/form-data" style="border-bottom: 1px solid #eee; padding-bottom: 1rem; margin-bottom: 1rem;">
+      {% csrf_token %}
+      <input type="hidden" name="acao" value="adicionar_foto_local">
+      
+      <label class="modal-label">Adicionar Nova Foto</label>
+      
+      <div style="display: flex; align-items: center; gap: 10px;">
+          <input type="file" name="foto_local" class="modal-input" required style="margin-bottom: 0; flex: 1; height: 42px; padding-top: 10px;">
+          
+          <button type="submit" class="modal-save" style="width: auto; padding: 0 25px; height: 42px; margin-top: 0; white-space: nowrap;">
+              Enviar
+          </button>
+      </div>
+    </form>
+
+    <label class="modal-label">Fotos Atuais</label>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-height: 300px; overflow-y: auto;">
+      {% for foto in fotos_estabelecimento %}
+        <div style="position: relative; border-radius: 6px; overflow: hidden; aspect-ratio: 1/1;">
+          <img src="{{ foto.imagem.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+          
+          <form method="POST" style="position: absolute; top: 4px; right: 4px;">
+              {% csrf_token %}
+              <input type="hidden" name="acao" value="excluir_foto_local">
+              <input type="hidden" name="foto_id" value="{{ foto.id }}">
+              <button type="submit" style="background: rgba(255, 255, 255, 0.9); border: none; border-radius: 4px; width: 24px; height: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                  <img src="{% static 'img/icones/icon_geral/delete.svg' %}" style="width: 14px; height: 14px;">
+              </button>
+          </form>
+        </div>
+      {% empty %}
+        <p style="grid-column: 1/-1; color: #777; font-size: 0.9rem; text-align: center; padding: 1rem;">
+            Nenhuma foto cadastrada.
+        </p>
+      {% endfor %}
+    </div>
+
+    <div class="modal-buttons" style="margin-top: 1.5rem;">
+      <button type="button" class="modal-cancel" onclick="fecharModal('modalFotosLocal')" style="width: 100%;">Fechar</button>
+    </div>
   </div>
 </div>
 

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import (
     CustomUser, Categoria, Cliente, Prestador, 
-    Servico, Agendamento, Avaliacao
+    Servico, Agendamento, Avaliacao, FotoEstabelecimento
 )
 
 
@@ -34,6 +34,9 @@ class ClienteAdmin(admin.ModelAdmin):
     search_fields = ('usuario__email', 'endereco')
     readonly_fields = ('usuario',)
 
+class FotoEstabelecimentoInline(admin.TabularInline):
+    model = FotoEstabelecimento
+    extra = 1
 
 @admin.register(Prestador)
 class PrestadorAdmin(admin.ModelAdmin):
@@ -42,6 +45,8 @@ class PrestadorAdmin(admin.ModelAdmin):
     search_fields = ('usuario__first_name', 'usuario__last_name', 'nome_estabelecimento', 'documento')
     filter_horizontal = ('categorias',)
     readonly_fields = ('usuario',)
+
+    inlines = [FotoEstabelecimentoInline]
 
     def get_nome_profissional(self, obj):
         return obj.usuario.get_full_name()
@@ -70,3 +75,4 @@ class AvaliacaoAdmin(admin.ModelAdmin):
     list_filter = ('nota',)
     search_fields = ('agendamento__servico__nome',)
     readonly_fields = ('agendamento',)
+

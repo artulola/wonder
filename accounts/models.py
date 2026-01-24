@@ -59,6 +59,14 @@ class Prestador(models.Model):
             nome_completo = self.usuario.username
         return f"{nome_completo} ({self.nome_estabelecimento})"
 
+class FotoEstabelecimento(models.Model):
+    prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='fotos_estabelecimento')
+    imagem = models.ImageField(upload_to='prestadores/locais/', verbose_name='Foto do Ambiente')
+    data_upload = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Foto de {self.prestador.nome_estabelecimento}"
+
 class Servico(models.Model):
     prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='servicos')
     nome = models.CharField(max_length=100)
