@@ -34,9 +34,9 @@ class Cliente(models.Model):
 
 class Prestador(models.Model):
     class StatusPrestador(models.TextChoices):
-            PENDENTE = 'PENDENTE', 'Pendente'
-            APROVADO = 'APROVADO', 'Aprovado'
-            REJEITADO = 'REJEITADO', 'Rejeitado'
+        PENDENTE = 'PENDENTE', 'Pendente'
+        APROVADO = 'APROVADO', 'Aprovado'
+        REJEITADO = 'REJEITADO', 'Rejeitado'
     
     class TipoDocumento(models.TextChoices):
         CPF = 'CPF', 'CPF (Pessoa Física)'
@@ -93,3 +93,22 @@ class Avaliacao(models.Model):
     NOTA_CHOICES = [(i, str(i)) for i in range(1, 6)] 
     agendamento = models.OneToOneField(Agendamento, on_delete=models.CASCADE, related_name='avaliacao')
     nota = models.IntegerField(choices=NOTA_CHOICES) 
+
+class HorarioFuncionamento(models.Model):
+    prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='horarios')
+    dia_semana = models.IntegerField(choices=[
+        (0, 'Domingo'),
+        (1, 'Segunda-feira'),
+        (2, 'Terça-feira'),
+        (3, 'Quarta-feira'),
+        (4, 'Quinta-feira'),
+        (5, 'Sexta-feira'),
+        (6, 'Sábado'),
+    ])
+    aberto_24h = models.BooleanField(default=False)
+    fechado = models.BooleanField(default=False)
+    hora_inicio = models.TimeField(null=True, blank=True)
+    hora_fim = models.TimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.get_dia_semana_display()} - {self.prestador.nome_estabelecimento}"

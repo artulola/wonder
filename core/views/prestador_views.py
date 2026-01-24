@@ -1,3 +1,4 @@
+import json  # <--- Importação essencial adicionada
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
@@ -5,17 +6,13 @@ from django.utils import timezone
 
 from accounts.decorators import prestador_required
 from core.forms import UserUpdateForm, PrestadorEstabelecimentoUpdateForm
-from accounts.models import Servico, Categoria, Agendamento
+from accounts.models import Servico, Categoria, Agendamento, HorarioFuncionamento
 
 
 @prestador_required
 def prestador_home_view(request: HttpRequest) -> HttpResponse:
-    """
-    Página inicial do prestador: lista agendamentos em aberto para o dia ou para a data escolhida.
-    """
     prestador = request.user.perfil_prestador
 
-    # Se o usuário escolher uma data via GET (?data=2026-01-20)
     data_str = request.GET.get('data')
     if data_str:
         try:
@@ -39,9 +36,6 @@ def prestador_home_view(request: HttpRequest) -> HttpResponse:
 
 @prestador_required
 def finalizar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
-    """
-    Finaliza um agendamento (status -> CONCLUIDO).
-    """
     agendamento = get_object_or_404(Agendamento, id=agendamento_id, prestador=request.user.perfil_prestador)
     agendamento.status = Agendamento.StatusAgendamento.CONCLUIDO
     agendamento.save()
@@ -51,9 +45,6 @@ def finalizar_agendamento_view(request: HttpRequest, agendamento_id: int) -> Htt
 
 @prestador_required
 def cancelar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
-    """
-    Cancela um agendamento (status -> CANCELADO).
-    """
     agendamento = get_object_or_404(Agendamento, id=agendamento_id, prestador=request.user.perfil_prestador)
     if request.method == 'POST':
         motivo = request.POST.get('motivo_cancelamento', '')
@@ -67,9 +58,6 @@ def cancelar_agendamento_view(request: HttpRequest, agendamento_id: int) -> Http
 
 @prestador_required
 def prestador_finalizados_view(request: HttpRequest) -> HttpResponse:
-    """
-    Lista agendamentos finalizados.
-    """
     prestador = request.user.perfil_prestador
     finalizados = Agendamento.objects.filter(prestador=prestador, status=Agendamento.StatusAgendamento.CONCLUIDO)
     return render(request, 'core/prestador/finalizados.html', {'agendamentos': finalizados})
@@ -77,9 +65,6 @@ def prestador_finalizados_view(request: HttpRequest) -> HttpResponse:
 
 @prestador_required
 def prestador_cancelados_view(request: HttpRequest) -> HttpResponse:
-    """
-    Lista agendamentos cancelados.
-    """
     prestador = request.user.perfil_prestador
     cancelados = Agendamento.objects.filter(prestador=prestador, status=Agendamento.StatusAgendamento.CANCELADO)
     return render(request, 'core/prestador/cancelados.html', {'agendamentos': cancelados})
@@ -87,9 +72,6 @@ def prestador_cancelados_view(request: HttpRequest) -> HttpResponse:
 
 @prestador_required
 def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
-    """
-    Página de perfil do prestador: atualizar dados e gerenciar serviços.
-    """
     user = request.user
 
     if not hasattr(user, 'perfil_prestador'):
@@ -103,6 +85,7 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         acao = request.POST.get('acao')
 
+        # --- 1. ATUALIZAR DADOS DO PERFIL ---
         if acao == 'atualizar_perfil':
             u_form = UserUpdateForm(request.POST, request.FILES, instance=user)
             p_form = PrestadorEstabelecimentoUpdateForm(request.POST, instance=perfil_prestador)
@@ -115,24 +98,29 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             else:
                 messages.error(request, 'Erro ao atualizar. Verifique os dados.')
 
+        # --- 2. CRIAR SERVIÇO ---
         elif acao == 'criar_servico':
-            nome = request.POST.get('nome')
-            descricao = request.POST.get('descricao')
-            preco = request.POST.get('preco')
-            duracao = request.POST.get('duracao')
-            foto = request.FILES.get('foto')
-            servico = Servico.objects.create(
-                prestador=perfil_prestador,
-                nome=nome,
-                descricao=descricao,
-                preco=preco,
-                duracao_minutos=duracao,
-                foto=foto
-            )
-            servico.categorias.set(request.POST.getlist('categorias'))
-            messages.success(request, 'Serviço criado com sucesso!')
+            try:
+                nome = request.POST.get('nome')
+                descricao = request.POST.get('descricao')
+                preco = request.POST.get('preco')
+                duracao = request.POST.get('duracao')
+                foto = request.FILES.get('foto')
+                servico = Servico.objects.create(
+                    prestador=perfil_prestador,
+                    nome=nome,
+                    descricao=descricao,
+                    preco=preco,
+                    duracao_minutos=duracao,
+                    foto=foto
+                )
+                servico.categorias.set(request.POST.getlist('categorias'))
+                messages.success(request, 'Serviço criado com sucesso!')
+            except Exception as e:
+                messages.error(request, f'Erro ao criar serviço: {e}')
             return redirect('prestador-perfil')
 
+        # --- 3. EDITAR SERVIÇO ---
         elif acao == 'editar_servico':
             servico_id = request.POST.get('servico_id')
             servico = get_object_or_404(Servico, id=servico_id, prestador=perfil_prestador)
@@ -147,6 +135,7 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             messages.success(request, 'Serviço atualizado com sucesso!')
             return redirect('prestador-perfil')
 
+        # --- 4. EXCLUIR SERVIÇO ---
         elif acao == 'excluir_servico':
             servico_id = request.POST.get('servico_id')
             servico = get_object_or_404(Servico, id=servico_id, prestador=perfil_prestador)
@@ -154,15 +143,100 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             messages.success(request, 'Serviço excluído com sucesso!')
             return redirect('prestador-perfil')
 
+        # --- 5. ATUALIZAR HORÁRIOS (Lógica Nova JSON) ---
+        elif acao == 'atualizar_horarios':
+            json_data = request.POST.get('horarios_json_completo')
+            
+            if json_data:
+                try:
+                    dados_horarios = json.loads(json_data)
+                    
+                    # Limpa horários antigos deste prestador
+                    HorarioFuncionamento.objects.filter(prestador=perfil_prestador).delete()
+
+                    # Itera sobre o JSON e cria as novas linhas no banco
+                    for dia_index, info in dados_horarios.items():
+                        dia_int = int(dia_index)
+                        eh_24h = info.get('aberto_24h', False)
+                        eh_fechado = info.get('fechado', False)
+
+                        # Caso 1: 24h ou Fechado
+                        if eh_24h or eh_fechado:
+                            HorarioFuncionamento.objects.create(
+                                prestador=perfil_prestador,
+                                dia_semana=dia_int,
+                                aberto_24h=eh_24h,
+                                fechado=eh_fechado
+                            )
+                        # Caso 2: Intervalos de Horário
+                        else:
+                            intervalos = info.get('intervalos', [])
+                            for intervalo in intervalos:
+                                inicio = intervalo.get('inicio')
+                                fim = intervalo.get('fim')
+                                if inicio and fim:
+                                    HorarioFuncionamento.objects.create(
+                                        prestador=perfil_prestador,
+                                        dia_semana=dia_int,
+                                        hora_inicio=inicio,
+                                        hora_fim=fim,
+                                        aberto_24h=False,
+                                        fechado=False
+                                    )
+                    messages.success(request, 'Horários atualizados com sucesso!')
+                except Exception as e:
+                    messages.error(request, 'Erro ao salvar horários.')
+            
+            return redirect('prestador-perfil')
+
+    # --- MÉTODO GET ---
     else:
         u_form = UserUpdateForm(instance=user)
         p_form = PrestadorEstabelecimentoUpdateForm(instance=perfil_prestador)
+
+    # --- PREPARAR JSON DE HORÁRIOS PARA O FRONTEND ---
+    # Transforma os dados do banco de volta em JSON para o HTML ler
+    horarios_banco = HorarioFuncionamento.objects.filter(prestador=perfil_prestador)
+    horarios_dict = {}
+
+    for h in horarios_banco:
+        d = str(h.dia_semana)
+        if d not in horarios_dict:
+            horarios_dict[d] = {
+                'aberto_24h': h.aberto_24h,
+                'fechado': h.fechado,
+                'intervalos': []
+            }
+        
+        if not h.aberto_24h and not h.fechado and h.hora_inicio and h.hora_fim:
+            horarios_dict[d]['intervalos'].append({
+                'inicio': h.hora_inicio.strftime('%H:%M'),
+                'fim': h.hora_fim.strftime('%H:%M')
+            })
+            # Garante consistência das flags
+            horarios_dict[d]['aberto_24h'] = False
+            horarios_dict[d]['fechado'] = False
+
+    horarios_json = json.dumps(horarios_dict)
+
+    # 0=Domingo conforme seu padrão original, mas vamos exibir ordenado na tela se quiser
+    dias_semana = [
+        (0, 'Domingo'),
+        (1, 'Segunda-feira'),
+        (2, 'Terça-feira'),
+        (3, 'Quarta-feira'),
+        (4, 'Quinta-feira'),
+        (5, 'Sexta-feira'),
+        (6, 'Sábado'),
+    ]
 
     context = {
         'u_form': u_form,
         'p_form': p_form,
         'prestador': perfil_prestador,
         'servicos': servicos,
-        'categorias': categorias
+        'categorias': categorias,
+        'dias_semana': dias_semana,
+        'horarios_json': horarios_json # Variável chave para o template
     }
     return render(request, 'core/prestador/perfil.html', context)
