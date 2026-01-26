@@ -53,6 +53,14 @@ class Prestador(models.Model):
     
     categorias = models.ManyToManyField(Categoria, related_name='prestadores')
 
+    def tem_perfil_completo(self):
+        tem_foto_perfil = bool(self.usuario.foto_perfil)
+        tem_horarios = self.horarios.exists()
+        tem_foto_local = self.fotos_local.exists()
+        tem_servico = self.servicos.exists()
+
+        return tem_foto_perfil and tem_horarios and tem_foto_local and tem_servico
+
     def __str__(self):
         nome_completo = self.usuario.get_full_name() 
         if not nome_completo:
@@ -60,9 +68,9 @@ class Prestador(models.Model):
         return f"{nome_completo} ({self.nome_estabelecimento})"
 
 class FotoEstabelecimento(models.Model):
-    prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='fotos_estabelecimento')
-    imagem = models.ImageField(upload_to='prestadores/locais/', verbose_name='Foto do Ambiente')
-    data_upload = models.DateTimeField(auto_now=True)
+    prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='fotos_local')
+    imagem = models.ImageField(upload_to='estabelecimento_fotos/')
+    data_upload = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Foto de {self.prestador.nome_estabelecimento}"

@@ -39,7 +39,7 @@
         <div class="photos-section">
             <h4 class="section-title">Fotos do Local</h4>
             <div class="photo-gallery">
-                {% for foto in prestador.fotos_estabelecimento.all %}
+                {% for foto in prestador.fotos_local.all %}
                     <img class="photo-item" src="{{ foto.imagem.url }}" alt="Ambiente {{ prestador.nome_estabelecimento }}">
                 {% empty %}
                     <p class="data-value" style="padding: 10px;">O prestador ainda não adicionou fotos do local.</p>

@@ -1,4 +1,4 @@
-import json  # <--- Importação essencial adicionada
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
@@ -157,7 +157,7 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
                 messages.error(request, 'Nenhuma imagem selecionada.')
             return redirect('prestador-perfil')   
 
-        # --- ADICIONAR FOTO DO LOCAL ---
+        # --- EXCLUIR FOTO DO LOCAL ---
         elif acao == 'excluir_foto_local':
             foto_id = request.POST.get('foto_id')
             foto = get_object_or_404(FotoEstabelecimento, id=foto_id, prestador=perfil_prestador)
@@ -218,7 +218,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
         p_form = PrestadorEstabelecimentoUpdateForm(instance=perfil_prestador)
 
     # --- PREPARAR JSON DE HORÁRIOS PARA O FRONTEND ---
-    # Transforma os dados do banco de volta em JSON para o HTML ler
     horarios_banco = HorarioFuncionamento.objects.filter(prestador=perfil_prestador)
     horarios_dict = {}
 
@@ -236,22 +235,29 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
                 'inicio': h.hora_inicio.strftime('%H:%M'),
                 'fim': h.hora_fim.strftime('%H:%M')
             })
-            # Garante consistência das flags
             horarios_dict[d]['aberto_24h'] = False
             horarios_dict[d]['fechado'] = False
 
     horarios_json = json.dumps(horarios_dict)
 
-    # 0=Domingo conforme seu padrão original, mas vamos exibir ordenado na tela se quiser
     dias_semana = [
-        (0, 'Domingo'),
-        (1, 'Segunda-feira'),
-        (2, 'Terça-feira'),
-        (3, 'Quarta-feira'),
-        (4, 'Quinta-feira'),
-        (5, 'Sexta-feira'),
-        (6, 'Sábado'),
+        (0, 'Domingo'), (1, 'Segunda-feira'), (2, 'Terça-feira'), 
+        (3, 'Quarta-feira'), (4, 'Quinta-feira'), (5, 'Sexta-feira'), (6, 'Sábado')
     ]
+
+    # VERIFICAÇÃO DE PENDÊNCIAS
+    pendencias = []
+    if not user.foto_perfil:
+        pendencias.append("Adicionar uma foto de perfil")
+    
+    if not FotoEstabelecimento.objects.filter(prestador=perfil_prestador).exists():
+        pendencias.append("Adicionar pelo menos uma foto do estabelecimento")
+    
+    if not HorarioFuncionamento.objects.filter(prestador=perfil_prestador).exists():
+        pendencias.append("Configurar os horários de funcionamento")
+
+    if not Servico.objects.filter(prestador=perfil_prestador).exists():
+        pendencias.append("Cadastrar pelo menos um serviço")
 
     context = {
         'u_form': u_form,
@@ -261,7 +267,7 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
         'categorias': categorias,
         'fotos_estabelecimento': fotos_estabelecimento,
         'dias_semana': dias_semana,
-        'horarios_json': horarios_json # Variável chave para o template
-
+        'horarios_json': horarios_json,
+        'pendencias': pendencias
     }
     return render(request, 'core/prestador/perfil.html', context)
