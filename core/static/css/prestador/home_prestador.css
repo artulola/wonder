@@ -4,7 +4,6 @@
     --cor-vermelho-hover: #c82333;
     --cor-verde: #46c20d;
     --cor-verde-hover: #3ca10d;
-    --cor-principal-fundo: #430b7a;
     --cor-azul: #2a6ccf;
     --cor-vermelho-texto: #FF5A5A; 
     --cor-texto-principal: #505050; 
@@ -287,3 +286,104 @@ span.flatpickr-weekday { color: rgba(255, 255, 255, 0.8) !important; font-weight
 }
 .flatpickr-day.today { border-color: var(--cor-principal) !important; color: #333; }
 .flatpickr-day.today:hover { background: #f0e6ff !important; color: var(--cor-principal) !important; }
+
+.modal-input { 
+    width: 100%; 
+    padding: 0.8rem; 
+    border: 1px solid #ddd; 
+    border-radius: 6px; 
+    margin-bottom: 10px; 
+}
+.modal-label { 
+    margin-top: 10px; 
+    display: block; 
+    font-weight: 600; 
+    color: #555; 
+    font-size: 0.9rem; 
+}
+
+.day-selector-container { 
+    display: flex; 
+    gap: 8px; 
+    justify-content: center; 
+    margin: 15px 0; 
+}
+.day-selector-container input { display: none; }
+.day-circle {
+    width: 35px; height: 35px; border-radius: 50%; border: 1px solid #ccc;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 600; color: #555; cursor: pointer; transition: 0.2s;
+}
+.day-selector-container input:checked + .day-circle {
+    background-color: #430b7a; color: #fff; border-color: #430b7a;
+}
+
+.time-row { 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin-bottom: 10px; 
+}
+.btn-remove-time { 
+    background: none; border: none; color: #d9534f; cursor: pointer; font-size: 1.2rem; 
+}
+.btn-add-text { 
+    background: none; border: none; color: #430b7a; font-weight: 600; cursor: pointer; margin-top: 10px; 
+}
+
+.aviso-pendencia-floating {
+    position: fixed;
+    top: 80px;
+    width: 320px;
+    background-color: var(--cor-principal);
+    border: 1px solid #420b7a1c;
+    color: var(--cor-texto-branco);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px #420b7a3a;
+    z-index: 9999;
+    animation: slideInRight 0.5s ease forwards;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.aviso-header-float {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.aviso-title-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.aviso-title-box h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+}
+.btn-fechar-aviso {
+    background: none;
+    border: none;
+    color: var(--cor-texto-branco);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 0.8;
+    padding: 0;
+    opacity: 0.7;
+}
+.btn-fechar-aviso:hover { opacity: 1; }
+.aviso-lista {
+    padding-left: 20px;
+    margin: 0;
+}
+.aviso-lista li {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    list-style-type: disc;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}

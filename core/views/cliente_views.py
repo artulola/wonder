@@ -109,22 +109,27 @@ def cliente_estabelecimento_horarios_calendario_view(request: HttpRequest) -> Ht
 
 @cliente_required
 def cliente_busca_view(request: HttpRequest) -> HttpResponse:
-    query = request.GET.get('q', '')
-
-    prestadores = Prestador.objects.filter(status = Prestador.StatusPrestador.APROVADO)
+    query = request.GET.get('q')
+    categorias = Categoria.objects.all()
+    prestadores_filtrados = []
 
     if query:
-        prestadores = prestadores.filter(
-            Q(nome_estabelecimento__icontains=query) |
-            Q(usuario__first_name__icontains=query) |
-            Q(categorias__nome__icontains=query)
+        # Busca inicial no banco (filtra por nome, categoria E status APROVADO)
+        resultados_banco = Prestador.objects.filter(
+            Q(nome_estabelecimento__icontains=query) | 
+            Q(categorias__nome__icontains=query),
+            status=Prestador.StatusPrestador.APROVADO
         ).distinct()
-
-    categorias = Categoria.objects.all().order_by('nome')
-
+        
+        # Filtra na memória para exibir APENAS os que têm perfil completo
+        prestadores_filtrados = [
+            p for p in resultados_banco 
+            if p.tem_perfil_completo()
+        ]
+    
     context = {
-        'prestadores': prestadores,
         'categorias': categorias,
+        'prestadores': prestadores_filtrados,
         'query': query
     }
 
