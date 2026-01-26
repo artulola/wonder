@@ -1,7 +1,7 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
 
-{% block title %}WONDER{% endblock %}
+{% block title %}{{ prestador.nome_estabelecimento }} - Serviços | WONDER{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/estabelecimento_oferece.css' %}">
@@ -9,81 +9,49 @@
 
 {% block content %}
 
-{% load static %}
-
 <main class="services-page-content">
   
   <h1 class="page-title">O Estabelecimento Oferece:</h1>
 
-  <form>
-    
+  <form method="POST" action="">
+    {% csrf_token %}
     
     <div class="service-list">
       
+      {% for servico in servicos %}
       <div class="service-item">
-        <input type="checkbox" id="service-1" name="services" value="1">
-        <label for="service-1" class="service-card">
-          <img class="service-image" src="{% static 'img/categorias/cat_est/corte-social.svg' %}" alt="">
-          <div class="service-details">
-            <span class="service-name">Corte de Cabelo Social</span>
-            <span class="service-duration">Tempo de duração: 1h</span>
-          </div>
-          <span class="service-price">R$ 25,00</span>
-        </label>
-      </div>
+        <input type="checkbox" id="service-{{ servico.id }}" name="services" value="{{ servico.id }}">
+        
+        <label for="service-{{ servico.id }}" class="service-card">
+          {% if servico.foto %}
+            <img class="service-image" src="{{ servico.foto.url }}" alt="{{ servico.nome }}">
+          {% else %}
+            <div class="service-image" style="background: #eee; display: flex; align-items: center; justify-content: center;">
+                <img src="{% static 'img/icones/icon_roxo/Tesoura.svg' %}" style="width: 30px; height: 30px;">
+             </div>
+          {% endif %}
 
-      <div class="service-item">
-        <input type="checkbox" id="service-2" name="services" value="2">
-        <label for="service-2" class="service-card">
-          <img class="service-image" src="{% static 'img/categorias/cat_est/barba.svg' %}" alt="">
           <div class="service-details">
-            <span class="service-name">Barba</span>
-            <span class="service-duration">Tempo de duração: 30min</span>
+            <span class="service-name">{{ servico.nome }}</span>
+            <span class="service-duration">Tempo de duração: {{ servico.duracao_minutos }}min</span>
+            {% if servico.descricao %}
+                <span class="service-duration" style="font-size: 0.75rem;">{{ servico.descricao|truncatechars:50 }}</span>
+            {% endif %}
           </div>
-          <span class="service-price">R$ 20,00</span>
+          <span class="service-price">R$ {{ servico.preco }}</span>
         </label>
       </div>
-
-      <div class="service-item">
-        <input type="checkbox" id="service-3" name="services" value="3">
-        <label for="service-3" class="service-card">
-          <img class="service-image" src="{% static 'img/categorias/cat_est/sobrancelha.svg' %}" alt="">
-          <div class="service-details">
-            <span class="service-name">Sobrancelha</span>
-            <span class="service-duration">Tempo de duração: 30min</span>
-          </div>
-          <span class="service-price">R$ 15,00</span>
-        </label>
-      </div>
-      
-      <div class="service-item">
-        <input type="checkbox" id="service-4" name="services" value="4">
-        <label for="service-4" class="service-card">
-          <img class="service-image" src="{% static 'img/categorias/cat_est/corte-barba.svg' %}" alt="">
-          <div class="service-details">
-            <span class="service-name">Corte de Cabelo e Barba</span>
-            <span class="service-duration">Tempo de duração: 1:30h</span>
-          </div>
-          <span class="service-price">R$ 40,00</span>
-        </label>
-      </div>
-
-      <div class="service-item">
-        <input type="checkbox" id="service-5" name="services" value="5">
-        <label for="service-5" class="service-card">
-          <img class="service-image" src="{% static 'img/categorias/cat_est/completo.svg' %}" alt="">
-          <div class="service-details">
-            <span class="service-name">Corte de Cabelo, Barba e Sobrancelha</span>
-            <span class="service-duration">Tempo de duração: 2h</span>
-          </div>
-          <span class="service-price">R$ 50,00</span>
-        </label>
-      </div>
+      {% empty %}
+        <p style="text-align: center; color: #777; margin-top: 2rem;">Este prestador ainda não cadastrou serviços.</p>
+      {% endfor %}
 
     </div>
+
+    {% if servicos %}
     <div class="page-footer">
-      <button type="button" class="submit-button" onclick="window.location.href=`{% url 'cliente-estabelecimento-horarios' %}`">Confirmar Agendamento</button>
+      <button type="submit" class="submit-button">Confirmar Agendamento</button>
     </div>
+    {% endif %}
 
   </form>
 </main>
