@@ -124,23 +124,7 @@ def cliente_busca_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/busca.html', context)
 
 @cliente_required
-def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int) -> HttpResponse:
-    prestador = get_object_or_404(Prestador, id=prestador_id)
-    
-    processados = _processar_prestadores_para_display([prestador])
-    prestador_processado = processados[0] if processados else prestador
-
-    context = {
-        'prestador': prestador_processado,
-        'horario_display': getattr(prestador_processado, 'horario_display', ''),
-        'status_text': getattr(prestador_processado, 'status_text', ''),
-        'status_color': getattr(prestador_processado, 'status_color', '')
-    }
-    return render(request, 'core/cliente/detalhe_estabelecimento.html', context)
-
-@cliente_required
 def cliente_cidade_view(request: HttpRequest) -> HttpResponse:
-    
     cidades_query = Prestador.objects.values_list('cidade_atendimento', flat=True).distinct().order_by('cidade_atendimento')
     
     termo = request.GET.get('q')
@@ -227,7 +211,6 @@ def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int
                     status_text = "Fechado agora"
 
     context = {
-
         'prestador': prestador,
         'horario_display': horario_display,
         'status_text': status_text,
@@ -281,10 +264,8 @@ def cliente_estabelecimento_oferece_view(request: HttpRequest, prestador_id: int
     servicos = Servico.objects.filter(prestador=prestador)
 
     context = {
-
         'prestador': prestador,
         'servicos': servicos
-
     }
 
     return render(request, 'core/cliente/estabelecimento_oferece.html', context)
@@ -389,7 +370,7 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
                 del request.session['agendamento_prestador_id']
                 del request.session['agendamento_servicos_ids']
                 
-                messages.success(request, 'Solicitação enviada com sucesso!')
+                messages.success(request, 'Solicitação enviada com sucesso! Aguarde a confirmação do prestador.')
                 return redirect('cliente-agendamentos')
 
             except Exception as e:
@@ -409,15 +390,17 @@ def cliente_estabelecimento_horarios_calendario_view(request: HttpRequest) -> Ht
 
 @cliente_required
 def cliente_cancelar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
-    """
-    Cancela um agendamento do cliente logado.
-    """
-    # 1. Busca o agendamento garantindo que é do cliente logado
+    
     agendamento = get_object_or_404(Agendamento, id=agendamento_id, cliente=request.user.perfil_cliente)
 
-    # 2. Verifica se é POST (segurança)
     if request.method == 'POST':
+        
+        if agendamento.status == Agendamento.StatusAgendamento.AGENDADO:
+            messages.warning(request, 'Este agendamento ainda está pendente. Aguarde o prestador aceitar.')
+            return redirect('cliente-agendamentos')
+
         motivo = request.POST.get('motivo_cancelamento', 'Cancelado pelo cliente.')
+        
         if agendamento.status not in [Agendamento.StatusAgendamento.CONCLUIDO, Agendamento.StatusAgendamento.CANCELADO]:
             agendamento.status = Agendamento.StatusAgendamento.CANCELADO
             agendamento.motivo_cancelamento = motivo

@@ -13,6 +13,19 @@ from accounts.models import Servico, Categoria, Agendamento, HorarioFuncionament
 def prestador_home_view(request: HttpRequest) -> HttpResponse:
     prestador = request.user.perfil_prestador
 
+    # --- INÍCIO DA CORREÇÃO DE LÓGICA ---
+    # Limpa agendamentos pendentes que já passaram da hora
+    agora = timezone.now()
+    Agendamento.objects.filter(
+        prestador=prestador,
+        status=Agendamento.StatusAgendamento.AGENDADO,
+        data_hora_inicio__lt=agora
+    ).update(
+        status=Agendamento.StatusAgendamento.CANCELADO,
+        motivo_cancelamento="Sistema: Solicitação expirada."
+    )
+    # --- FIM DA CORREÇÃO ---
+
     data_str = request.GET.get('data')
     if data_str:
         try:
@@ -26,7 +39,7 @@ def prestador_home_view(request: HttpRequest) -> HttpResponse:
         prestador=prestador,
         data_hora_inicio__date=data_escolhida,
         status__in=[Agendamento.StatusAgendamento.AGENDADO, Agendamento.StatusAgendamento.CONFIRMADO]
-    )
+    ).order_by('data_hora_inicio') # Ordene por horário para ficar organizado
 
     return render(request, 'core/prestador/home.html', {
         'agendamentos': agendamentos,

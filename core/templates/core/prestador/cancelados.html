@@ -9,21 +9,21 @@
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
 <link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 <style>
-    /* Ajuste para agrupar o card e o motivo visualmente */
+    
     .agendamento-wrapper {
         margin-bottom: 1.5rem;
         display: flex;
         flex-direction: column;
     }
     
-    /* Estilo da nota de motivo */
+    
     .motivo-note {
-        background-color: #fff5f5; /* Fundo levemente avermelhado */
+        background-color: #fff5f5; 
         border-left: 3px solid #dc3545;
         color: #c0392b;
         font-size: 0.85rem;
         padding: 8px 12px;
-        margin-top: -5px; /* Puxa para cima para colar no card */
+        margin-top: -5px; 
         margin-left: 10px;
         margin-right: 10px;
         border-bottom-left-radius: 8px;
@@ -67,10 +67,10 @@
                 
                 <div class="agendamento-wrapper">
                     
-                    {# 1. Prepara variáveis de nome, data, hora e inicial #}
+                   
                     {% with nome_cliente=agendamento.cliente.usuario.get_full_name|default:agendamento.cliente.usuario.username hora_formatada=agendamento.data_hora_inicio|date:"H:i" dia_formatado=agendamento.data_hora_inicio|date:"d/m" inicial=agendamento.cliente.usuario.first_name|slice:":1"|default:agendamento.cliente.usuario.username|slice:":1"|upper %}
                     
-                        {# 2. Lógica da Imagem (Foto ou Avatar) #}
+                     
                         {% if agendamento.cliente.usuario.foto_perfil %}
                             
                             {# CASO A: Cliente TEM foto #}
@@ -79,7 +79,7 @@
                         {% else %}
                             
                             {# CASO B: Cliente NÃO tem foto (Usa Placehold.co com inicial) #}
-                            {# Montamos a URL antes para evitar erro de sintaxe #}
+                            {# URL antes para evitar erro de sintaxe #}
                             {% with avatar_url="https://placehold.co/80x80/8000ff/ffffff?text="|add:inicial %}
                                 {% card_wonder title=agendamento.servico.nome img_url=avatar_url subtitle=nome_cliente time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelado" btn_color_conclude="red" %}
                             {% endwith %}
