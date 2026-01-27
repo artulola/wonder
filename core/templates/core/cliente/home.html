@@ -1,183 +1,66 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
 {% load card_wonder %}
-
-{% block title %}WONDER - Prestador{% endblock title %}
+{% block title %}WONDER{% endblock title %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
+<link rel="stylesheet" href="{% static 'css/cliente/home.css' %}">
 <link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock extra_css %}
 
-{% block header_extra %}
-<a href="{% url 'logout' %}" class="header-logout-button">
-    <img src="{% static 'img/icones/icon_geral/logout.svg' %}" alt="Sair">
-    <span>Sair</span>
-</a>
-{% endblock header_extra %}
-
 {% block content %}
-<div class="prestador-layout-container">
-
-    <main class="main-prestador">
+<section class="home-content">
+    
+    <div class="category-section">
+        <div class="section-header">
+            <h2 class="section-title">Categorias</h2>
+        </div>
         
-        <div class="nav-tabs-container">
-            <button class="option-tab active left">Em Aberto</button>
-            <a href="{% url 'prestador-finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
-        </div>
-
-        <div class="block-text-tag">
-            <span class="text-tag-day">Agendamentos em {{ data_escolhida|date:"d/m/Y" }}</span>
-
-            <div style="position: relative;">
-                <button type="button" class="agenda-button" id="btn-abrir-calendario">
-                    <span class="text-tag">Ver agenda</span>
-                    <img src="{% static 'img/icones/icon_geral/calendar(1).svg' %}" alt="Calendário">
-                </button>
-                <input type="text" id="agenda-input" style="display: none;">
-            </div>
-        </div>
-
-        <div class="results-list" id="lista-agendamentos">
-            {% for agendamento in agendamentos %}
-                
-                <div class="agendamento-card-wrapper" 
-                     data-id="{{ agendamento.id }}" 
-                     data-cliente="{{ agendamento.cliente.usuario.first_name }}">
+        <div class="category-list-scroll">
+            {% for categoria in categorias %}
+                <a href="{% url 'cliente-busca' %}?q={{ categoria.nome }}" 
+                   class="category-card {% if categoria.num_prestadores == 0 %}category-empty{% endif %}">
                     
-                    {% with hora=agendamento.data_hora_inicio|date:"H:i" %}
-                        
-                        {# --- LÓGICA DA IMAGEM (FOTO OU LETRA) --- #}
-                        {% if agendamento.cliente.usuario.foto_perfil %}
-                            {# Se tem foto, usa a URL da foto #}
-                            {% with imagem_final=agendamento.cliente.usuario.foto_perfil.url %}
-                                
-                                {% if agendamento.status == 'AGENDADO' %}
-                                    {% card_wonder title=agendamento.servico.nome img_url=imagem_final subtitle=agendamento.cliente.usuario.first_name time_value=hora buttons_preset="confirm_reject" %}
-                                {% else %}
-                                    {% card_wonder title=agendamento.servico.nome img_url=imagem_final subtitle=agendamento.cliente.usuario.first_name time_value=hora buttons_preset="finish_cancel" %}
-                                {% endif %}
-
-                            {% endwith %}
-
-                        {% else %}
-                            {# Se NÃO tem foto, gera a URL com a inicial #}
-                            {% with inicial=agendamento.cliente.usuario.first_name|slice:":1" %}
-                                {% with imagem_final="https://ui-avatars.com/api/?name="|add:inicial|add:"&background=random&color=fff&size=128&bold=true" %}
-                                    
-                                    {% if agendamento.status == 'AGENDADO' %}
-                                        {% card_wonder title=agendamento.servico.nome img_url=imagem_final subtitle=agendamento.cliente.usuario.first_name time_value=hora buttons_preset="confirm_reject" %}
-                                    {% else %}
-                                        {% card_wonder title=agendamento.servico.nome img_url=imagem_final subtitle=agendamento.cliente.usuario.first_name time_value=hora buttons_preset="finish_cancel" %}
-                                    {% endif %}
-
-                                {% endwith %}
-                            {% endwith %}
-                        {% endif %}
-                        
-                    {% endwith %}
-                </div>
-
+                    {% if categoria.foto %}
+                        <img src="{{ categoria.foto.url }}" alt="{{ categoria.nome }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        <div style="width: 100%; height: 100%; background: #eee; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 1.5rem; color: #ccc;">#</span>
+                        </div>
+                    {% endif %}
+                    <p class="category-label">{{ categoria.nome }}</p>
+                </a>
             {% empty %}
-                <div style="text-align: center; margin-top: 3rem; color: #999;">
-                    <p>Não há agendamentos em aberto para esta data.</p>
-                </div>
+                <p style="color: #999; padding: 10px;">Nenhuma categoria encontrada.</p>
             {% endfor %}
         </div>
-    
-    </main>
-
-    <nav class="app-navbar prestador-navbar">
-        <a href="{% url 'prestador-home' %}" class="nav-item active">
-            <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" alt="Agendamentos" class="nav-icon">
-            <span class="nav-label">Agendamentos</span>
-        </a>
-        <a href="{% url 'prestador-perfil' %}" class="nav-item">
-            <img src="{% static 'img/icones/icon_footer/user.svg' %}" alt="Perfil" class="nav-icon">
-            <span class="nav-label">Perfil</span>
-        </a>
-    </nav>
-    
-</div>
-
-<form id="form-confirmar" method="POST" style="display: none;"> {% csrf_token %} </form>
-<form id="form-finalizar" method="POST" style="display: none;"> {% csrf_token %} </form>
-<form id="form-cancelar" method="POST" style="display: none;"> 
-    {% csrf_token %} 
-    <input type="hidden" name="motivo_cancelamento" value="Cancelado pelo prestador via painel.">
-</form>
-
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
         
-        const dataAtual = "{{ data_escolhida|date:'Y-m-d' }}";
-        const btnCalendario = document.getElementById('btn-abrir-calendario');
-        
-        // Configuração do Flatpickr (Calendário)
-        const fp = flatpickr("#agenda-input", {
-            locale: "pt",
-            dateFormat: "Y-m-d",
-            defaultDate: dataAtual,
-            positionElement: btnCalendario,
-            disableMobile: "true",
-            onChange: function(selectedDates, dateStr, instance) {
-                const url = new URL(window.location.href);
-                url.searchParams.set('data', dateStr);
-                window.location.href = url.toString();
-            }
-        });
+    </div>
+    
+    <div class="recommendation-section">
+        <div class="section-header">
+            <h2 class="section-title">Para você</h2>
+        </div>
 
-        if(btnCalendario) {
-            btnCalendario.addEventListener('click', function() { fp.toggle(); });
-        }
+        {% for prestador in prestadores %}
+            <a href="{% url 'cliente-estabelecimento--detalhe' prestador.id %}" style="text-decoration: none;">
+                
+                {% if prestador.usuario.foto_perfil %}
+                    {% card_wonder title=prestador.nome_estabelecimento img_url=prestador.usuario.foto_perfil.url subtitle=prestador.cidade_atendimento time_rating=False time_value=prestador.horario_display day_text=prestador.status_text color_status=prestador.status_color %}
+                {% else %}
+                    {% with avatar_url="https://ui-avatars.com/api/?background=random&color=fff&name="|add:prestador.nome_estabelecimento %}
+                        {% card_wonder title=prestador.nome_estabelecimento img_url=avatar_url subtitle=prestador.cidade_atendimento time_rating=False time_value=prestador.horario_display day_text=prestador.status_text color_status=prestador.status_color %}
+                    {% endwith %}
+                {% endif %}
 
-        // Lógica dos Botões (Delegação de Eventos)
-        const lista = document.getElementById('lista-agendamentos');
-        const formConfirmar = document.getElementById('form-confirmar');
-        const formFinalizar = document.getElementById('form-finalizar');
-        const formCancelar = document.getElementById('form-cancelar');
+            </a>
+        {% empty %}
+            <div style="text-align: center; margin-top: 2rem; color: #999;">
+                <p>Nenhum prestador disponível no momento.</p>
+                <p style="font-size: 0.8rem;">Tente mudar sua cidade ou volte mais tarde.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
 
-        if (lista) {
-            lista.addEventListener('click', function(e) {
-                const botao = e.target.closest('button');
-                if (!botao) return;
-
-                const wrapper = botao.closest('.agendamento-card-wrapper');
-                if (!wrapper) return;
-
-                const id = wrapper.dataset.id;
-                const cliente = wrapper.dataset.cliente;
-                const textoBotao = botao.textContent.trim();
-                const queryData = `?data=${dataAtual}`;
-
-                if (textoBotao === 'Confirmar') {
-                    formConfirmar.action = `/prestador/agendamentos/confirmar/${id}/${queryData}`;
-                    formConfirmar.submit();
-                }
-                else if (textoBotao === 'Recusar') {
-                    if (confirm(`Deseja recusar o agendamento de ${cliente}?`)) {
-                        formCancelar.action = `/prestador/agendamentos/cancelar/${id}/${queryData}`;
-                        formCancelar.submit();
-                    }
-                }
-                else if (textoBotao === 'Finalizar') {
-                    if (confirm(`Deseja finalizar o serviço para ${cliente}?`)) {
-                        formFinalizar.action = `/prestador/agendamentos/finalizar/${id}/${queryData}`;
-                        formFinalizar.submit();
-                    }
-                }
-                else if (textoBotao === 'Cancelar') {
-                    if (confirm(`Tem certeza que deseja cancelar o agendamento de ${cliente}?`)) {
-                        formCancelar.action = `/prestador/agendamentos/cancelar/${id}/${queryData}`;
-                        formCancelar.submit();
-                    }
-                }
-            });
-        }
-    });
-</script>
-{% endblock %}
+{% endblock content %}
