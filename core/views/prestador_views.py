@@ -42,6 +42,7 @@ def finalizar_agendamento_view(request: HttpRequest, agendamento_id: int) -> Htt
     messages.success(request, 'Agendamento finalizado com sucesso!')
     return redirect('prestador-home')
 
+
 @prestador_required
 def confirmar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
     agendamento = get_object_or_404(Agendamento, id=agendamento_id, prestador=request.user.perfil_prestador)
@@ -55,30 +56,45 @@ def confirmar_agendamento_view(request: HttpRequest, agendamento_id: int) -> Htt
         
     return redirect('prestador-home')
 
+
 @prestador_required
 def cancelar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
+    
     agendamento = get_object_or_404(Agendamento, id=agendamento_id, prestador=request.user.perfil_prestador)
+    
     if request.method == 'POST':
-        motivo = request.POST.get('motivo_cancelamento', '')
+        motivo = request.POST.get('motivo_cancelamento', 'Cancelado pelo prestador.')
         agendamento.status = Agendamento.StatusAgendamento.CANCELADO
         agendamento.motivo_cancelamento = motivo
         agendamento.save()
         messages.warning(request, 'Agendamento cancelado.')
         return redirect('prestador-home')
+    
     return render(request, 'core/prestador/cancelar_agendamento.html', {'agendamento': agendamento})
 
 
 @prestador_required
 def prestador_finalizados_view(request: HttpRequest) -> HttpResponse:
     prestador = request.user.perfil_prestador
-    finalizados = Agendamento.objects.filter(prestador=prestador, status=Agendamento.StatusAgendamento.CONCLUIDO)
+    
+    finalizados = Agendamento.objects.filter(
+        prestador=prestador, 
+        status=Agendamento.StatusAgendamento.CONCLUIDO
+    ).order_by('-data_hora_inicio')
+    
     return render(request, 'core/prestador/finalizados.html', {'agendamentos': finalizados})
 
 
 @prestador_required
 def prestador_cancelados_view(request: HttpRequest) -> HttpResponse:
+    
     prestador = request.user.perfil_prestador
-    cancelados = Agendamento.objects.filter(prestador=prestador, status=Agendamento.StatusAgendamento.CANCELADO)
+    
+    cancelados = Agendamento.objects.filter(
+        prestador=prestador, 
+        status=Agendamento.StatusAgendamento.CANCELADO
+    ).order_by('-data_hora_inicio')
+    
     return render(request, 'core/prestador/cancelados.html', {'agendamentos': cancelados})
 
 
@@ -178,7 +194,7 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             return redirect('prestador-perfil')
 
 
-        # --- 5. ATUALIZAR HORÁRIOS (Lógica Nova JSON) ---
+       
         elif acao == 'atualizar_horarios':
             json_data = request.POST.get('horarios_json_completo')
             
@@ -189,7 +205,7 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
                     # Limpa horários antigos deste prestador
                     HorarioFuncionamento.objects.filter(prestador=perfil_prestador).delete()
 
-                    # Itera sobre o JSON e cria as novas linhas no banco
+                  
                     for dia_index, info in dados_horarios.items():
                         dia_int = int(dia_index)
                         eh_24h = info.get('aberto_24h', False)
@@ -224,12 +240,12 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             
             return redirect('prestador-perfil')
 
-    # --- MÉTODO GET ---
+    
     else:
         u_form = UserUpdateForm(instance=user)
         p_form = PrestadorEstabelecimentoUpdateForm(instance=perfil_prestador)
 
-    # --- PREPARAR JSON DE HORÁRIOS PARA O FRONTEND ---
+    
     horarios_banco = HorarioFuncionamento.objects.filter(prestador=perfil_prestador)
     horarios_dict = {}
 

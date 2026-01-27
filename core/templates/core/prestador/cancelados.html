@@ -1,12 +1,35 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
+{# A LINHA ABAIXO É OBRIGATÓRIA PARA O CARD FUNCIONAR #}
 {% load card_wonder %}
 
-{% block title %}WONDER{% endblock title %}
+{% block title %}WONDER - Cancelados{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
 <link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
+<style>
+    /* Ajuste para agrupar o card e o motivo visualmente */
+    .agendamento-wrapper {
+        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Estilo da nota de motivo */
+    .motivo-note {
+        background-color: #fff5f5; /* Fundo levemente avermelhado */
+        border-left: 3px solid #dc3545;
+        color: #c0392b;
+        font-size: 0.85rem;
+        padding: 8px 12px;
+        margin-top: -5px; /* Puxa para cima para colar no card */
+        margin-left: 10px;
+        margin-right: 10px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+</style>
 {% endblock extra_css %}
 
 {% block header_extra %}
@@ -22,37 +45,67 @@
     <main class="main-prestador">
         
         <div class="nav-tabs-container">
-            <a href="{% url 'prestador-home' %}"><button class="option-tab inactive left">Em Aberto</button></a>
-            <a href="{% url 'prestador-finalizados' %}"><button class="option-tab active right">Finalizados</button></a> 
+            <a href="{% url 'prestador-home' %}">
+                <button class="option-tab inactive left">Em Aberto</button>
+            </a>
+            <a href="{% url 'prestador-finalizados' %}">
+                <button class="option-tab active right">Histórico</button>
+            </a> 
         </div>
 
         <div class="block-text-tag">
-            <span class="text-tag-day">Agendamentos Cancelados</span>
+            <span class="text-tag-day" style="color: #c0392b;">Cancelados</span>
 
             <a href="{% url 'prestador-finalizados' %}" class="filtro-toggle">
-                <span>Ver Finalizados</span>
+                <span>Ver Concluídos ></span>
             </a>
         </div>
 
         <div class="results-list">
+            
             {% for agendamento in agendamentos %}
-                {% card_wonder 
-                    title=agendamento.servico.nome 
-                    img_url=agendamento.cliente.usuario.foto_perfil.url|default:"img/icones/icon_footer/user.svg" 
-                    subtitle=agendamento.cliente.usuario.first_name 
-                    btn_text_conclude="Cancelado" 
-                    btn_color_conclude="red" 
-                %}
-                {% if agendamento.motivo_cancelamento %}
-                    <p style="font-size: 0.8rem; color: #dc3545; padding: 0 0.5rem;">
-                        <strong>Motivo:</strong> {{ agendamento.motivo_cancelamento }}
-                    </p>
-                {% endif %}
+                
+                <div class="agendamento-wrapper">
+                    
+                    {# 1. Prepara variáveis de nome, data, hora e inicial #}
+                    {% with nome_cliente=agendamento.cliente.usuario.get_full_name|default:agendamento.cliente.usuario.username hora_formatada=agendamento.data_hora_inicio|date:"H:i" dia_formatado=agendamento.data_hora_inicio|date:"d/m" inicial=agendamento.cliente.usuario.first_name|slice:":1"|default:agendamento.cliente.usuario.username|slice:":1"|upper %}
+                    
+                        {# 2. Lógica da Imagem (Foto ou Avatar) #}
+                        {% if agendamento.cliente.usuario.foto_perfil %}
+                            
+                            {# CASO A: Cliente TEM foto #}
+                            {% card_wonder title=agendamento.servico.nome img_url=agendamento.cliente.usuario.foto_perfil.url subtitle=nome_cliente time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelado" btn_color_conclude="red" %}
+                        
+                        {% else %}
+                            
+                            {# CASO B: Cliente NÃO tem foto (Usa Placehold.co com inicial) #}
+                            {# Montamos a URL antes para evitar erro de sintaxe #}
+                            {% with avatar_url="https://placehold.co/80x80/8000ff/ffffff?text="|add:inicial %}
+                                {% card_wonder title=agendamento.servico.nome img_url=avatar_url subtitle=nome_cliente time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelado" btn_color_conclude="red" %}
+                            {% endwith %}
+                        
+                        {% endif %}
+
+                    {% endwith %}
+
+                    {% if agendamento.motivo_cancelamento %}
+                        <div class="motivo-note">
+                            <strong>Motivo:</strong> "{{ agendamento.motivo_cancelamento }}"
+                        </div>
+                    {% else %}
+                        <div class="motivo-note">
+                            <em>Sem motivo informado.</em>
+                        </div>
+                    {% endif %}
+                </div>
+
             {% empty %}
-                <div style="text-align: center; margin-top: 2rem; color: #999;">
-                    <p>Não há agendamentos cancelados.</p>
+                <div style="text-align: center; margin-top: 3rem; color: #999;">
+                    <img src="{% static 'img/icones/icon_roxo/calendario_roxo.svg' %}" style="width: 40px; opacity: 0.5; filter: grayscale(1);">
+                    <p style="margin-top: 10px;">Nenhum cancelamento recente.</p>
                 </div>
             {% endfor %}
+            
         </div>
     
     </main>
