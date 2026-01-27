@@ -33,13 +33,11 @@
                     <a href="{% url 'cliente-estabelecimento--detalhe' prestador.id %}" style="text-decoration: none;">
 
                         {% if prestador.usuario.foto_perfil %}
-                            
-                            {% card_wonder title=prestador.nome_estabelecimento subtitle=prestador.usuario.get_full_name img_url=prestador.usuario.foto_perfil.url time_rating=True rating_value="5.0" time_start="08:00" time_end="18:00" day_text="Disponível hoje" color_status="green" %}
-                            
+                            {% card_wonder title=prestador.nome_estabelecimento img_url=prestador.usuario.foto_perfil.url subtitle=prestador.cidade_atendimento time_rating=False time_value=prestador.horario_display day_text=prestador.status_text color_status=prestador.status_color %}
                         {% else %}
-                            
-                            {% card_wonder title=prestador.nome_estabelecimento subtitle=prestador.usuario.get_full_name img_url="img/icones/padrao_avatar.svg" time_rating=True rating_value="5.0" time_start="08:00" time_end="18:00" day_text="Disponível hoje" color_status="green" %}
-                            
+                            {% with avatar_url="https://ui-avatars.com/api/?background=random&color=fff&name="|add:prestador.nome_estabelecimento %}
+                                {% card_wonder title=prestador.nome_estabelecimento img_url=avatar_url subtitle=prestador.cidade_atendimento time_rating=False time_value=prestador.horario_display day_text=prestador.status_text color_status=prestador.status_color %}
+                            {% endwith %}
                         {% endif %}
 
                     </a>
@@ -61,13 +59,15 @@
             
             <div class="categories-grid">
                 {% for categoria in categorias %}
-                    <a href="?q={{ categoria.nome }}" class="category-card">
+                    <a href="?q={{ categoria.nome }}" class="category-card {% if categoria.num_prestadores == 0 %}category-empty{% endif %}">
 
                         <div class="card-image">
                             {% if categoria.foto %}
                                 <img src="{{ categoria.foto.url }}" alt="{{ categoria.nome }}">
                             {% else %}
-                                <img src="{% static 'img/icones/padrao_categoria.svg' %}" alt="{{ categoria.nome }}" style="opacity: 0.5;">
+                                <div style="width: 100%; height: 100%; background: #eee; display: flex; align-items: center; justify-content: center;">
+                                    <span style="font-size: 2rem; color: #ccc;">#</span>
+                                </div>
                             {% endif %}
                         </div>
 

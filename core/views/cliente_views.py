@@ -9,31 +9,14 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from urllib.parse import unquote
 
-@cliente_required
-def cliente_home_view(request: HttpRequest) -> HttpResponse:
-    categorias = Categoria.objects.annotate(
-        num_prestadores=Count(
-            'prestadores', 
-            filter=Q(prestadores__status=Prestador.StatusPrestador.APROVADO)
-        )
-    ).order_by('-num_prestadores', 'nome')
-    
-    todos_aprovados = Prestador.objects.filter(status=Prestador.StatusPrestador.APROVADO)
-
-    cidade_selecionada = request.session.get('cidade_atual')
-    if cidade_selecionada:
-        todos_aprovados = todos_aprovados.filter(cidade_atendimento=cidade_selecionada)
-    
-    prestadores_processados = []
-    
+def _processar_prestadores_para_display(prestadores_queryset):
     agora = timezone.localtime()
     dia_semana_hoje = (agora.weekday() + 1) % 7 
     hora_atual = agora.time()
 
-    for p in todos_aprovados:
-        if not p.tem_perfil_completo():
-            continue
-            
+    lista_processada = []
+
+    for p in prestadores_queryset:
         horario_hoje = p.horarios.filter(dia_semana=dia_semana_hoje).first()
         
         is_open = False
@@ -72,37 +55,88 @@ def cliente_home_view(request: HttpRequest) -> HttpResponse:
         p.status_color = "green" if is_open else "red"
         p.horario_display = texto_horario
         
-        prestadores_processados.append(p)
+        lista_processada.append(p)
     
-    prestadores_processados.sort(key=lambda x: x.is_open_today, reverse=True)
+    lista_processada.sort(key=lambda x: x.is_open_today, reverse=True)
+    return lista_processada
+
+@cliente_required
+def cliente_home_view(request: HttpRequest) -> HttpResponse:
+    cidade_selecionada = request.session.get('cidade_atual')
+
+    filtros_categoria = Q(prestadores__status=Prestador.StatusPrestador.APROVADO)
+    
+    filtros_prestador = Q(status=Prestador.StatusPrestador.APROVADO)
+    
+    if cidade_selecionada:
+        filtros_categoria &= Q(prestadores__cidade_atendimento=cidade_selecionada)
+        filtros_prestador &= Q(cidade_atendimento=cidade_selecionada)
+
+    categorias = Categoria.objects.annotate(
+        num_prestadores=Count('prestadores', filter=filtros_categoria)
+    ).order_by('-num_prestadores', 'nome')
+    
+    todos_aprovados = Prestador.objects.filter(filtros_prestador)
+    
+    prestadores_aptos = [p for p in todos_aprovados if p.tem_perfil_completo()]
+    
+    prestadores_processados = _processar_prestadores_para_display(prestadores_aptos)
 
     context = {
         'categorias': categorias,
-        'prestadores': prestadores_processados
+        'prestadores': prestadores_processados[:10]
     }
     return render(request, 'core/cliente/home.html', context)
 
 @cliente_required
 def cliente_busca_view(request: HttpRequest) -> HttpResponse:
     query = request.GET.get('q')
-    categorias = Categoria.objects.all()
-    prestadores_filtrados = []
+    cidade_selecionada = request.session.get('cidade_atual')
+    
+    filtros_prestador_cat = Q(prestadores__status=Prestador.StatusPrestador.APROVADO)
+    if cidade_selecionada:
+        filtros_prestador_cat &= Q(prestadores__cidade_atendimento=cidade_selecionada)
+
+    categorias = Categoria.objects.annotate(
+        num_prestadores=Count('prestadores', filter=filtros_prestador_cat)
+    ).order_by('-num_prestadores', 'nome')
+    
+    prestadores_processados = []
 
     if query:
-        resultados_banco = Prestador.objects.filter(
+        filtros_busca = Q(status=Prestador.StatusPrestador.APROVADO) & (
             Q(nome_estabelecimento__icontains=query) | 
-            Q(categorias__nome__icontains=query),
-            status=Prestador.StatusPrestador.APROVADO
-        ).distinct()
+            Q(categorias__nome__icontains=query)
+        )
+        if cidade_selecionada:
+            filtros_busca &= Q(cidade_atendimento=cidade_selecionada)
+
+        resultados_banco = Prestador.objects.filter(filtros_busca).distinct()
         
-        prestadores_filtrados = [p for p in resultados_banco if p.tem_perfil_completo()]
+        prestadores_aptos = [p for p in resultados_banco if p.tem_perfil_completo()]
+        prestadores_processados = _processar_prestadores_para_display(prestadores_aptos)
     
     context = {
         'categorias': categorias,
-        'prestadores': prestadores_filtrados,
+        'prestadores': prestadores_processados,
         'query': query
     }
     return render(request, 'core/cliente/busca.html', context)
+
+@cliente_required
+def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int) -> HttpResponse:
+    prestador = get_object_or_404(Prestador, id=prestador_id)
+    
+    processados = _processar_prestadores_para_display([prestador])
+    prestador_processado = processados[0] if processados else prestador
+
+    context = {
+        'prestador': prestador_processado,
+        'horario_display': getattr(prestador_processado, 'horario_display', ''),
+        'status_text': getattr(prestador_processado, 'status_text', ''),
+        'status_color': getattr(prestador_processado, 'status_color', '')
+    }
+    return render(request, 'core/cliente/detalhe_estabelecimento.html', context)
 
 @cliente_required
 def cliente_cidade_view(request: HttpRequest) -> HttpResponse:
@@ -209,8 +243,14 @@ def cliente_agendamentos_view(request: HttpRequest) -> HttpResponse:
         cliente=cliente,
         status__in=[Agendamento.StatusAgendamento.AGENDADO, Agendamento.StatusAgendamento.CONFIRMADO]
     ).order_by('data_hora_inicio')
-    
-    return render(request, 'core/cliente/agendados.html', {'agendamentos': agendamentos})
+
+    agendamentos_processados = []
+    for ag in agendamentos:
+        ag.hora_formatada = ag.data_hora_inicio.strftime('%H:%M')
+        ag.dia_formatado = ag.data_hora_inicio.strftime('%A, %d/%m')
+        agendamentos_processados.append(ag)
+
+    return render(request, 'core/cliente/agendados.html', {'agendamentos': agendamentos_processados})
 
 @cliente_required
 def cliente_agendamentos_finalizados_view(request: HttpRequest) -> HttpResponse:
@@ -377,16 +417,15 @@ def cliente_cancelar_agendamento_view(request: HttpRequest, agendamento_id: int)
 
     # 2. Verifica se é POST (segurança)
     if request.method == 'POST':
-        # Regra: Só cancela se não estiver Concluído ou já Cancelado
-        if agendamento.status in [Agendamento.StatusAgendamento.CONCLUIDO, Agendamento.StatusAgendamento.CANCELADO]:
-            messages.error(request, 'Este agendamento não pode ser cancelado.')
-        else:
-            motivo = request.POST.get('motivo_cancelamento', 'Cancelado pelo cliente.')
-            
+        motivo = request.POST.get('motivo_cancelamento', 'Cancelado pelo cliente.')
+        if agendamento.status not in [Agendamento.StatusAgendamento.CONCLUIDO, Agendamento.StatusAgendamento.CANCELADO]:
             agendamento.status = Agendamento.StatusAgendamento.CANCELADO
             agendamento.motivo_cancelamento = motivo
             agendamento.save()
             
             messages.success(request, 'Agendamento cancelado com sucesso.')
-
+            
+        else:
+            messages.error(request, 'Este agendamento não pode ser cancelado.')
+            
     return redirect('cliente-agendamentos')
