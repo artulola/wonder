@@ -20,63 +20,41 @@
     <div class="block-text-tag">
         <span class="text-tag">Meus Agendamentos</span>
         <a href="{% url 'cliente-agendamentos--finalizados' %}" class="nova-categoria-button">
-            <span class="text-tag-category">Visualizar Agendamentos Finalizados ></span>
+            <span class="text-tag-category">Histórico ></span>
         </a>
     </div>
 
-    
-    <div class="results-list">
+    <div class="results-list" id="lista-agendamentos">
+      {% for agendamento in agendamentos %}
+          
+          <div class="card-cancelar-wrapper" 
+               data-id="{{ agendamento.id }}" 
+               data-prestador="{{ agendamento.prestador.nome_estabelecimento }}">
+               
+             {% with hora_formatada=agendamento.data_hora_inicio|date:"H:i" dia_formatado=agendamento.data_hora_inicio|date:"l, d/m" %}
+                 
+                 {% if agendamento.prestador.usuario.foto_perfil %}
+                     {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=agendamento.prestador.usuario.foto_perfil.url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelar" btn_color_conclude="red" %}
+                 {% else %}
+                     {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url="img/icones/padrao_avatar.svg" subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelar" btn_color_conclude="red" %}
+                 {% endif %}
 
-      {% card_wonder title="Diego BarberShop" img_url="img/logo/Diego-BarberShop.svg" subtitle="Cabelo, Barba"  time_value="14:00" day_text="Segunda-Feira" btn_text_conclude="Cancelar" btn_color_conclude="red" %}
-      {% card_wonder title="Studio de Beleza" img_url="img/logo/Diva-nails.svg" subtitle="Unha"  time_value="18:00" day_text="Segunda-Feira" btn_text_conclude="Cancelar" btn_color_conclude="red" %}
-      {% card_wonder title="RD Cabelos" img_url="img/logo/RD-Cabelos.svg" subtitle="Sobrancelha" time_value="18:00" day_text="Terça-feira" btn_text_conclude="Cancelar" btn_color_conclude="red" %}
+             {% endwith %}
+          
+          </div>
 
-<!-- Modal de Cancelamento -->
-<div class="modal-overlay" id="modalCancelar">
-  <div class="modal-content">
-    <h2 class="modal-title">Cancelar Agendamento</h2>
-    <label class="modal-label">Motivo do cancelamento</label>
-    <textarea class="modal-input" rows="3" placeholder="Digite o motivo..."></textarea>
-    <div class="modal-buttons">
-      <button class="modal-cancel" onclick="fecharModal('modalCancelar')">Voltar</button>
-      <button class="modal-save">Confirmar Cancelamento</button>
+      {% empty %}
+          <div style="text-align: center; margin-top: 3rem; color: #777;">
+              <p>Você não tem agendamentos ativos.</p>
+              <a href="{% url 'cliente-busca' %}" style="color: #430b7a; text-decoration: underline;">Buscar serviços</a>
+          </div>
+      {% endfor %}
     </div>
-  </div>
-</div>
 
-<script>
-  function abrirModal(id) {
-    document.getElementById(id).style.display = 'flex';
-  }
+    <form id="form-cancelar-cliente" method="POST" style="display: none;">
+        {% csrf_token %}
+        <input type="hidden" name="motivo_cancelamento" value="Cancelado pelo cliente.">
+    </form>
 
-  function fecharModal(id) {
-    document.getElementById(id).style.display = 'none';
-  }
-
-  // Abrir modal de Cancelar ao clicar nos botões
-  document.querySelectorAll('button').forEach(btn => {
-    if (btn.textContent.trim() === 'Cancelar'){ 
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        abrirModal('modalCancelar');
-      });
-    }
-  });
-
-  // Fechar ao clicar fora
-  document.querySelectorAll('.modal-overlay').forEach(modal => {
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  });
-</script>
-
-
-
-
-    </div>
 </section>
-
 {% endblock content %}

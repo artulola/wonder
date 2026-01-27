@@ -1,6 +1,6 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
-{% block title %}HORÁRIOS | WONDER{% endblock %}
+{% block title %}Horários | WONDER{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/detalhe_estabelecimento.css' %}">
@@ -10,49 +10,50 @@
 {% block content %}
 
 <div class="nav-tabs-container">
-        <a href="{% url 'cliente-estabelecimento--detalhe' %}"><button class="option-tab inactive left">Sobre o Estabelecimento</button></a>
-        <button class="option-tab active right"> Horários Disponíveis</button>
+    <a href="{% url 'cliente-estabelecimento--detalhe' prestador.id %}">
+        <button type="button" class="option-tab inactive left">Sobre o Estabelecimento</button>
+    </a>
+    <button class="option-tab active right">Horários Disponíveis</button>
 </div>
 
-
-<form action="#" method="post">
+<form method="POST">
     {% csrf_token %}
 
     <div class="time-slot-header">
-        <h2 class="page-title">Disponível Hoje</h2>
+        <h2 class="page-title">
+            {% if data_selecionada == hoje %}
+                DISPONÍVEL HOJE
+            {% else %}
+                DISPONÍVEL EM {{ data_selecionada|date:"d/m/Y" }}
+            {% endif %}
+        </h2>
+        
         <a href="{% url 'cliente-estabelecimento-horarios-calendario' %}" class="calendar-link" aria-label="Selecionar outra data">
             <img src="{% static 'img/icones/icon_geral/calendar-icon.svg' %}" alt="Calendário">
         </a>
     </div>
 
     <div class="time-slot-list">
-        
-        <div class="time-slot-item">
-            <input type="radio" id="time1" name="selected_time" value="10:00-10:30">
-            <label for="time1" class="time-slot-button">
-                10H - 10:30H
-            </label>
-        </div>
+        {% for slot in horarios %}
+            <div class="time-slot-item">
+                <input type="radio" id="time-{{ forloop.counter }}" name="selected_time" value="{{ slot.value }}">
+                <label for="time-{{ forloop.counter }}" class="time-slot-button">
+                    {{ slot.inicio }} - {{ slot.fim }}
+                </label>
+            </div>
+        {% empty %}
+            <div style="width: 100%; text-align: center; padding: 2rem; background: #f9f9f9; border-radius: 12px;">
+                <p style="color: #666; font-weight: 500;">Sem horários disponíveis para esta data.</p>
+                <p style="font-size: 0.8rem; color: #999;">Tente selecionar outro dia no calendário.</p>
+            </div>
+        {% endfor %}
+    </div>
 
-        <div class="time-slot-item">
-            <input type="radio" id="time2" name="selected_time" value="14:00-15:30">
-            <label for="time2" class="time-slot-button">
-                14H - 15:30H
-            </label>
-        </div>
-
-        <div class="time-slot-item">
-            <input type="radio" id="time3" name="selected_time" value="17:00-17:30">
-            <label for="time3" class="time-slot-button">
-                17H - 17:30H
-            </label>
-        </div>
-
-        </div>
-
+    {% if horarios %}
     <div class="submit-wrapper">
         <button type="submit" class="submit-button">Confirmar Horário</button>
     </div>
+    {% endif %}
 
 </form>
 

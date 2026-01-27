@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from datetime import timedelta
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100)
@@ -98,9 +99,14 @@ class Agendamento(models.Model):
     prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE)
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
     data_hora_inicio = models.DateTimeField()
-    data_hora_fim = models.DateTimeField()
+    data_hora_fim = models.DateTimeField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=StatusAgendamento.choices, default=StatusAgendamento.AGENDADO)
     motivo_cancelamento = models.TextField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.data_hora_inicio and self.servico:
+            self.data_hora_fim = self.data_hora_inicio + timedelta(minutes=self.servico.duracao_minutos)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.servico.nome} em {self.data_hora_inicio.strftime('%d/%m %H:%M')}"
