@@ -129,12 +129,16 @@ def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int
     
     processados = _processar_prestadores_para_display([prestador])
     prestador_processado = processados[0] if processados else prestador
+    
+    status_text = getattr(prestador_processado, 'status_text', "Fechado")
+    horario_display = getattr(prestador_processado, 'horario_display', "Consulte agenda")
+    status_color = getattr(prestador_processado, 'status_color', "red")
 
     context = {
         'prestador': prestador_processado,
-        'horario_display': getattr(prestador_processado, 'horario_display', ''),
-        'status_text': getattr(prestador_processado, 'status_text', ''),
-        'status_color': getattr(prestador_processado, 'status_color', '')
+        'horario_display': horario_display,
+        'status_text': status_text,
+        'status_color': status_color
     }
     return render(request, 'core/cliente/detalhe_estabelecimento.html', context)
 
@@ -189,54 +193,6 @@ def cliente_perfil_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/perfil.html', context)
 
 @cliente_required
-def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int) -> HttpResponse:
-    prestador = get_object_or_404(Prestador, id=prestador_id)
-    
-    agora = timezone.localtime()
-    dia_semana_hoje = (agora.weekday() + 1) % 7
-    hora_atual = agora.time()
-    
-    horario_hoje = prestador.horarios.filter(dia_semana=dia_semana_hoje).first()
-    
-    is_open = False
-    status_text = "Fechado"
-    horario_display = "Consulte agenda"
-    
-    if horario_hoje:
-        if horario_hoje.fechado:
-            is_open = False
-            status_text = "Fechado hoje"
-            horario_display = "Não abre hoje"
-        elif horario_hoje.aberto_24h:
-            is_open = True
-            status_text = "Aberto agora"
-            horario_display = "24 horas"
-        elif horario_hoje.hora_inicio and horario_hoje.hora_fim:
-            inicio_str = horario_hoje.hora_inicio.strftime('%H:%M')
-            fim_str = horario_hoje.hora_fim.strftime('%H:%M')
-            horario_display = f"{inicio_str} - {fim_str}"
-            
-            if horario_hoje.hora_inicio <= hora_atual <= horario_hoje.hora_fim:
-                is_open = True
-                status_text = "Aberto agora"
-            else:
-                is_open = False
-                if hora_atual < horario_hoje.hora_inicio:
-                    status_text = f"Abre às {inicio_str}"
-                else:
-                    status_text = "Fechado agora"
-
-    context = {
-
-        'prestador': prestador,
-        'horario_display': horario_display,
-        'status_text': status_text,
-        'status_color': "green" if is_open else "red"
-    }
-
-    return render(request, 'core/cliente/detalhe_estabelecimento.html', context)
-
-@cliente_required
 def cliente_agendamentos_view(request: HttpRequest) -> HttpResponse:
     cliente = request.user.perfil_cliente
     agendamentos = Agendamento.objects.filter(
@@ -281,18 +237,23 @@ def cliente_estabelecimento_oferece_view(request: HttpRequest, prestador_id: int
     servicos = Servico.objects.filter(prestador=prestador)
 
     context = {
-
         'prestador': prestador,
         'servicos': servicos
-
     }
 
     return render(request, 'core/cliente/estabelecimento_oferece.html', context)
 
 def gerar_horarios_disponiveis(prestador, data_selecionada, duracao_total_minutos): 
     dia_semana_model = (data_selecionada.weekday() + 1) % 7
-    regras = HorarioFuncionamento.objects.filter(prestador=prestador, dia_semana=dia_semana_model, fechado=False)
-    if not regras.exists(): return []
+    
+    regras = HorarioFuncionamento.objects.filter(
+        prestador=prestador, 
+        dia_semana=dia_semana_model, 
+        fechado=False
+    )
+    
+    if not regras.exists(): 
+        return []
     
     agendamentos = Agendamento.objects.filter(
         prestador=prestador,
@@ -310,15 +271,16 @@ def gerar_horarios_disponiveis(prestador, data_selecionada, duracao_total_minuto
             inicio = timezone.make_aware(datetime.combine(data_selecionada, datetime.min.time()))
             fim = timezone.make_aware(datetime.combine(data_selecionada, datetime.max.time()))
         else:
-            if not regra.hora_inicio or not regra.hora_fim: continue
+            if not regra.hora_inicio or not regra.hora_fim: 
+                continue
             inicio = timezone.make_aware(datetime.combine(data_selecionada, regra.hora_inicio))
             fim = timezone.make_aware(datetime.combine(data_selecionada, regra.hora_fim))
 
         if data_selecionada == agora.date():
             if inicio < agora:
-                minutos_extra = 30 - (agora.minute % 30)
-                inicio = agora + timedelta(minutes=minutos_extra)
-                inicio = inicio.replace(second=0, microsecond=0)
+                minutos_extra = 30 - (agora.minute % 30) if (agora.minute % 30) != 0 else 0
+                inicio_ajustado = agora + timedelta(minutes=minutos_extra)
+                inicio = inicio_ajustado.replace(second=0, microsecond=0)
 
         cursor = inicio
         while cursor + duracao_total <= fim:
@@ -354,7 +316,8 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
 
     prestador = get_object_or_404(Prestador, id=prestador_id)
     servicos_objetos = Servico.objects.filter(id__in=servicos_ids)
-    duracao_total = sum([s.duracao_minutos for s in servicos_objetos])
+    
+    duracao_total_minutos = sum([s.duracao_minutos for s in servicos_objetos])
 
     data_get = request.GET.get('data')
     hoje = timezone.now().date()
@@ -364,7 +327,15 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
     except ValueError:
         data_selecionada = hoje
 
-    horarios = gerar_horarios_disponiveis(prestador, data_selecionada, duracao_total)
+    horarios = gerar_horarios_disponiveis(prestador, data_selecionada, duracao_total_minutos)
+
+    datas_bloqueadas = []
+    
+    for i in range(45):
+        dia_checagem = hoje + timedelta(days=i)
+        
+        if not gerar_horarios_disponiveis(prestador, dia_checagem, duracao_total_minutos):
+            datas_bloqueadas.append(dia_checagem.strftime('%Y-%m-%d'))
 
     if request.method == 'POST':
         hora_str = request.POST.get('selected_time')
@@ -400,7 +371,8 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
         'horarios': horarios,
         'data_selecionada': data_selecionada,
         'hoje': hoje,
-        'duracao_total': duracao_total
+        'duracao_total': duracao_total_minutos,
+        'datas_bloqueadas': datas_bloqueadas
     })
 
 @cliente_required
@@ -409,22 +381,15 @@ def cliente_estabelecimento_horarios_calendario_view(request: HttpRequest) -> Ht
 
 @cliente_required
 def cliente_cancelar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
-    """
-    Cancela um agendamento do cliente logado.
-    """
-    # 1. Busca o agendamento garantindo que é do cliente logado
     agendamento = get_object_or_404(Agendamento, id=agendamento_id, cliente=request.user.perfil_cliente)
 
-    # 2. Verifica se é POST (segurança)
     if request.method == 'POST':
         motivo = request.POST.get('motivo_cancelamento', 'Cancelado pelo cliente.')
         if agendamento.status not in [Agendamento.StatusAgendamento.CONCLUIDO, Agendamento.StatusAgendamento.CANCELADO]:
             agendamento.status = Agendamento.StatusAgendamento.CANCELADO
             agendamento.motivo_cancelamento = motivo
             agendamento.save()
-            
             messages.success(request, 'Agendamento cancelado com sucesso.')
-            
         else:
             messages.error(request, 'Este agendamento não pode ser cancelado.')
             
