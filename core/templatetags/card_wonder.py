@@ -48,7 +48,7 @@ def card_wonder(
             {'text': 'Recusar', 'color': 'red'},
         ],
         'confirm_reject': [
-            {'text': 'Confirmar', 'color': 'blue'},
+            {'text': 'Confirmar', 'color': 'green'},
             {'text': 'Recusar', 'color': 'red'},
         ],
     }

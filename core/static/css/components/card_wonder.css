@@ -155,6 +155,15 @@
     color: #2A6CCF;
 }
 
+.card-wonder-btn-finish-color-green {
+    color: #3dcf2a;
+}
+
+.card-wonder-btn-finish-color-green:hover {
+    background-color: #52e040;
+    color: white;
+}
+
 .card-wonder-btn-finish-color-red {
     color: #DC3545FF;
 }

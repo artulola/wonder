@@ -56,7 +56,7 @@
                             
                             {# OPÇÃO A: Cliente TEM foto #}
                             {% if agendamento.status == 'AGENDADO' %}
-                                {% card_wonder title=agendamento.servico.nome img_url=agendamento.cliente.usuario.foto_perfil.url subtitle=nome_cliente time_value=hora buttons_preset="confirm_reject" %}
+                                {% card_wonder title=agendamento.servico.nome img_url=agendamento.cliente.usuario.foto_perfil.url subtitle=nome_cliente time_value=hora btn_color_conclude="green" buttons_preset="confirm_reject" %}
                             {% else %}
                                 {% card_wonder title=agendamento.servico.nome img_url=agendamento.cliente.usuario.foto_perfil.url subtitle=nome_cliente time_value=hora buttons_preset="finish_cancel" %}
                             {% endif %}

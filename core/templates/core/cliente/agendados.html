@@ -121,7 +121,7 @@
             
             <form id="form-confirmar-cancelamento" method="POST" action="">
                 {% csrf_token %}
-                <textarea name="motivo_cancelamento" rows="3" placeholder="Motivo (opcional)" required></textarea>
+                <textarea name="motivo_cancelamento" rows="3" placeholder="Motivo do Cancelamento" required></textarea>
                 
                 <div class="modal-actions">
                     <button type="button" class="btn-modal btn-voltar" onclick="fecharModal()">Voltar</button>
