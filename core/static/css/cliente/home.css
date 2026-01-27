@@ -54,23 +54,35 @@
     position: relative;
     text-decoration: none;
     transition: transform 0.2s;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .category-card:active {
     transform: scale(0.98);
 }
 
+.category-empty {
+    opacity: 0.4;
+    filter: grayscale(100%);
+    cursor: default;
+}
+
 .category-label {
     position: absolute;
-    bottom: 0.3rem;
-    padding: 0.1875rem 0.25rem;
+    bottom: 0;
+    width: 100%;
+    padding: 0.2rem;
     font-family: "Poppins-SemiBold", Helvetica;
     font-weight: 600;
     color: #f2f2f2;
     font-size: 0.6rem;
     line-height: normal;
-    background-color: rgba(0, 0, 0, 0.4);
-    border-radius: 0 0.15rem 0 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .more-categories-link {

@@ -15,7 +15,13 @@
 <section class="establishment-detail-content">
     <h4 class="section-title">Sobre o Estabelecimento</h4>
 
-    {% card_wonder title=prestador.nome_estabelecimento img_url=prestador.usuario.foto_perfil.url|default:"/static/img/icones/avatar_padrao.svg" time_rating=True rating_value="5.0" time_start="8:00" time_end="18:00" day_text="Disponível hoje" %}
+    {% if prestador.usuario.foto_perfil %}
+        {% card_wonder title=prestador.nome_estabelecimento img_url=prestador.usuario.foto_perfil.url time_rating=False time_value=horario_display day_text=status_text color_status=status_color %}
+    {% else %}
+        {% with avatar_url="https://ui-avatars.com/api/?background=random&color=fff&name="|add:prestador.nome_estabelecimento %}
+             {% card_wonder title=prestador.nome_estabelecimento img_url=avatar_url time_rating=False time_value=horario_display day_text=status_text color_status=status_color %}
+        {% endwith %}
+    {% endif %}
 
     <div class="main-detail-sections">
 
@@ -42,7 +48,7 @@
                 {% for foto in prestador.fotos_local.all %}
                     <img class="photo-item" src="{{ foto.imagem.url }}" alt="Ambiente {{ prestador.nome_estabelecimento }}">
                 {% empty %}
-                    <p class="data-value" style="padding: 10px;">O prestador ainda não adicionou fotos do local.</p>
+                    <p class="data-value" style="padding: 10px; color: #999;">O prestador ainda não adicionou fotos do local.</p>
                 {% endfor %}
             </div>
         </div>
