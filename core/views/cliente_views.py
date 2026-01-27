@@ -366,3 +366,27 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
 @cliente_required
 def cliente_estabelecimento_horarios_calendario_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/estabelecimento_calendario.html')
+
+@cliente_required
+def cliente_cancelar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
+    """
+    Cancela um agendamento do cliente logado.
+    """
+    # 1. Busca o agendamento garantindo que é do cliente logado
+    agendamento = get_object_or_404(Agendamento, id=agendamento_id, cliente=request.user.perfil_cliente)
+
+    # 2. Verifica se é POST (segurança)
+    if request.method == 'POST':
+        # Regra: Só cancela se não estiver Concluído ou já Cancelado
+        if agendamento.status in [Agendamento.StatusAgendamento.CONCLUIDO, Agendamento.StatusAgendamento.CANCELADO]:
+            messages.error(request, 'Este agendamento não pode ser cancelado.')
+        else:
+            motivo = request.POST.get('motivo_cancelamento', 'Cancelado pelo cliente.')
+            
+            agendamento.status = Agendamento.StatusAgendamento.CANCELADO
+            agendamento.motivo_cancelamento = motivo
+            agendamento.save()
+            
+            messages.success(request, 'Agendamento cancelado com sucesso.')
+
+    return redirect('cliente-agendamentos')

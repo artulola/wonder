@@ -1,20 +1,52 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
 {% load card_wonder %}
-{% block title %}WONDER{% endblock title %}
+{% block title %}WONDER - Meus Agendamentos{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/agendados.css' %}">
 <link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
+<style>
+    /* Estilos rápidos para o Modal de Cancelamento */
+    .modal-overlay {
+        display: none; /* Escondido por padrão */
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .modal-content h3 { color: #430b7a; margin-bottom: 1rem; }
+    .modal-content textarea {
+        width: 100%; padding: 10px; margin-bottom: 1rem;
+        border: 1px solid #ccc; border-radius: 8px;
+        resize: none;
+    }
+    .modal-actions { display: flex; gap: 10px; justify-content: center; }
+    .btn-modal { padding: 10px 20px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; }
+    .btn-voltar { background: #ddd; color: #333; }
+    .btn-confirmar { background: #c82333; color: white; }
+</style>
 {% endblock extra_css %}
 
-
 {% block content %}
-
 <section class="home-content">
+    
     <div class="nav-tabs-container">
         <button class="option-tab active left">Agendados</button>
-        <a href="{% url 'cliente-agendamentos--finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
+        <a href="{% url 'cliente-agendamentos--finalizados' %}">
+            <button class="option-tab inactive right">Finalizados</button>
+        </a>
     </div>
 
     <div class="block-text-tag">
@@ -27,7 +59,7 @@
     <div class="results-list" id="lista-agendamentos">
       {% for agendamento in agendamentos %}
           
-          <div class="card-cancelar-wrapper" 
+          <div class="card-wrapper-js" 
                data-id="{{ agendamento.id }}" 
                data-prestador="{{ agendamento.prestador.nome_estabelecimento }}">
                
@@ -40,7 +72,6 @@
                  {% endif %}
 
              {% endwith %}
-          
           </div>
 
       {% empty %}
@@ -51,10 +82,54 @@
       {% endfor %}
     </div>
 
-    <form id="form-cancelar-cliente" method="POST" style="display: none;">
-        {% csrf_token %}
-        <input type="hidden" name="motivo_cancelamento" value="Cancelado pelo cliente.">
-    </form>
+    <div id="modal-cancelamento" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Cancelar Agendamento?</h3>
+            <p style="margin-bottom: 1rem;">Deseja cancelar o serviço com <strong id="nome-prestador-modal">Prestador</strong>?</p>
+            
+            <form id="form-confirmar-cancelamento" method="POST" action="">
+                {% csrf_token %}
+                <textarea name="motivo_cancelamento" rows="3" placeholder="Motivo (opcional)"></textarea>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal btn-voltar" onclick="fecharModal()">Voltar</button>
+                    <button type="submit" class="btn-modal btn-confirmar">Confirmar Cancelamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const wrappers = document.querySelectorAll('.card-wrapper-js');
+        const modal = document.getElementById('modal-cancelamento');
+        const form = document.getElementById('form-confirmar-cancelamento');
+        const spanPrestador = document.getElementById('nome-prestador-modal');
+
+        wrappers.forEach(wrapper => {
+           
+            wrapper.addEventListener('click', function(e) {
+              
+                if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+                    e.preventDefault();
+                    
+                    const idAgendamento = this.dataset.id;
+                    const nomePrestador = this.dataset.prestador;
+
+                    spanPrestador.textContent = nomePrestador;
+
+                    form.action = `/agendamentos/cancelar/${idAgendamento}/`;
+
+                    modal.style.display = 'flex';
+                }
+            });
+        });
+    });
+
+    function fecharModal() {
+        document.getElementById('modal-cancelamento').style.display = 'none';
+    }
+</script>
 {% endblock content %}
