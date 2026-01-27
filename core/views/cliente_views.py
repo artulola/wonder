@@ -272,8 +272,15 @@ def cliente_estabelecimento_oferece_view(request: HttpRequest, prestador_id: int
 
 def gerar_horarios_disponiveis(prestador, data_selecionada, duracao_total_minutos): 
     dia_semana_model = (data_selecionada.weekday() + 1) % 7
-    regras = HorarioFuncionamento.objects.filter(prestador=prestador, dia_semana=dia_semana_model, fechado=False)
-    if not regras.exists(): return []
+    
+    regras = HorarioFuncionamento.objects.filter(
+        prestador=prestador, 
+        dia_semana=dia_semana_model, 
+        fechado=False
+    )
+    
+    if not regras.exists(): 
+        return []
     
     agendamentos = Agendamento.objects.filter(
         prestador=prestador,
@@ -291,15 +298,16 @@ def gerar_horarios_disponiveis(prestador, data_selecionada, duracao_total_minuto
             inicio = timezone.make_aware(datetime.combine(data_selecionada, datetime.min.time()))
             fim = timezone.make_aware(datetime.combine(data_selecionada, datetime.max.time()))
         else:
-            if not regra.hora_inicio or not regra.hora_fim: continue
+            if not regra.hora_inicio or not regra.hora_fim: 
+                continue
             inicio = timezone.make_aware(datetime.combine(data_selecionada, regra.hora_inicio))
             fim = timezone.make_aware(datetime.combine(data_selecionada, regra.hora_fim))
 
         if data_selecionada == agora.date():
             if inicio < agora:
-                minutos_extra = 30 - (agora.minute % 30)
-                inicio = agora + timedelta(minutes=minutos_extra)
-                inicio = inicio.replace(second=0, microsecond=0)
+                minutos_extra = 30 - (agora.minute % 30) if (agora.minute % 30) != 0 else 0
+                inicio_ajustado = agora + timedelta(minutes=minutos_extra)
+                inicio = inicio_ajustado.replace(second=0, microsecond=0)
 
         cursor = inicio
         while cursor + duracao_total <= fim:
@@ -335,7 +343,8 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
 
     prestador = get_object_or_404(Prestador, id=prestador_id)
     servicos_objetos = Servico.objects.filter(id__in=servicos_ids)
-    duracao_total = sum([s.duracao_minutos for s in servicos_objetos])
+    
+    duracao_total_minutos = sum([s.duracao_minutos for s in servicos_objetos])
 
     data_get = request.GET.get('data')
     hoje = timezone.now().date()
@@ -345,7 +354,15 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
     except ValueError:
         data_selecionada = hoje
 
-    horarios = gerar_horarios_disponiveis(prestador, data_selecionada, duracao_total)
+    horarios = gerar_horarios_disponiveis(prestador, data_selecionada, duracao_total_minutos)
+
+    datas_bloqueadas = []
+    
+    for i in range(45):
+        dia_checagem = hoje + timedelta(days=i)
+        
+        if not gerar_horarios_disponiveis(prestador, dia_checagem, duracao_total_minutos):
+            datas_bloqueadas.append(dia_checagem.strftime('%Y-%m-%d'))
 
     if request.method == 'POST':
         hora_str = request.POST.get('selected_time')
@@ -381,7 +398,8 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
         'horarios': horarios,
         'data_selecionada': data_selecionada,
         'hoje': hoje,
-        'duracao_total': duracao_total
+        'duracao_total': duracao_total_minutos,
+        'datas_bloqueadas': datas_bloqueadas
     })
 
 @cliente_required
@@ -405,9 +423,7 @@ def cliente_cancelar_agendamento_view(request: HttpRequest, agendamento_id: int)
             agendamento.status = Agendamento.StatusAgendamento.CANCELADO
             agendamento.motivo_cancelamento = motivo
             agendamento.save()
-            
             messages.success(request, 'Agendamento cancelado com sucesso.')
-            
         else:
             messages.error(request, 'Este agendamento não pode ser cancelado.')
             

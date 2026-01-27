@@ -5,6 +5,103 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/detalhe_estabelecimento.css' %}">
 <link rel="stylesheet" href="{% static 'css/cliente/estabelecimento_horarios.css' %}?v=2">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<style>
+    .flatpickr-calendar {
+        font-family: 'Poppins', sans-serif;
+        border-radius: 20px; 
+        border: none;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.2); 
+        padding: 0;
+        overflow: hidden;
+        z-index: 9999 !important;
+    }
+
+    .flatpickr-months {
+        background-color: var(--color-primary);
+        padding-top: 15px;
+        padding-bottom: 10px;
+        align-items: center;
+    }
+
+    .flatpickr-current-month .flatpickr-monthDropdown-months,
+    .flatpickr-current-month input.cur-year {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    
+    .flatpickr-months .flatpickr-prev-month, .flatpickr-months .flatpickr-next-month {
+        fill: #ffffff !important; 
+        padding: 10px;
+        top: 5px;
+    }
+    .flatpickr-months .flatpickr-prev-month:hover svg, .flatpickr-months .flatpickr-next-month:hover svg {
+        fill: #e0e0e0 !important;
+    }
+
+    .flatpickr-weekdays {
+        background-color: var(--color-primary);
+        border: none;
+        padding-bottom: 10px;
+    }
+    span.flatpickr-weekday {
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    .flatpickr-days {
+        padding: 15px;
+        background: #fff;
+    }
+
+    .flatpickr-day {
+        border-radius: 50% !important;
+        border: 2px solid transparent;
+        color: var(--text-dark);
+        font-weight: 500;
+        margin-top: 5px;
+        height: 38px;
+        line-height: 38px; 
+        transition: all 0.2s ease;
+    }
+
+    .flatpickr-day:hover, .flatpickr-day:focus {
+        background-color: #f0edff;
+        border-color: #f0edff;
+    }
+
+    .flatpickr-day.today {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+        background-color: transparent;
+    }
+    .flatpickr-day.today:hover {
+        background-color: var(--color-primary);
+        color: #fff;
+    }
+
+    .flatpickr-day.selected,
+    .flatpickr-day.selected:hover,
+    .flatpickr-day.selected:focus {
+        background-color: var(--color-primary) !important;
+        border-color: var(--color-primary) !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 10px rgba(86, 11, 173, 0.3);
+    }
+
+    .flatpickr-day.flatpickr-disabled,
+    .flatpickr-day.flatpickr-disabled:hover,
+    .flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay {
+        color: #e0e0e0 !important;
+        background: transparent !important;
+        border-color: transparent !important;
+        pointer-events: none;
+    }
+</style>
 {% endblock extra_css %}
 
 {% block content %}
@@ -28,9 +125,12 @@
             {% endif %}
         </h2>
         
-        <a href="{% url 'cliente-estabelecimento-horarios-calendario' %}" class="calendar-link" aria-label="Selecionar outra data">
-            <img src="{% static 'img/icones/icon_geral/calendar-icon.svg' %}" alt="Calendário">
-        </a>
+        <div style="position: relative;">
+            <button type="button" class="calendar-link" id="btn-abrir-calendario" aria-label="Selecionar outra data" style="background: none; border: none; cursor: pointer; padding: 5px;">
+                <img src="{% static 'img/icones/icon_geral/calendar-icon.svg' %}" alt="Calendário" style="pointer-events: none;">
+            </button>
+            <input type="text" id="agenda-input" style="display: none;">
+        </div>
     </div>
 
     <div class="time-slot-list">
@@ -42,9 +142,9 @@
                 </label>
             </div>
         {% empty %}
-            <div style="width: 100%; text-align: center; padding: 2rem; background: #f9f9f9; border-radius: 12px;">
+            <div style="width: 100%; text-align: center; padding: 2rem; background: #f9f9f9; border-radius: 12px; grid-column: 1 / -1;">
                 <p style="color: #666; font-weight: 500;">Sem horários disponíveis para esta data.</p>
-                <p style="font-size: 0.8rem; color: #999;">Tente selecionar outro dia no calendário.</p>
+                <p style="font-size: 0.8rem; color: #999;">Clique no calendário acima para escolher outro dia.</p>
             </div>
         {% endfor %}
     </div>
@@ -56,5 +156,50 @@
     {% endif %}
 
 </form>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        const btnCalendario = document.getElementById('btn-abrir-calendario');
+        
+        const datasBloqueadas = {{ datas_bloqueadas|safe }};
+        
+        const fp = flatpickr("#agenda-input", {
+            locale: "pt",
+            dateFormat: "Y-m-d",
+            minDate: "today",
+            defaultDate: "{{ data_selecionada|date:'Y-m-d' }}",
+            positionElement: btnCalendario,
+            disableMobile: "true",
+            
+            disable: [
+                function(date) {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const dateString = `${year}-${month}-${day}`;
+                    
+                    return datasBloqueadas.includes(dateString);
+                }
+            ],
+
+            onChange: function(selectedDates, dateStr, instance) {
+                const url = new URL(window.location.href);
+                url.searchParams.set('data', dateStr);
+                window.location.href = url.toString();
+            }
+        });
+
+        if(btnCalendario) {
+            btnCalendario.addEventListener('click', function(e) {
+                e.preventDefault();
+                fp.toggle();
+            });
+        }
+    });
+</script>
 
 {% endblock content %}
