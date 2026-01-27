@@ -231,7 +231,7 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
     duracao_total = sum([s.duracao_minutos for s in servicos_objetos])
 
     data_get = request.GET.get('data')
-    hoje = timezone.now().date()
+    hoje = timezone.localtime(timezone.now()).date()
     
     try:
         data_selecionada = datetime.strptime(data_get, '%Y-%m-%d').date() if data_get else hoje

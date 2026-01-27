@@ -18,9 +18,9 @@ def prestador_home_view(request: HttpRequest) -> HttpResponse:
         try:
             data_escolhida = timezone.datetime.strptime(data_str, "%Y-%m-%d").date()
         except ValueError:
-            data_escolhida = timezone.now().date()
+            data_escolhida = timezone.localtime(timezone.now()).date()
     else:
-        data_escolhida = timezone.now().date()
+        data_escolhida = timezone.localtime(timezone.now()).date()
 
     agendamentos = Agendamento.objects.filter(
         prestador=prestador,
@@ -42,6 +42,18 @@ def finalizar_agendamento_view(request: HttpRequest, agendamento_id: int) -> Htt
     messages.success(request, 'Agendamento finalizado com sucesso!')
     return redirect('prestador-home')
 
+@prestador_required
+def confirmar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
+    agendamento = get_object_or_404(Agendamento, id=agendamento_id, prestador=request.user.perfil_prestador)
+    
+    if agendamento.status == Agendamento.StatusAgendamento.AGENDADO:
+        agendamento.status = Agendamento.StatusAgendamento.CONFIRMADO
+        agendamento.save()
+        messages.success(request, 'Agendamento confirmado com sucesso!')
+    else:
+        messages.warning(request, 'Este agendamento não está pendente.')
+        
+    return redirect('prestador-home')
 
 @prestador_required
 def cancelar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:

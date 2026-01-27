@@ -47,6 +47,10 @@ def card_wonder(
             {'text': 'Ver detalhes', 'color': 'blue'},
             {'text': 'Recusar', 'color': 'red'},
         ],
+        'confirm_reject': [
+            {'text': 'Confirmar', 'color': 'blue'},
+            {'text': 'Recusar', 'color': 'red'},
+        ],
     }
 
     btn_finish = button_presets.get(buttons_preset)
