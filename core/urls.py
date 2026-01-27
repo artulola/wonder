@@ -38,6 +38,7 @@ urlpatterns = [
     path('prestador/perfil', prestador_views.prestador_perfil_view, name='prestador-perfil'),
     path('prestador/home/', prestador_views.prestador_home_view, name='prestador-home'),
     path('prestador/agendamentos/', prestador_views.prestador_home_view, name='prestador-agendamentos'),
+    path('prestador/agendamentos/confirmar/<int:agendamento_id>/', prestador_views.confirmar_agendamento_view, name='confirmar-agendamento'), # NOVA
     path('prestador/agendamentos/finalizar/<int:agendamento_id>/', prestador_views.finalizar_agendamento_view, name='finalizar-agendamento'),
     path('prestador/agendamentos/cancelar/<int:agendamento_id>/', prestador_views.cancelar_agendamento_view, name='cancelar-agendamento'),
  

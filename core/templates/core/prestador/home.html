@@ -41,14 +41,36 @@
             </div>
         </div>
 
-        <div class="results-list">
+        <div class="results-list" id="lista-agendamentos">
             {% for agendamento in agendamentos %}
-                {% card_wonder 
-                    title=agendamento.servico.nome 
-                    img_url=agendamento.cliente.usuario.foto_perfil.url|default:"img/icones/icon_footer/user.svg" 
-                    subtitle=agendamento.cliente.usuario.first_name 
-                    buttons_preset="finish_cancel" 
-                %}
+                
+                <div class="agendamento-card-wrapper" 
+                     data-id="{{ agendamento.id }}" 
+                     data-cliente="{{ agendamento.cliente.usuario.first_name }}">
+                    
+                    {% with hora=agendamento.data_hora_inicio|date:"H:i" %}
+                        
+                        {% if agendamento.cliente.usuario.foto_perfil %}
+                            
+                            {% if agendamento.status == 'AGENDADO' %}
+                                {% card_wonder title=agendamento.servico.nome img_url=agendamento.cliente.usuario.foto_perfil.url subtitle=agendamento.cliente.usuario.first_name time_value=hora buttons_preset="confirm_reject" %}
+                            {% else %}
+                                {% card_wonder title=agendamento.servico.nome img_url=agendamento.cliente.usuario.foto_perfil.url subtitle=agendamento.cliente.usuario.first_name time_value=hora buttons_preset="finish_cancel" %}
+                            {% endif %}
+
+                        {% else %}
+                            
+                            {% if agendamento.status == 'AGENDADO' %}
+                                {% card_wonder title=agendamento.servico.nome img_url="img/icones/icon_footer/user.svg" subtitle=agendamento.cliente.usuario.first_name time_value=hora buttons_preset="confirm_reject" %}
+                            {% else %}
+                                {% card_wonder title=agendamento.servico.nome img_url="img/icones/icon_footer/user.svg" subtitle=agendamento.cliente.usuario.first_name time_value=hora buttons_preset="finish_cancel" %}
+                            {% endif %}
+
+                        {% endif %}
+                        
+                    {% endwith %}
+                </div>
+
             {% empty %}
                 <div style="text-align: center; margin-top: 2rem; color: #999;">
                     <p>Não há agendamentos em aberto nesta data.</p>
@@ -71,11 +93,26 @@
     
 </div>
 
-<!-- Calaendário Flatpickr JS -->
+<form id="form-confirmar" method="POST" style="display: none;">
+    {% csrf_token %}
+</form>
+
+<form id="form-finalizar" method="POST" style="display: none;">
+    {% csrf_token %}
+</form>
+
+<form id="form-cancelar" method="POST" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="motivo_cancelamento" value="Cancelado pelo prestador via painel.">
+</form>
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        
+        const dataAtual = "{{ data_escolhida|date:'Y-m-d' }}";
+
         const btnCalendario = document.getElementById('btn-abrir-calendario');
         
         const fp = flatpickr("#agenda-input", {
@@ -91,9 +128,57 @@
             }
         });
 
-        btnCalendario.addEventListener('click', function() {
-            fp.toggle();
-        });
+        if(btnCalendario) {
+            btnCalendario.addEventListener('click', function() {
+                fp.toggle();
+            });
+        }
+
+        const lista = document.getElementById('lista-agendamentos');
+        const formConfirmar = document.getElementById('form-confirmar');
+        const formFinalizar = document.getElementById('form-finalizar');
+        const formCancelar = document.getElementById('form-cancelar');
+
+        if (lista) {
+            lista.addEventListener('click', function(e) {
+                const botao = e.target.closest('button');
+                if (!botao) return;
+
+                const wrapper = botao.closest('.agendamento-card-wrapper');
+                if (!wrapper) return;
+
+                const id = wrapper.dataset.id;
+                const cliente = wrapper.dataset.cliente;
+                const textoBotao = botao.textContent.trim();
+                const queryData = `?data=${dataAtual}`;
+
+                if (textoBotao === 'Confirmar') {
+                    formConfirmar.action = `/prestador/agendamentos/confirmar/${id}/${queryData}`;
+                    formConfirmar.submit();
+                }
+
+                else if (textoBotao === 'Recusar') {
+                    if (confirm(`Deseja recusar o agendamento de ${cliente}?`)) {
+                        formCancelar.action = `/prestador/agendamentos/cancelar/${id}/${queryData}`;
+                        formCancelar.submit();
+                    }
+                }
+
+                else if (textoBotao === 'Finalizar') {
+                    if (confirm(`Deseja finalizar o serviço para ${cliente}?`)) {
+                        formFinalizar.action = `/prestador/agendamentos/finalizar/${id}/${queryData}`;
+                        formFinalizar.submit();
+                    }
+                }
+                
+                else if (textoBotao === 'Cancelar') {
+                    if (confirm(`Tem certeza que deseja cancelar o agendamento de ${cliente}?`)) {
+                        formCancelar.action = `/prestador/agendamentos/cancelar/${id}/${queryData}`;
+                        formCancelar.submit();
+                    }
+                }
+            });
+        }
     });
 </script>
 {% endblock %}
