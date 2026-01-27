@@ -17,59 +17,22 @@
         </div>
         
         <div class="category-list-scroll">
-            
-            <a href="{% url 'cliente-busca' %}" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-barbearia.svg' %}" alt="Categoria Barbearia">
-                <p class="category-label">Barbearia</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-unha.svg' %}" alt="Categoria Unha">
-                <p class="category-label">Unha</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-cabeleireira.svg' %}" alt="Categoria Cabeleireira">
-                <p class="category-label">Cabeleireira</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-depilacao.svg' %}" alt="Categoria Depilação">
-                <p class="category-label">Depilação</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-spa.svg' %}" alt="Categoria SPA">
-                <p class="category-label">SPA</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-maquiagem.svg' %}" alt="Categoria Maquiagem">
-                <p class="category-label">Maquiagem</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-massagem.svg' %}" alt="Categoria Massagem">
-                <p class="category-label">Massagem</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-estetica.svg' %}" alt="Categoria Estética">
-                <p class="category-label">Estética</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-tatuagem.svg' %}" alt="Categoria Tatuagem">
-                <p class="category-label">Tatuagem</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-podologia.svg' %}" alt="Categoria Podologia">
-                <p class="category-label">Podologia</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-sobrancelha.svg' %}" alt="Categoria Sobrancelha">
-                <p class="category-label">Sobrancelhas</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-bronzeamento.svg' %}" alt="Categoria Bronzeamento">
-                <p class="category-label">Bronzeamento</p>
-            </a>
-            <a href="#" class="category-card">
-                <img src="{% static 'img/categorias/servicos/cat-piercing.svg' %}" alt="Categoria Piercing">
-                <p class="category-label">Piercing</p>
-            </a>
+            {% for categoria in categorias %}
+                <a href="{% url 'cliente-busca' %}?q={{ categoria.nome }}" 
+                   class="category-card {% if categoria.num_prestadores == 0 %}category-empty{% endif %}">
+                    
+                    {% if categoria.foto %}
+                        <img src="{{ categoria.foto.url }}" alt="{{ categoria.nome }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        <div style="width: 100%; height: 100%; background: #eee; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 1.5rem; color: #ccc;">#</span>
+                        </div>
+                    {% endif %}
+                    <p class="category-label">{{ categoria.nome }}</p>
+                </a>
+            {% empty %}
+                <p style="color: #999; padding: 10px;">Nenhuma categoria encontrada.</p>
+            {% endfor %}
         </div>
         
     </div>
@@ -77,16 +40,26 @@
     <div class="recommendation-section">
         <div class="section-header">
             <h2 class="section-title">Para você</h2>
-            <!--<a href="#" class="more-categories-link">Ver mais categorias</a>-->
         </div>
 
-        <a href="#">{% card_wonder title="Diego BarberShop" img_url="img/logo/Diego-BarberShop.svg" time_rating=True rating_value="5.0" time_start="8:00" time_end="18:00" day_text="Disponível hoje" %}</a>
-        {% card_wonder title="SPA da GI" img_url="img/logo/SPA-da-gi.svg" time_rating=True rating_value="4.8" time_start="8:00" time_end="18:00" day_text="Disponível hoje" %}
-        {% card_wonder title="RD Cabelos" img_url="img/logo/RD-Cabelos.svg" time_rating=True rating_value="100" time_start="8:00" time_end="18:00" day_text="Disponível Hoje" %}
-        {% card_wonder title="Diva Nails" img_url="img/logo/Diva-nails.svg" time_rating=True rating_value="21" time_start="8:00" time_end="18:00" day_text="Fechado" color_status="red" %}
-        {% card_wonder title="Tranças Negô" img_url="img/logo/trancas-nego.svg" time_rating=True rating_value="254" time_start="8:00" time_end="18:00" day_text="Fechado" color_status="red" %}
-        {% card_wonder title="Studio Make-Up" img_url="img/logo/studio-make.svg" time_rating=True rating_value="25" time_start="8:00" time_end="18:00" day_text="Fechado" color_status="red" %}
-    
+        {% for prestador in prestadores %}
+            <a href="{% url 'cliente-estabelecimento--detalhe' prestador.id %}" style="text-decoration: none;">
+                
+                {% if prestador.usuario.foto_perfil %}
+                    {% card_wonder title=prestador.nome_estabelecimento img_url=prestador.usuario.foto_perfil.url subtitle=prestador.cidade_atendimento time_rating=False time_value=prestador.horario_display day_text=prestador.status_text color_status=prestador.status_color %}
+                {% else %}
+                    {% with avatar_url="https://ui-avatars.com/api/?background=random&color=fff&name="|add:prestador.nome_estabelecimento %}
+                        {% card_wonder title=prestador.nome_estabelecimento img_url=avatar_url subtitle=prestador.cidade_atendimento time_rating=False time_value=prestador.horario_display day_text=prestador.status_text color_status=prestador.status_color %}
+                    {% endwith %}
+                {% endif %}
+
+            </a>
+        {% empty %}
+            <div style="text-align: center; margin-top: 2rem; color: #999;">
+                <p>Nenhum prestador disponível no momento.</p>
+                <p style="font-size: 0.8rem;">Tente mudar sua cidade ou volte mais tarde.</p>
+            </div>
+        {% endfor %}
     </div>
 </section>
 
