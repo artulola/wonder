@@ -7,9 +7,9 @@
 <link rel="stylesheet" href="{% static 'css/cliente/agendados.css' %}">
 <link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
 <style>
-    /* Estilos rápidos para o Modal de Cancelamento */
+    /* Estilos do Modal */
     .modal-overlay {
-        display: none; /* Escondido por padrão */
+        display: none;
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0, 0, 0, 0.5);
@@ -36,6 +36,15 @@
     .btn-modal { padding: 10px 20px; border-radius: 8px; cursor: pointer; border: none; font-weight: bold; }
     .btn-voltar { background: #ddd; color: #333; }
     .btn-confirmar { background: #c82333; color: white; }
+
+    .status-aguardando button, 
+    .status-aguardando a { 
+        background-color: #f2d205f3 !important; 
+        color: white !important;           
+        border: none !important;
+        opacity: 1 !important;
+    }
+
 </style>
 {% endblock extra_css %}
 
@@ -59,19 +68,42 @@
     <div class="results-list" id="lista-agendamentos">
       {% for agendamento in agendamentos %}
           
-          <div class="card-wrapper-js" 
-               data-id="{{ agendamento.id }}" 
-               data-prestador="{{ agendamento.prestador.nome_estabelecimento }}">
-               
-             {% with hora_formatada=agendamento.data_hora_inicio|date:"H:i" dia_formatado=agendamento.data_hora_inicio|date:"l, d/m" %}
-                 
-                 {% if agendamento.prestador.usuario.foto_perfil %}
-                     {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=agendamento.prestador.usuario.foto_perfil.url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelar" btn_color_conclude="red" %}
-                 {% else %}
-                     {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url="img/icones/padrao_avatar.svg" subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelar" btn_color_conclude="red" %}
-                 {% endif %}
+          <div class="agendamento-item-container"> 
+            
+            {% with hora_formatada=agendamento.data_hora_inicio|date:"H:i" dia_formatado=agendamento.data_hora_inicio|date:"l, d/m" %}
+            
+                {# Lógica para definir a imagem (foto do perfil ou padrão) #}
+                {% if agendamento.prestador.usuario.foto_perfil %}
+                    {% with foto_url=agendamento.prestador.usuario.foto_perfil.url %}
+                        {# Exibe o Card #}
+                        {% if agendamento.status == 'CONFIRMADO' %}
+                            <div class="card-wrapper-js" data-id="{{ agendamento.id }}" data-prestador="{{ agendamento.prestador.nome_estabelecimento }}">
+                                {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelar" btn_color_conclude="red" %}
+                            </div>
 
-             {% endwith %}
+                        {% else %}
+                            <div class="status-aguardando">
+                                {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Aguardando" btn_color_conclude="#ef8e1e" %}
+                            </div>
+
+                        {% endif %}
+                    {% endwith %}
+
+                {% else %}
+                     {% with foto_url="img/icones/padrao_avatar.svg" %} 
+                        {% if agendamento.status == 'CONFIRMADO' %}
+                            <div class="card-wrapper-js" data-id="{{ agendamento.id }}" data-prestador="{{ agendamento.prestador.nome_estabelecimento }}">
+                                {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelar" btn_color_conclude="red" %}
+                            </div>
+                        {% else %}
+                            <div>
+                                {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Aguardando..." btn_color_conclude="#f39c12" %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                {% endif %}
+
+            {% endwith %}
           </div>
 
       {% empty %}
@@ -89,7 +121,7 @@
             
             <form id="form-confirmar-cancelamento" method="POST" action="">
                 {% csrf_token %}
-                <textarea name="motivo_cancelamento" rows="3" placeholder="Motivo" required></textarea>
+                <textarea name="motivo_cancelamento" rows="3" placeholder="Motivo (opcional)" required></textarea>
                 
                 <div class="modal-actions">
                     <button type="button" class="btn-modal btn-voltar" onclick="fecharModal()">Voltar</button>
@@ -109,9 +141,7 @@
         const spanPrestador = document.getElementById('nome-prestador-modal');
 
         wrappers.forEach(wrapper => {
-           
             wrapper.addEventListener('click', function(e) {
-              
                 if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
                     e.preventDefault();
                     
@@ -119,9 +149,7 @@
                     const nomePrestador = this.dataset.prestador;
 
                     spanPrestador.textContent = nomePrestador;
-
-                    form.action = `/agendamentos/cancelar/${idAgendamento}/`;
-
+                    form.action = `/agendamentos/cancelar/${idAgendamento}/`; 
                     modal.style.display = 'flex';
                 }
             });

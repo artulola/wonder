@@ -124,27 +124,7 @@ def cliente_busca_view(request: HttpRequest) -> HttpResponse:
     return render(request, 'core/cliente/busca.html', context)
 
 @cliente_required
-def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int) -> HttpResponse:
-    prestador = get_object_or_404(Prestador, id=prestador_id)
-    
-    processados = _processar_prestadores_para_display([prestador])
-    prestador_processado = processados[0] if processados else prestador
-    
-    status_text = getattr(prestador_processado, 'status_text', "Fechado")
-    horario_display = getattr(prestador_processado, 'horario_display', "Consulte agenda")
-    status_color = getattr(prestador_processado, 'status_color', "red")
-
-    context = {
-        'prestador': prestador_processado,
-        'horario_display': horario_display,
-        'status_text': status_text,
-        'status_color': status_color
-    }
-    return render(request, 'core/cliente/detalhe_estabelecimento.html', context)
-
-@cliente_required
 def cliente_cidade_view(request: HttpRequest) -> HttpResponse:
-    
     cidades_query = Prestador.objects.values_list('cidade_atendimento', flat=True).distinct().order_by('cidade_atendimento')
     
     termo = request.GET.get('q')
@@ -191,6 +171,53 @@ def cliente_perfil_view(request: HttpRequest) -> HttpResponse:
         'c_form': c_form
     }
     return render(request, 'core/cliente/perfil.html', context)
+
+@cliente_required
+def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int) -> HttpResponse:
+    prestador = get_object_or_404(Prestador, id=prestador_id)
+    
+    agora = timezone.localtime()
+    dia_semana_hoje = (agora.weekday() + 1) % 7
+    hora_atual = agora.time()
+    
+    horario_hoje = prestador.horarios.filter(dia_semana=dia_semana_hoje).first()
+    
+    is_open = False
+    status_text = "Fechado"
+    horario_display = "Consulte agenda"
+    
+    if horario_hoje:
+        if horario_hoje.fechado:
+            is_open = False
+            status_text = "Fechado hoje"
+            horario_display = "Não abre hoje"
+        elif horario_hoje.aberto_24h:
+            is_open = True
+            status_text = "Aberto agora"
+            horario_display = "24 horas"
+        elif horario_hoje.hora_inicio and horario_hoje.hora_fim:
+            inicio_str = horario_hoje.hora_inicio.strftime('%H:%M')
+            fim_str = horario_hoje.hora_fim.strftime('%H:%M')
+            horario_display = f"{inicio_str} - {fim_str}"
+            
+            if horario_hoje.hora_inicio <= hora_atual <= horario_hoje.hora_fim:
+                is_open = True
+                status_text = "Aberto agora"
+            else:
+                is_open = False
+                if hora_atual < horario_hoje.hora_inicio:
+                    status_text = f"Abre às {inicio_str}"
+                else:
+                    status_text = "Fechado agora"
+
+    context = {
+        'prestador': prestador,
+        'horario_display': horario_display,
+        'status_text': status_text,
+        'status_color': "green" if is_open else "red"
+    }
+
+    return render(request, 'core/cliente/detalhe_estabelecimento.html', context)
 
 @cliente_required
 def cliente_agendamentos_view(request: HttpRequest) -> HttpResponse:
@@ -360,7 +387,7 @@ def cliente_estabelecimento_horarios_view(request: HttpRequest) -> HttpResponse:
                 del request.session['agendamento_prestador_id']
                 del request.session['agendamento_servicos_ids']
                 
-                messages.success(request, 'Solicitação enviada com sucesso!')
+                messages.success(request, 'Solicitação enviada com sucesso! Aguarde a confirmação do prestador.')
                 return redirect('cliente-agendamentos')
 
             except Exception as e:
@@ -381,10 +408,17 @@ def cliente_estabelecimento_horarios_calendario_view(request: HttpRequest) -> Ht
 
 @cliente_required
 def cliente_cancelar_agendamento_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
+    
     agendamento = get_object_or_404(Agendamento, id=agendamento_id, cliente=request.user.perfil_cliente)
 
     if request.method == 'POST':
+        
+        if agendamento.status == Agendamento.StatusAgendamento.AGENDADO:
+            messages.warning(request, 'Este agendamento ainda está pendente. Aguarde o prestador aceitar.')
+            return redirect('cliente-agendamentos')
+
         motivo = request.POST.get('motivo_cancelamento', 'Cancelado pelo cliente.')
+        
         if agendamento.status not in [Agendamento.StatusAgendamento.CONCLUIDO, Agendamento.StatusAgendamento.CANCELADO]:
             agendamento.status = Agendamento.StatusAgendamento.CANCELADO
             agendamento.motivo_cancelamento = motivo

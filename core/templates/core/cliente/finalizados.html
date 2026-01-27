@@ -1,13 +1,25 @@
 {% extends 'core/base/base.html' %}
 {% load static %}
-{% load card_wonder%}
-{% block title %}WONDER{% endblock title %}
+{% load card_wonder %}
+
+{% block title %}WONDER - Histórico{% endblock title %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/cliente/agendados.css' %}">
 <link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
+<style>
+    /* Css para motivo de cancelamento */
+    .motivo-cancelamento-box {
+        background-color: #fff5f5;
+        border-left: 4px solid #c0392b;
+        color: #c0392b;
+        padding: 10px;
+        margin: 5px 10px 20px 10px;
+        font-size: 0.9rem;
+        border-radius: 4px;
+    }
+</style>
 {% endblock extra_css %}
-
 
 {% block content %}
 
@@ -25,44 +37,89 @@
     </div>
 
     <div class="results-list">
-      {% card_wonder title="SPA da Gi" img_url="img/logo/SPA-da-gi.svg" subtitle="Massagem"  time_value="07:00" btn_text_conclude="Avaliar" %}
-      {% card_wonder title="Diva Nails" img_url="img/logo/Diva-nails.svg" subtitle="Unhas das Mãos"  time_value="09:00" btn_text_conclude="Avaliar" %}
+        
+        {% for agendamento in agendamentos %}
+            
+            {% with hora_formatada=agendamento.data_hora_inicio|date:"H:i" dia_formatado=agendamento.data_hora_inicio|date:"d/m" %}
+                
+                {# Define Imagem ou Avatar Padrão #}
+                {% if agendamento.prestador.usuario.foto_perfil %}
+                    {%  with foto_url=agendamento.prestador.usuario.foto_perfil.url %}
+                         
+                         {% if agendamento.status == 'CANCELADO' %}
+                             {# Card Cancelado #}
+                             {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelado" btn_color_conclude="red" %}
+                             
+                             <div class="motivo-cancelamento-box">
+                                 <strong>Motivo:</strong> {{ agendamento.motivo_cancelamento|default:"Sem motivo informado." }}
+                             </div>
 
-<!-- Modal de Avaliação -->
-<div class="modal-overlay" id="modalAvaliacao">
-  <div class="modal-content">
-    <h2 class="modal-title">AVALIE O SERVIÇO</h2>
+                         {% else %}
+                             {# Card Concluido (Botão Avaliar) #}
+                             <div class="btn-avaliar-wrapper" data-agendamento-id="{{ agendamento.id }}">
+                                {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Avaliar" %}
+                             </div>
+                         {% endif %}
+                    {% endwith %}
+                
+                {% else %}
+                    {# Caso sem foto #}
+                    {% with foto_url="img/icones/padrao_avatar.svg" %}
+                         {% if agendamento.status == 'CANCELADO' %}
+                             {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelado" btn_color_conclude="red" %}
+                             <div class="motivo-cancelamento-box">
+                                 <strong>Motivo:</strong> {{ agendamento.motivo_cancelamento|default:"Sem motivo informado." }}
+                             </div>
+                         {% else %}
+                             <div class="btn-avaliar-wrapper" data-agendamento-id="{{ agendamento.id }}">
+                                {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Avaliar" %}
+                             </div>
+                         {% endif %}
+                    {% endwith %}
+                {% endif %}
 
-    <div class="rating-stars">
-      <span class="star" data-value="1">★</span>
-      <span class="star" data-value="2">★</span>
-      <span class="star" data-value="3">★</span>
-      <span class="star" data-value="4">★</span>
-      <span class="star" data-value="5">★</span>
+            {% endwith %}
+
+        {% empty %}
+            <div style="text-align: center; margin-top: 3rem; color: #777;">
+                <p>Nenhum histórico encontrado.</p>
+            </div>
+        {% endfor %}
+
+        <div class="modal-overlay" id="modalAvaliacao">
+          <div class="modal-content">
+            <h2 class="modal-title">AVALIE O SERVIÇO</h2>
+            <div class="rating-stars">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+            <p class="rating-hint">*As estrelas representam a qualidade do serviço.</p>
+            <div class="modal-buttons">
+              <button class="modal-cancel" onclick="fecharModal('modalAvaliacao')">Cancelar</button>
+              <button class="modal-save" id="enviarAvaliacao">Enviar Avaliação</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-overlay" id="modalConfirmacao">
+          <div class="modal-content">
+            <h2 class="modal-title" style="color: green;">Sucesso</h2>
+            <p>Avaliação enviada!</p>
+            <div class="modal-buttons" style="justify-content: center;">
+              <button class="modal-save" onclick="fecharModal('modalConfirmacao')">OK</button>
+            </div>
+          </div>
+        </div>
+
     </div>
-
-    <p class="rating-hint">*As estrelas representam a qualidade do serviço. Ex: 1 = Péssimo | 5 = Ótimo</p>
-
-    <div class="modal-buttons">
-      <button class="modal-cancel" onclick="fecharModal('modalAvaliacao')">Cancelar</button>
-      <button class="modal-save" id="enviarAvaliacao">Enviar Avaliação</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal de Confirmação -->
-<div class="modal-overlay" id="modalConfirmacao">
-  <div class="modal-content">
-    <h2 class="modal-title" style="color: green;">Sucesso</h2>
-    <p>Avaliação enviada!</p>
-    <div class="modal-buttons" style="justify-content: center;">
-      <button class="modal-save" onclick="fecharModal('modalConfirmacao')">OK</button>
-    </div>
-  </div>
-</div>
+</section>
 
 <script>
   let notaSelecionada = 0;
+  let agendamentoIdAtual = null;
 
   function abrirModal(id) {
     document.getElementById(id).style.display = 'flex';
@@ -72,19 +129,23 @@
     document.getElementById(id).style.display = 'none';
   }
 
-  // Abrir modal de avaliação
-  document.querySelectorAll('button').forEach(btn => {
-    if (btn.textContent.trim() === 'Avaliar') {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        notaSelecionada = 0;
-        document.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
-        abrirModal('modalAvaliacao');
+  
+  document.querySelectorAll('.btn-avaliar-wrapper').forEach(wrapper => {
+      wrapper.addEventListener('click', function(e) {
+         if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+             e.preventDefault();
+             
+             if(e.target.innerText.includes('Avaliar') || e.target.closest('button').innerText.includes('Avaliar')){
+                 agendamentoIdAtual = this.dataset.agendamentoId;
+                 notaSelecionada = 0;
+                 document.querySelectorAll('.star').forEach(s => s.classList.remove('selected'));
+                 abrirModal('modalAvaliacao');
+             }
+         }
       });
-    }
   });
 
-  // Selecionar estrelas
+  
   document.querySelectorAll('.star').forEach(star => {
     star.addEventListener('click', function() {
       notaSelecionada = parseInt(this.dataset.value);
@@ -94,15 +155,18 @@
     });
   });
 
-  // Enviar avaliação
+  
   document.getElementById('enviarAvaliacao').addEventListener('click', function() {
     if (notaSelecionada === 0) return alert('Selecione uma nota antes de enviar.');
+    
+    
+    console.log("Enviando avaliação", notaSelecionada, "para o agendamento ID:", agendamentoIdAtual);
+
     fecharModal('modalAvaliacao');
     abrirModal('modalConfirmacao');
-    // Aqui você pode enviar a nota via AJAX ou formulário
   });
 
-  // Fechar ao clicar fora
+  
   document.querySelectorAll('.modal-overlay').forEach(modal => {
     modal.addEventListener('click', function(e) {
       if (e.target === modal) {
@@ -111,9 +175,5 @@
     });
   });
 </script>
-
-
-    </div>
-</section>
 
 {% endblock content %}
