@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
 from core.views import admin_views, cliente_views, prestador_views
 from accounts import views as auth_views
 
@@ -13,15 +14,12 @@ urlpatterns = [
     path('cidade/', cliente_views.cliente_cidade_view, name='cliente-cidade'),
     path('perfil/', cliente_views.cliente_perfil_view, name='cliente-perfil'),
     path('estabelecimento/<int:prestador_id>/', cliente_views.cliente_detalhe_estabelecimento_view, name='cliente-estabelecimento--detalhe'),
-    
     path('agendamentos/agendados', cliente_views.cliente_agendamentos_view, name='cliente-agendamentos'),
     path('agendamentos/finalizados/', cliente_views.cliente_agendamentos_finalizados_view, name='cliente-agendamentos--finalizados'),
-    path('agendamentos/cancelar/<int:agendamento_id>/', cliente_views.cliente_cancelar_agendamento_view, name='cliente-cancelar-agendamento'), # NOVA ROTA
-    
     path('estabelecimento/<int:prestador_id>/servicos/', cliente_views.cliente_estabelecimento_oferece_view, name='cliente-estabelecimento--oferece'),
     path('estabelecimento_horarios/', cliente_views.cliente_estabelecimento_horarios_view, name='cliente-estabelecimento-horarios'),
     path('estabelecimento-horarios/calendario/', cliente_views.cliente_estabelecimento_horarios_calendario_view, name='cliente-estabelecimento-horarios-calendario'),
-    path('estabelecimento/horarios/', cliente_views.cliente_estabelecimento_horarios_view, name='cliente-estabelecimento-horarios'),
+    path('estabelecimento/horarios/',cliente_views.cliente_estabelecimento_horarios_view, name='cliente-estabelecimento-horarios'),
     path('definir-cidade/<str:cidade>/', cliente_views.definir_cidade_view, name='definir-cidade'),
 
     path('auth/login/', auth_views.auth_login_view, name='login' ),
@@ -40,8 +38,9 @@ urlpatterns = [
     path('prestador/perfil', prestador_views.prestador_perfil_view, name='prestador-perfil'),
     path('prestador/home/', prestador_views.prestador_home_view, name='prestador-home'),
     path('prestador/agendamentos/', prestador_views.prestador_home_view, name='prestador-agendamentos'),
-    path('prestador/agendamentos/confirmar/<int:agendamento_id>/', prestador_views.confirmar_agendamento_view, name='confirmar-agendamento'),
+    path('prestador/agendamentos/confirmar/<int:agendamento_id>/', prestador_views.confirmar_agendamento_view, name='confirmar-agendamento'), # NOVA
     path('prestador/agendamentos/finalizar/<int:agendamento_id>/', prestador_views.finalizar_agendamento_view, name='finalizar-agendamento'),
     path('prestador/agendamentos/cancelar/<int:agendamento_id>/', prestador_views.cancelar_agendamento_view, name='cancelar-agendamento'),
  
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
