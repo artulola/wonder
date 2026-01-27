@@ -3,7 +3,7 @@
 {% block title %}Meu Perfil | WONDER{% endblock title %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/cliente/perfil_usuario.css' %}?v=2">
+<link rel="stylesheet" href="{% static 'css/cliente/perfil_usuario.css' %}?v=3">
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
 {% endblock extra_css %}
 
@@ -245,7 +245,7 @@
   <div class="modal-content" style="max-width: 450px;">
 
     <h2 class="modal-title">Configurar Horários</h2>
-    <p style="font-size:0.85rem; color:#666; margin-bottom:1rem; text-align:center;">Selecione os dias e defina os intervalos de atendimento.</p>
+    <p style="font-size:0.85rem; color:#666; margin-bottom:1rem; text-align:center;">Selecione os dias e defina os intervalos.</p>
     
     <form method="POST" id="formHorarios" onsubmit="prepararEnvioHorarios(event)">
       {% csrf_token %}
@@ -253,12 +253,13 @@
       <input type="hidden" name="horarios_json_completo" id="inputJsonCompleto">
 
       <div class="day-selector-container">
-        {% for dia_idx, dia_nome in dias_semana %}
-          <label>
-            <input type="checkbox" name="dias_ui_selecionados" value="{{ dia_idx }}">
-            <div class="day-circle">{{ dia_nome|slice:":1" }}</div>
-          </label>
-        {% endfor %}
+          <label><input type="checkbox" name="dias_ui_selecionados" value="0"><div class="day-circle">D</div></label>
+          <label><input type="checkbox" name="dias_ui_selecionados" value="1"><div class="day-circle">S</div></label>
+          <label><input type="checkbox" name="dias_ui_selecionados" value="2"><div class="day-circle">T</div></label>
+          <label><input type="checkbox" name="dias_ui_selecionados" value="3"><div class="day-circle">Q</div></label>
+          <label><input type="checkbox" name="dias_ui_selecionados" value="4"><div class="day-circle">Q</div></label>
+          <label><input type="checkbox" name="dias_ui_selecionados" value="5"><div class="day-circle">S</div></label>
+          <label><input type="checkbox" name="dias_ui_selecionados" value="6"><div class="day-circle">S</div></label>
       </div>
 
       <div style="display:flex; justify-content:space-around; margin-bottom:1rem;">
@@ -268,7 +269,10 @@
 
       <div id="intervalos-container"></div>
 
-      <button type="button" class="btn-add-text" onclick="adicionarNovoHorario()">+ Adicionar intervalo</button>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+          <button type="button" class="btn-add-text" onclick="adicionarNovoHorario()">+ Adicionar intervalo</button>
+          <button type="button" onclick="limparConfiguracaoGeral()" style="background:none; border:none; color:#dc3545; font-size:0.8rem; cursor:pointer; text-decoration:underline;">Limpar Tudo (Resetar)</button>
+      </div>
 
       <div class="modal-buttons" style="margin-top:1.5rem;">
         <button type="button" class="modal-cancel" onclick="fecharModal('modalHorarios')">Cancelar</button>
@@ -318,11 +322,25 @@
 </div>
 
 <script>
+  // --- VARIÁVEL GLOBAL DE HORÁRIOS ---
+  let horariosSalvos = {};
+
+  // Tenta carregar o JSON do Django com proteção contra erros
+  try {
+      const rawData = '{{ horarios_json|default:"{}"|escapejs }}';
+      horariosSalvos = JSON.parse(rawData);
+  } catch (e) {
+      console.error("Erro ao ler dados:", e);
+      horariosSalvos = {};
+  }
+
+  // --- FUNÇÕES DE MODAL ---
   window.abrirModal = function(id) {
     const modal = document.getElementById(id);
     if(modal) {
         modal.style.display = 'flex';
-        if(id === 'modalHorarios') resetarInputsModal();
+        // Se for o modal de horários, apenas limpa os checkboxes visuais
+        if(id === 'modalHorarios') resetarInputsVisuais();
     }
   }
 
@@ -330,46 +348,35 @@
     document.getElementById(id).style.display = 'none';
   }
 
-  window.fecharAvisoPendencia = function() {
-    const aviso = document.getElementById('avisoPendencia');
-    if(aviso) aviso.style.display = 'none';
-  }
-
-  window.abrirModalEditarServico = function(id, nome, descricao, preco, duracao) {
-      document.getElementById('editServicoId').value = id;
-      document.getElementById('editServicoNome').value = nome;
-      document.getElementById('editServicoPreco').value = preco.replace(',', '.');
-      document.getElementById('editServicoDuracao').value = duracao;
-      document.getElementById('editServicoDescricao').value = descricao;
-      abrirModal('modalEditarServico');
-  }
-
-  window.abrirModalExcluirServico = function(id, nome) {
-      document.getElementById('deleteServicoId').value = id;
-      document.getElementById('deleteServicoNome').innerText = nome;
-      abrirModal('modalExcluirServico');
-  }
-
+  // Fecha clicando fora
   document.querySelectorAll('.modal-overlay').forEach(m => {
       m.addEventListener('click', e => { if(e.target===m) m.style.display='none'; });
   });
 
-  
   // --- LÓGICA DE HORÁRIOS ---
-  let horariosSalvos = {{ horarios_json|default:"{}"|safe }};
-  if(typeof horariosSalvos !== 'object' || horariosSalvos === null) horariosSalvos = {};
   const containerIntervalos = document.getElementById('intervalos-container');
   const chkAberto24 = document.getElementById('chk24h');
   const chkFechado = document.getElementById('chkFechado');
   const btnAdd = document.querySelector('.btn-add-text');
 
-  function resetarInputsModal() {
+  function resetarInputsVisuais() {
     document.querySelectorAll('input[name="dias_ui_selecionados"]').forEach(chk => chk.checked = false);
     chkAberto24.checked = false;
     chkFechado.checked = false;
     containerIntervalos.innerHTML = '';
     criarLinhaIntervalo('08:00', '18:00');
     atualizarEstadoInputs();
+  }
+
+  // FUNÇÃO IMPORTANTE: Limpa TUDO para corrigir dados misturados
+  window.limparConfiguracaoGeral = function() {
+      if(confirm("Isso apagará TODOS os horários configurados. Isso corrige erros de dias trocados. Deseja continuar?")) {
+          horariosSalvos = {}; // Zera a memória
+          alert("Horários limpos! Configure novamente e clique em Salvar Configuração.");
+          resetarInputsVisuais();
+          // Atualiza o input hidden imediatamente com objeto vazio
+          document.getElementById('inputJsonCompleto').value = JSON.stringify({});
+      }
   }
 
   function criarLinhaIntervalo(inicio = '', fim = '') {
@@ -403,12 +410,14 @@
   chkAberto24.addEventListener('change', () => { if(chkAberto24.checked) chkFechado.checked=false; atualizarEstadoInputs(); });
   chkFechado.addEventListener('change', () => { if(chkFechado.checked) chkAberto24.checked=false; atualizarEstadoInputs(); });
 
+  // --- PREPARAÇÃO DO ENVIO ---
   window.prepararEnvioHorarios = function(e) {
     const diasMarcados = Array.from(document.querySelectorAll('input[name="dias_ui_selecionados"]:checked')).map(el => el.value);
 
-    if (diasMarcados.length === 0) {
+    // Se limpou tudo e quer salvar vazio, permite. Se tem dados mas não marcou dia, bloqueia.
+    if (diasMarcados.length === 0 && Object.keys(horariosSalvos).length > 0) {
         e.preventDefault();
-        alert("Selecione pelo menos um dia da semana.");
+        alert("Selecione os dias da semana para aplicar esse horário, ou clique em 'Limpar Tudo' para resetar.");
         return false;
     }
 
@@ -439,6 +448,7 @@
     document.getElementById('inputJsonCompleto').value = JSON.stringify(horariosSalvos);
   }
 
+  // --- RESUMO NA TELA PRINCIPAL (LÓGICA: 0=DOMINGO) ---
   function atualizarResumoTela() {
     const el = document.getElementById('txtHorariosResumo');
     if(!el) return;
@@ -447,11 +457,17 @@
         return; 
     }
 
-    const nomesDias = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"]; 
+    // Mapeamento fixo e correto
+    const nomesDias = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+    
     let grupos = {}; 
 
     for(let i=0; i<7; i++) {
         const diaStr = i.toString();
+        
+        // Se a chave não existe no objeto, pula
+        if(!horariosSalvos.hasOwnProperty(diaStr)) continue;
+
         const dados = horariosSalvos[diaStr];
 
         if(dados && !dados.fechado) {
@@ -492,13 +508,33 @@
 
     let textoDias = sequencias.map(seq => {
         if(seq.length === 1) return nomesDias[seq[0]];
-        return `${nomesDias[seq[0]]} - ${nomesDias[seq[seq.length-1]]}`;
+        if(seq.length > 2) return `${nomesDias[seq[0]]} - ${nomesDias[seq[seq.length-1]]}`;
+        return `${nomesDias[seq[0]]}, ${nomesDias[seq[1]]}`;
     }).join(", ");
 
     if(diasDoMelhor.length === 7) textoDias = "Todos os dias";
 
     el.innerText = `${textoDias} • ${melhorHorario}`;
     el.style.color = "#333";
+  }
+
+  // --- OUTRAS FUNÇÕES ---
+  window.fecharAvisoPendencia = function() {
+    const aviso = document.getElementById('avisoPendencia');
+    if(aviso) aviso.style.display = 'none';
+  }
+  window.abrirModalEditarServico = function(id, nome, descricao, preco, duracao) {
+      document.getElementById('editServicoId').value = id;
+      document.getElementById('editServicoNome').value = nome;
+      document.getElementById('editServicoPreco').value = preco.replace(',', '.');
+      document.getElementById('editServicoDuracao').value = duracao;
+      document.getElementById('editServicoDescricao').value = descricao;
+      abrirModal('modalEditarServico');
+  }
+  window.abrirModalExcluirServico = function(id, nome) {
+      document.getElementById('deleteServicoId').value = id;
+      document.getElementById('deleteServicoNome').innerText = nome;
+      abrirModal('modalExcluirServico');
   }
 
   document.addEventListener('DOMContentLoaded', () => {

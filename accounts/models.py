@@ -9,6 +9,7 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nome
 
+
 class CustomUser(AbstractUser):
     class TipoUsuario(models.TextChoices):
         CLIENTE = 'CLIENTE', 'Cliente'
@@ -26,12 +27,14 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 
+
 class Cliente(models.Model):
     usuario = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='perfil_cliente')
     endereco = models.CharField(max_length=255)
 
     def __str__(self):
         return f"Cliente: {self.usuario.first_name}"
+
 
 class Prestador(models.Model):
     class StatusPrestador(models.TextChoices):
@@ -68,6 +71,7 @@ class Prestador(models.Model):
             nome_completo = self.usuario.username
         return f"{nome_completo} ({self.nome_estabelecimento})"
 
+
 class FotoEstabelecimento(models.Model):
     prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='fotos_local')
     imagem = models.ImageField(upload_to='estabelecimento_fotos/')
@@ -75,6 +79,7 @@ class FotoEstabelecimento(models.Model):
 
     def __str__(self):
         return f"Foto de {self.prestador.nome_estabelecimento}"
+
 
 class Servico(models.Model):
     prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='servicos')
@@ -87,6 +92,7 @@ class Servico(models.Model):
 
     def __str__(self):
         return f"{self.nome} - {self.prestador.nome_estabelecimento}"
+
 
 class Agendamento(models.Model):
     class StatusAgendamento(models.TextChoices):
@@ -111,10 +117,12 @@ class Agendamento(models.Model):
     def __str__(self):
         return f"{self.servico.nome} em {self.data_hora_inicio.strftime('%d/%m %H:%M')}"
 
+
 class Avaliacao(models.Model):
     NOTA_CHOICES = [(i, str(i)) for i in range(1, 6)] 
     agendamento = models.OneToOneField(Agendamento, on_delete=models.CASCADE, related_name='avaliacao')
-    nota = models.IntegerField(choices=NOTA_CHOICES) 
+    nota = models.IntegerField(choices=NOTA_CHOICES)
+
 
 class HorarioFuncionamento(models.Model):
     prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='horarios')
