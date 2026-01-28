@@ -17,13 +17,26 @@
     color: var(--color-primary);
     font-size: 1rem;
     font-weight: 700;
-    text-transform: uppercase;
 }
 
 .calendar-link img {
     width: 28px;
     height: 28px;
-    filter: invert(50%) sepia(8%) saturate(1202%) hue-rotate(218deg) brightness(90%) contrast(85%);
+}
+
+.flatpickr-calendar {
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 0.85rem !important; 
+    width: 305px !important;       
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
+    border-radius: 12px !important;
+    margin-top: 5px !important;
+    z-index: 9999 !important; 
+}
+
+.flatpickr-days {
+    padding: 0 !important; 
 }
 
 /* --- Horários (Mobile) --- */
@@ -41,7 +54,7 @@
 .time-slot-button {
     display: block;
     width: 100%;
-    padding: 1.25rem;
+    padding: 0.8rem 0.8rem;
     background-color: var(--color-white);
     border: 1px solid #D1D5DB; 
     border-radius: 12px;
@@ -70,17 +83,20 @@
 .submit-wrapper {
     margin-top: 2rem;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .submit-button {
     font-family: "Poppins", sans-serif;
     width: 100%;
-    padding: 1rem;
+    width: 400px;
+    height: 2.5rem;
     background-color: var(--color-primary);
     color: var(--color-white);
     border: none;
-    border-radius: 12px;
-    font-size: 1rem;
+    border-radius: 0.4rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -119,7 +135,7 @@
     }
 
     .page-title {
-        font-size: 1.25rem;
+        font-size: 1rem;
     }
 
     .time-slot-list {
@@ -129,7 +145,7 @@
     }
 
     .time-slot-button {
-        padding: 1.5rem; 
+        padding: 0.8rem 0.8rem; 
     }
   
     .time-slot-item input[type="radio"]:checked + .time-slot-button:hover {
@@ -146,7 +162,6 @@
     
     .submit-button {
         font-family: "Poppins", sans-serif;
-        padding: 1.2rem;
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
 }

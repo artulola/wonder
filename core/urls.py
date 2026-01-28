@@ -40,7 +40,7 @@ urlpatterns = [
     path('prestador/agendamentos/', prestador_views.prestador_home_view, name='prestador-agendamentos'),
     path('prestador/agendamentos/confirmar/<int:agendamento_id>/', prestador_views.confirmar_agendamento_view, name='confirmar-agendamento'), # NOVA
     path('prestador/agendamentos/finalizar/<int:agendamento_id>/', prestador_views.finalizar_agendamento_view, name='finalizar-agendamento'),
-    path('prestador/agendamentos/cancelar/<int:agendamento_id>/', prestador_views.cancelar_agendamento_view, name='cancelar-agendamento'),
+    path('agendamentos/cancelar/<int:agendamento_id>/', cliente_views.cliente_cancelar_agendamento_view, name='cliente-cancelar-agendamento'),
  
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

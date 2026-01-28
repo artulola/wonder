@@ -10,14 +10,19 @@
 <style>
     /* Css para motivo de cancelamento */
     .motivo-cancelamento-box {
-        background-color: #fff5f5;
+        background-color: #f7f1f1ff;
         border-left: 4px solid #c0392b;
-        color: #c0392b;
+        color: #5f5a5a;
         padding: 10px;
-        margin: 5px 10px 20px 10px;
+        margin-top: 5px;
         font-size: 0.9rem;
         border-radius: 4px;
     }
+
+    .motivo-cancelamento-box strong {
+      color: #444141ff;
+      font-weight: 600;
+    }    
 </style>
 {% endblock extra_css %}
 
@@ -46,35 +51,40 @@
                 {% if agendamento.prestador.usuario.foto_perfil %}
                     {%  with foto_url=agendamento.prestador.usuario.foto_perfil.url %}
                          
-                         {% if agendamento.status == 'CANCELADO' %}
-                             {# Card Cancelado #}
-                             {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelado" btn_color_conclude="red" %}
-                             
-                             <div class="motivo-cancelamento-box">
-                                 <strong>Motivo:</strong> {{ agendamento.motivo_cancelamento|default:"Sem motivo informado." }}
-                             </div>
+                         <div class="agendamento-card-container">
+                             {% if agendamento.status == 'CANCELADO' %}
+                                 {# Card Cancelado #}
+                                 {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelado" btn_color_conclude="red" %}
+                                 
+                                 <div class="motivo-cancelamento-box">
+                                     <strong>Motivo do Cancelamento:</strong> {{ agendamento.motivo_cancelamento|default:"Sem motivo informado." }}
+                                 </div>
 
-                         {% else %}
-                             {# Card Concluido (Botão Avaliar) #}
-                             <div class="btn-avaliar-wrapper" data-agendamento-id="{{ agendamento.id }}">
-                                {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Avaliar" %}
-                             </div>
-                         {% endif %}
+                             {% else %}
+                                 {# Card Concluido (Botão Avaliar) #}
+                                 <div class="btn-avaliar-wrapper" data-agendamento-id="{{ agendamento.id }}">
+                                    {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Avaliar" %}
+                                 </div>
+                             {% endif %}
+                         </div>
+
                     {% endwith %}
                 
                 {% else %}
                     {# Caso sem foto #}
                     {% with foto_url="img/icones/padrao_avatar.svg" %}
-                         {% if agendamento.status == 'CANCELADO' %}
-                             {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelado" btn_color_conclude="red" %}
-                             <div class="motivo-cancelamento-box">
-                                 <strong>Motivo:</strong> {{ agendamento.motivo_cancelamento|default:"Sem motivo informado." }}
-                             </div>
-                         {% else %}
-                             <div class="btn-avaliar-wrapper" data-agendamento-id="{{ agendamento.id }}">
-                                {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Avaliar" %}
-                             </div>
-                         {% endif %}
+                         <div class="agendamento-card-container">
+                             {% if agendamento.status == 'CANCELADO' %}
+                                 {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Cancelado" btn_color_conclude="red" %}
+                                 <div class="motivo-cancelamento-box">
+                                     <strong>Motivo:</strong> {{ agendamento.motivo_cancelamento|default:"Sem motivo informado." }}
+                                 </div>
+                             {% else %}
+                                 <div class="btn-avaliar-wrapper" data-agendamento-id="{{ agendamento.id }}">
+                                    {% card_wonder title=agendamento.prestador.nome_estabelecimento img_url=foto_url subtitle=agendamento.servico.nome time_value=hora_formatada day_text=dia_formatado btn_text_conclude="Avaliar" %}
+                                 </div>
+                             {% endif %}
+                         </div>
                     {% endwith %}
                 {% endif %}
 
