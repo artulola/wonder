@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import timedelta
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Categoria(models.Model):
     nome = models.CharField(max_length=100)
@@ -119,9 +120,23 @@ class Agendamento(models.Model):
 
 
 class Avaliacao(models.Model):
-    NOTA_CHOICES = [(i, str(i)) for i in range(1, 6)] 
+    NOTA_CHOICES = [(i, str(i)) for i in range(1, 6)]
+
     agendamento = models.OneToOneField(Agendamento, on_delete=models.CASCADE, related_name='avaliacao')
-    nota = models.IntegerField(choices=NOTA_CHOICES)
+    
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    prestador = models.ForeignKey(Prestador, on_delete=models.CASCADE, related_name='avaliacoes')
+    
+    nota = models.IntegerField(choices=NOTA_CHOICES, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    comentario = models.TextField(blank=True, null=True)
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Avaliação {self.nota} - {self.prestador.nome_estabelecimento}"
+
+
+    def estrelas_display(self):
+        return "★" * self.nota + "☆" * (5 - self.nota)
 
 
 class HorarioFuncionamento(models.Model):

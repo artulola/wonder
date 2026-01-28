@@ -1,4 +1,5 @@
 import json
+from django.db.models import Avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
@@ -13,8 +14,6 @@ from accounts.models import Servico, Categoria, Agendamento, HorarioFuncionament
 def prestador_home_view(request: HttpRequest) -> HttpResponse:
     prestador = request.user.perfil_prestador
 
-    # --- INÍCIO DA CORREÇÃO DE LÓGICA ---
-    # Limpa agendamentos pendentes que já passaram da hora
     agora = timezone.now()
     Agendamento.objects.filter(
         prestador=prestador,
@@ -24,7 +23,6 @@ def prestador_home_view(request: HttpRequest) -> HttpResponse:
         status=Agendamento.StatusAgendamento.CANCELADO,
         motivo_cancelamento="Sistema: Solicitação expirada."
     )
-    # --- FIM DA CORREÇÃO ---
 
     data_str = request.GET.get('data')
     if data_str:
@@ -39,11 +37,17 @@ def prestador_home_view(request: HttpRequest) -> HttpResponse:
         prestador=prestador,
         data_hora_inicio__date=data_escolhida,
         status__in=[Agendamento.StatusAgendamento.AGENDADO, Agendamento.StatusAgendamento.CONFIRMADO]
-    ).order_by('data_hora_inicio') # Ordene por horário para ficar organizado
+    ).order_by('data_hora_inicio')
+
+    media = prestador.avaliacoes.aggregate(Avg('nota'))['nota__avg']
+    media_avaliacao = round(media, 1) if media else None
+    total_avaliacoes = prestador.avaliacoes.count()
 
     return render(request, 'core/prestador/home.html', {
         'agendamentos': agendamentos,
-        'data_escolhida': data_escolhida
+        'data_escolhida': data_escolhida,
+        'media_avaliacao': media_avaliacao,
+        'total_avaliacoes': total_avaliacoes
     })
 
 
@@ -127,7 +131,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         acao = request.POST.get('acao')
 
-        # --- 1. ATUALIZAR DADOS DO PERFIL ---
         if acao == 'atualizar_perfil':
             u_form = UserUpdateForm(request.POST, request.FILES, instance=user)
             p_form = PrestadorEstabelecimentoUpdateForm(request.POST, instance=perfil_prestador)
@@ -140,7 +143,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             else:
                 messages.error(request, 'Erro ao atualizar. Verifique os dados.')
 
-        # --- 2. CRIAR SERVIÇO ---
         elif acao == 'criar_servico':
             try:
                 nome = request.POST.get('nome')
@@ -162,7 +164,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
                 messages.error(request, f'Erro ao criar serviço: {e}')
             return redirect('prestador-perfil')
 
-        # --- 3. EDITAR SERVIÇO ---
         elif acao == 'editar_servico':
             servico_id = request.POST.get('servico_id')
             servico = get_object_or_404(Servico, id=servico_id, prestador=perfil_prestador)
@@ -177,7 +178,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             messages.success(request, 'Serviço atualizado com sucesso!')
             return redirect('prestador-perfil')
 
-        # --- 4. EXCLUIR SERVIÇO ---
         elif acao == 'excluir_servico':
             servico_id = request.POST.get('servico_id')
             servico = get_object_or_404(Servico, id=servico_id, prestador=perfil_prestador)
@@ -185,7 +185,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             messages.success(request, 'Serviço excluído com sucesso!')
             return redirect('prestador-perfil')
         
-        # --- ADICIONAR FOTO DO LOCAL ---
         elif acao == 'adicionar_foto_local':
             if 'foto_local' in request.FILES:
                 imagem = request.FILES['foto_local']
@@ -198,7 +197,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
                 messages.error(request, 'Nenhuma imagem selecionada.')
             return redirect('prestador-perfil')   
 
-        # --- EXCLUIR FOTO DO LOCAL ---
         elif acao == 'excluir_foto_local':
             foto_id = request.POST.get('foto_id')
             foto = get_object_or_404(FotoEstabelecimento, id=foto_id, prestador=perfil_prestador)
@@ -206,8 +204,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             messages.success(request, 'Foto removida com sucesso!')
             return redirect('prestador-perfil')
 
-
-       
         elif acao == 'atualizar_horarios':
             json_data = request.POST.get('horarios_json_completo')
             
@@ -215,16 +211,13 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
                 try:
                     dados_horarios = json.loads(json_data)
                     
-                    # Limpa horários antigos deste prestador
                     HorarioFuncionamento.objects.filter(prestador=perfil_prestador).delete()
-
                   
                     for dia_index, info in dados_horarios.items():
                         dia_int = int(dia_index)
                         eh_24h = info.get('aberto_24h', False)
                         eh_fechado = info.get('fechado', False)
 
-                        # Caso 1: 24h ou Fechado
                         if eh_24h or eh_fechado:
                             HorarioFuncionamento.objects.create(
                                 prestador=perfil_prestador,
@@ -232,7 +225,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
                                 aberto_24h=eh_24h,
                                 fechado=eh_fechado
                             )
-                        # Caso 2: Intervalos de Horário
                         else:
                             intervalos = info.get('intervalos', [])
                             for intervalo in intervalos:
@@ -253,12 +245,10 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
             
             return redirect('prestador-perfil')
 
-    
     else:
         u_form = UserUpdateForm(instance=user)
         p_form = PrestadorEstabelecimentoUpdateForm(instance=perfil_prestador)
 
-    
     horarios_banco = HorarioFuncionamento.objects.filter(prestador=perfil_prestador)
     horarios_dict = {}
 
@@ -286,7 +276,6 @@ def prestador_perfil_view(request: HttpRequest) -> HttpResponse:
         (3, 'Quarta-feira'), (4, 'Quinta-feira'), (5, 'Sexta-feira'), (6, 'Sábado')
     ]
 
-    # VERIFICAÇÃO DE PENDÊNCIAS
     pendencias = []
     if not user.foto_perfil:
         pendencias.append("Adicionar uma foto de perfil")
