@@ -14,10 +14,16 @@
   padding-bottom: calc(var(--navbar-height) + 5.5rem);
 }
 
+.services-page-content form{
+  display: flex;
+  height: 300px;
+  justify-content: space-between;
+  flex-direction: column;
+}
 
 .page-title {
   color: var(--color-primary);
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
   text-align: center;
   margin-bottom: 1.5rem; 
@@ -31,6 +37,7 @@
 }
 
 .service-item input[type="checkbox"] {
+  width: 700px;
   display: none; 
 }
 
@@ -39,7 +46,7 @@
   align-items: center;
   gap: 1rem;
   width: 100%;
-  padding: 1rem;
+  padding: 0.6rem 0.8rem;
   background-color: var(--color-white);
   border: 1px solid var(--border-light);
   border-radius: 12px;
@@ -53,8 +60,8 @@
 }
 
 .service-image {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   border-radius: 8px;
   object-fit: cover;
 }
@@ -73,7 +80,7 @@
 }
 
 .service-duration {
-  font-size: 0.875rem; 
+  font-size: 0.8rem; 
   color: var(--text-light);
 }
 
@@ -85,29 +92,30 @@
 
 
 .page-footer {
+  display: flex;
   position: fixed;
- 
+  justify-content: center;
+
+
   bottom: var(--navbar-height); 
   left: 0;
   right: 0;
   
   padding: 1rem;
   background: var(--color-white);
-  border-top: 1px solid var(--border-light);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
   
   z-index: 90; 
 }
 
 .submit-button {
   font-family: "Poppins", sans-serif;  
-  width: 100%;
-  padding: 1rem;
+  width: 600px;
+  height: 2.5rem;
   background-color: var(--color-primary);
   color: var(--color-white);
   border: none;
-  border-radius: 12px;
-  font-size: 1rem;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -115,7 +123,7 @@
 
 @media (min-width: 48rem) {
   .service-list {
-    max-width: 700px;
+    width: 700px;
     margin-left: auto;
     margin-right: auto;
   }

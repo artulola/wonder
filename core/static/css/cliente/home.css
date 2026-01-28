@@ -36,7 +36,6 @@
     padding-bottom: 0.5rem;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    justify-content: space-between;
 }
 
 .category-list-scroll::-webkit-scrollbar {

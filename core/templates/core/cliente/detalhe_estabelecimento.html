@@ -40,6 +40,14 @@
                 </div>
                 <p class="data-value">{{ prestador.usuario.telefone|default:"Não informado" }}</p>
             </div>
+
+            <div class="data-item">
+                <div class="data-label-group">
+                    <img src="{% static 'img/icones/icon_roxo/time.svg' %}" alt="Ícone de Horário" class="data-icon">
+                    <span class="data-label">Horários</span>
+                </div>
+                <p class="data-value" style="white-space: pre-wrap; line-height: 1.4;">{{ resumo_horarios|default:"Horário não informado" }}</p>
+            </div>
         </div>
 
         <div class="photos-section">

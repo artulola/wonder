@@ -119,15 +119,15 @@
     <div class="time-slot-header">
         <h2 class="page-title">
             {% if data_selecionada == hoje %}
-                DISPONÍVEL HOJE
+                Disponível hoje
             {% else %}
-                DISPONÍVEL EM {{ data_selecionada|date:"d/m/Y" }}
+                Disponível em {{ data_selecionada|date:"d/m/Y" }}
             {% endif %}
         </h2>
         
         <div style="position: relative;">
             <button type="button" class="calendar-link" id="btn-abrir-calendario" aria-label="Selecionar outra data" style="background: none; border: none; cursor: pointer; padding: 5px;">
-                <img src="{% static 'img/icones/icon_geral/calendar-icon.svg' %}" alt="Calendário" style="pointer-events: none;">
+                <img src="{% static 'img/icones/icon_geral/calendario.svg' %}" alt="Calendário" style="pointer-events: none;">
             </button>
             <input type="text" id="agenda-input" style="display: none;">
         </div>

@@ -9,6 +9,66 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from urllib.parse import unquote
 
+def _gerar_resumo_horarios(prestador):
+
+    horarios = prestador.horarios.filter(fechado=False).order_by('dia_semana')
+    
+    if not horarios.exists():
+        return "Horários não configurados"
+
+    grupos = {}
+    
+    for h in horarios:
+        if h.aberto_24h:
+            assinatura = "24 horas"
+        elif h.hora_inicio and h.hora_fim:
+            assinatura = f"{h.hora_inicio.strftime('%H:%M')} - {h.hora_fim.strftime('%H:%M')}"
+        else:
+            continue
+            
+        if assinatura not in grupos:
+            grupos[assinatura] = []
+        grupos[assinatura].append(h.dia_semana)
+    
+    if not grupos:
+        return "Fechado temporariamente"
+
+    dias_nomes = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB']
+    resumos_finais = []
+
+    for horario, dias in grupos.items():
+        dias.sort()
+        sequencias = []
+        
+        if not dias: continue
+        
+        inicio = dias[0]
+        prev = dias[0]
+        
+        for i in range(1, len(dias)):
+            if dias[i] == prev + 1:
+                prev = dias[i]
+            else:
+                if inicio == prev:
+                    sequencias.append(dias_nomes[inicio])
+                else:
+                    sequencias.append(f"{dias_nomes[inicio]} - {dias_nomes[prev]}")
+                inicio = dias[i]
+                prev = dias[i]
+        
+        if inicio == prev:
+            sequencias.append(dias_nomes[inicio])
+        else:
+            sequencias.append(f"{dias_nomes[inicio]} - {dias_nomes[prev]}")
+            
+        dias_texto = ", ".join(sequencias)
+        if len(dias) == 7:
+            dias_texto = "Todos os dias"
+            
+        resumos_finais.append(f"{dias_texto} • {horario}")
+
+    return " | ".join(resumos_finais)
+
 def _processar_prestadores_para_display(prestadores_queryset):
     agora = timezone.localtime()
     dia_semana_hoje = (agora.weekday() + 1) % 7 
@@ -44,8 +104,6 @@ def _processar_prestadores_para_display(prestadores_queryset):
                     is_open = False
                     if hora_atual < horario_hoje.hora_inicio:
                         status_text = f"Abre às {inicio}"
-                    else:
-                        status_text = "Fechado agora"
             else:
                 is_open = False
                 texto_horario = "Indisponível"
@@ -74,7 +132,7 @@ def cliente_home_view(request: HttpRequest) -> HttpResponse:
 
     categorias = Categoria.objects.annotate(
         num_prestadores=Count('prestadores', filter=filtros_categoria)
-    ).order_by('-num_prestadores', 'nome')
+    ).filter(num_prestadores__gt=0).order_by('nome')
     
     todos_aprovados = Prestador.objects.filter(filtros_prestador)
     
@@ -99,7 +157,7 @@ def cliente_busca_view(request: HttpRequest) -> HttpResponse:
 
     categorias = Categoria.objects.annotate(
         num_prestadores=Count('prestadores', filter=filtros_prestador_cat)
-    ).order_by('-num_prestadores', 'nome')
+    ).filter(num_prestadores__gt=0).order_by('nome')
     
     prestadores_processados = []
 
@@ -176,45 +234,17 @@ def cliente_perfil_view(request: HttpRequest) -> HttpResponse:
 def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int) -> HttpResponse:
     prestador = get_object_or_404(Prestador, id=prestador_id)
     
-    agora = timezone.localtime()
-    dia_semana_hoje = (agora.weekday() + 1) % 7
-    hora_atual = agora.time()
-    
-    horario_hoje = prestador.horarios.filter(dia_semana=dia_semana_hoje).first()
-    
-    is_open = False
-    status_text = "Fechado"
-    horario_display = "Consulte agenda"
-    
-    if horario_hoje:
-        if horario_hoje.fechado:
-            is_open = False
-            status_text = "Fechado hoje"
-            horario_display = "Não abre hoje"
-        elif horario_hoje.aberto_24h:
-            is_open = True
-            status_text = "Aberto agora"
-            horario_display = "24 horas"
-        elif horario_hoje.hora_inicio and horario_hoje.hora_fim:
-            inicio_str = horario_hoje.hora_inicio.strftime('%H:%M')
-            fim_str = horario_hoje.hora_fim.strftime('%H:%M')
-            horario_display = f"{inicio_str} - {fim_str}"
-            
-            if horario_hoje.hora_inicio <= hora_atual <= horario_hoje.hora_fim:
-                is_open = True
-                status_text = "Aberto agora"
-            else:
-                is_open = False
-                if hora_atual < horario_hoje.hora_inicio:
-                    status_text = f"Abre às {inicio_str}"
-                else:
-                    status_text = "Fechado agora"
+    processados = _processar_prestadores_para_display([prestador])
+    prestador_processado = processados[0] if processados else prestador
+
+    texto_dias_horarios = _gerar_resumo_horarios(prestador)
 
     context = {
-        'prestador': prestador,
-        'horario_display': horario_display,
-        'status_text': status_text,
-        'status_color': "green" if is_open else "red"
+        'prestador': prestador_processado,
+        'horario_display': getattr(prestador_processado, 'horario_display', ''),
+        'status_text': getattr(prestador_processado, 'status_text', ''),
+        'status_color': getattr(prestador_processado, 'status_color', ''),
+        'resumo_horarios': texto_dias_horarios, 
     }
 
     return render(request, 'core/cliente/detalhe_estabelecimento.html', context)
