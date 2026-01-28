@@ -69,19 +69,45 @@
     </div>
 
     <div class="reviews-section">
-        <h4 class="section-title reviews-title">Avaliações</h4>
-        <div class="review-list">
-            <article class="review-card">
-                <div class="card-details-group">
-                    <div class="reviewer-avatar">
-                        <img src="{% static 'img/clientes/foto-arthur.svg' %}" alt="Avatar">
-                    </div>
-                    <div class="reviewer-details">
-                        <h5 class="reviewer-name">Arthur Lola</h5>
-                        <div class="review-rating-stars">★★★★★</div>
-                    </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+            <h4 class="section-title reviews-title" style="margin: 0;">Avaliações</h4>
+            
+            {% if media_avaliacao %}
+                <div style="background: #f3f3f3; padding: 5px 12px; border-radius: 20px; font-weight: bold; color: #4b4b4b;">
+                    {{ media_avaliacao }} <span style="font-size: 0.8em; font-weight: normal;">({{ total_avaliacoes }})</span>
                 </div>
-            </article>
+            {% endif %}
+        </div>
+
+        <div class="review-list">
+            {% for avaliacao in avaliacoes %}
+                <article class="review-card">
+                    <div class="card-details-group">
+                        <div class="reviewer-avatar">
+                            {% if avaliacao.cliente.usuario.foto_perfil %}
+                                <img src="{{ avaliacao.cliente.usuario.foto_perfil.url }}" alt="Avatar">
+                            {% else %}
+                                <img src="{% static 'img/icones/padrao_avatar.svg' %}" alt="Avatar">
+                            {% endif %}
+                        </div>
+                        <div class="reviewer-details">
+                            <h5 class="reviewer-name">{{ avaliacao.cliente.usuario.first_name }}</h5>
+                            
+                            <div class="review-rating-stars" style="color: #FFD700; letter-spacing: 2px;">
+                                {{ avaliacao.estrelas_display }}
+                            </div>
+                            
+                            <span style="font-size: 0.75rem; color: #999; display: block; margin-top: 5px;">
+                                {{ avaliacao.data_criacao|date:"d/m/Y" }}
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <div style="text-align: center; padding: 20px; color: #999;">
+                    <p>Este estabelecimento ainda não possui avaliações.</p>
+                </div>
+            {% endfor %}
         </div>
     </div>
 

@@ -7,7 +7,6 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/prestador/home_prestador.css' %}">
 <link rel="stylesheet" href="{% static 'css/components/card_wonder.css' %}">
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 {% endblock extra_css %}
 
@@ -23,6 +22,20 @@
 
     <main class="main-prestador">
         
+        <div style="background: #fff; border-radius: 12px; padding: 15px 20px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h2 style="font-size: 1.1rem; color: #2d3436; margin: 0; font-weight: 600;">Sua Reputação</h2>
+                <span style="font-size: 0.8rem; color: #636e72;">Visão geral das avaliações</span>
+            </div>
+            <div style="text-align: right;">
+                <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end;">
+                    <span style="color: #f1c40f; font-size: 1.2rem;">★</span>
+                    <span style="font-size: 1.4rem; font-weight: 700; color: #2d3436;">{{ media_avaliacao|default:"-" }}</span>
+                </div>
+                <span style="font-size: 0.75rem; color: #b2bec3;">{{ total_avaliacoes }} avaliações</span>
+            </div>
+        </div>
+
         <div class="nav-tabs-container">
             <button class="option-tab active left">Em Aberto</button>
             <a href="{% url 'prestador-finalizados' %}"><button class="option-tab inactive right">Finalizados</button></a>
@@ -48,13 +61,10 @@
                      data-cliente="{{ agendamento.cliente.usuario.first_name }}">
                     
                     {% with hora=agendamento.data_hora_inicio|date:"H:i" %}
-                    {# Garante que sempre tenha um nome, mesmo que o banco esteja vazio #}
                     {% with nome_cliente=agendamento.cliente.usuario.first_name|default:"Cliente" %}
                         
-                        {# --- LÓGICA DA FOTO VS LETRA --- #}
                         {% if agendamento.cliente.usuario.foto_perfil %}
                             
-                            {# OPÇÃO A: Cliente TEM foto #}
                             {% if agendamento.status == 'AGENDADO' %}
                                 {% card_wonder title=agendamento.servico.nome img_url=agendamento.cliente.usuario.foto_perfil.url subtitle=nome_cliente time_value=hora btn_color_conclude="green" buttons_preset="confirm_reject" %}
                             {% else %}
@@ -63,8 +73,6 @@
 
                         {% else %}
                             
-                            {# OPÇÃO B: Cliente SEM foto (Gera Avatar Colorido) #}
-                            {# Montamos a URL passando o nome completo, a API pega a inicial #}
                             {% with avatar_url="https://ui-avatars.com/api/?name="|add:nome_cliente|add:"&background=random&color=fff&size=128&bold=true" %}
                                 
                                 {% if agendamento.status == 'AGENDADO' %}
@@ -118,7 +126,6 @@
         const dataAtual = "{{ data_escolhida|date:'Y-m-d' }}";
         const btnCalendario = document.getElementById('btn-abrir-calendario');
         
-        // --- Configuração do Calendário ---
         const fp = flatpickr("#agenda-input", {
             locale: "pt",
             dateFormat: "Y-m-d",
@@ -136,7 +143,6 @@
             btnCalendario.addEventListener('click', function() { fp.toggle(); });
         }
 
-        // --- Lógica dos Botões (Confirmar, Cancelar, Finalizar) ---
         const lista = document.getElementById('lista-agendamentos');
         const formConfirmar = document.getElementById('form-confirmar');
         const formFinalizar = document.getElementById('form-finalizar');

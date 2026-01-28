@@ -3,8 +3,8 @@ from django.http import HttpRequest, HttpResponse
 from django.contrib import messages
 from accounts.decorators import cliente_required
 from core.forms import UserUpdateForm, ClienteEnderecoUpdateForm
-from django.db.models import Q, Count
-from accounts.models import Prestador, Categoria, Servico, Agendamento, HorarioFuncionamento
+from django.db.models import Q, Count, Avg
+from accounts.models import Prestador, Categoria, Servico, Agendamento, HorarioFuncionamento, Avaliacao
 from datetime import datetime, timedelta
 from django.utils import timezone
 from urllib.parse import unquote
@@ -233,7 +233,13 @@ def cliente_perfil_view(request: HttpRequest) -> HttpResponse:
 @cliente_required
 def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int) -> HttpResponse:
     prestador = get_object_or_404(Prestador, id=prestador_id)
+
+    media = prestador.avaliacoes.aggregate(Avg('nota'))['nota__avg']
+    media_avaliacao = round(media, 1) if media else None
     
+    avaliacoes_lista = prestador.avaliacoes.all().order_by('-data_criacao')
+    total_avaliacoes = avaliacoes_lista.count()
+
     processados = _processar_prestadores_para_display([prestador])
     prestador_processado = processados[0] if processados else prestador
 
@@ -245,6 +251,10 @@ def cliente_detalhe_estabelecimento_view(request: HttpRequest, prestador_id: int
         'status_text': getattr(prestador_processado, 'status_text', ''),
         'status_color': getattr(prestador_processado, 'status_color', ''),
         'resumo_horarios': texto_dias_horarios, 
+        
+        'media_avaliacao': media_avaliacao,
+        'avaliacoes': avaliacoes_lista,
+        'total_avaliacoes': total_avaliacoes
     }
 
     return render(request, 'core/cliente/detalhe_estabelecimento.html', context)
@@ -458,3 +468,31 @@ def cliente_cancelar_agendamento_view(request: HttpRequest, agendamento_id: int)
             messages.error(request, 'Este agendamento não pode ser cancelado.')
             
     return redirect('cliente-agendamentos')
+
+@cliente_required
+def cliente_avaliar_servico_view(request: HttpRequest, agendamento_id: int) -> HttpResponse:
+    agendamento = get_object_or_404(Agendamento, id=agendamento_id, cliente=request.user.perfil_cliente)
+    
+    if agendamento.status != Agendamento.StatusAgendamento.CONCLUIDO:
+        messages.error(request, 'Serviço não concluído.')
+        return redirect('cliente-agendamentos--finalizados')
+    
+    if hasattr(agendamento, 'avaliacao'):
+        messages.warning(request, 'Você já avaliou este serviço.')
+        return redirect('cliente-agendamentos--finalizados')
+
+    if request.method == 'POST':
+        nota = request.POST.get('nota')
+        
+        if nota:
+            Avaliacao.objects.create(
+                agendamento=agendamento,
+                cliente=request.user.perfil_cliente,
+                prestador=agendamento.prestador,
+                nota=int(nota)
+            )
+            messages.success(request, 'Avaliação enviada com sucesso!')
+        else:
+            messages.error(request, 'Selecione uma nota de 1 a 5.')
+
+    return redirect('cliente-agendamentos--finalizados')

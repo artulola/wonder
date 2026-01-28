@@ -21,6 +21,7 @@ urlpatterns = [
     path('estabelecimento-horarios/calendario/', cliente_views.cliente_estabelecimento_horarios_calendario_view, name='cliente-estabelecimento-horarios-calendario'),
     path('estabelecimento/horarios/',cliente_views.cliente_estabelecimento_horarios_view, name='cliente-estabelecimento-horarios'),
     path('definir-cidade/<str:cidade>/', cliente_views.definir_cidade_view, name='definir-cidade'),
+    path('cliente/avaliar/<int:agendamento_id>/', cliente_views.cliente_avaliar_servico_view, name='cliente-avaliar-servico'),
 
     path('auth/login/', auth_views.auth_login_view, name='login' ),
     path('auth/logout/', auth_views.auth_logout_view, name='logout' ),
