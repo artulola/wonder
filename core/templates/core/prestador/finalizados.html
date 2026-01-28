@@ -37,12 +37,7 @@
 
         <div class="results-list">
             {% for agendamento in agendamentos %}
-                {% card_wonder 
-                    title=agendamento.servico.nome 
-                    img_url=agendamento.cliente.usuario.foto_perfil.url|default:"img/icones/icon_footer/user.svg" 
-                    subtitle=agendamento.cliente.usuario.first_name 
-                    btn_text_conclude="Concluído" 
-                %}
+                {% card_wonder title=agendamento.servico.nome img_url=agendamento.cliente.usuario.foto_perfil.url|default:"img/icones/icon_footer/user.svg" subtitle=agendamento.cliente.usuario.first_name btn_text_conclude="Concluído" %}
             {% empty %}
                 <div style="text-align: center; margin-top: 2rem; color: #999;">
                     <p>Não há agendamentos finalizados.</p>

@@ -11,23 +11,23 @@
 <style>
     
     .agendamento-wrapper {
-        margin-bottom: 1.5rem;
         display: flex;
         flex-direction: column;
     }
     
     
     .motivo-note {
-        background-color: #fff5f5; 
-        border-left: 3px solid #dc3545;
-        color: #c0392b;
-        font-size: 0.85rem;
-        padding: 8px 12px;
-        margin-top: -5px; 
-        margin-left: 10px;
-        margin-right: 10px;
-        border-bottom-left-radius: 8px;
-        border-bottom-right-radius: 8px;
+        background-color: #f7f1f1ff;
+        border-left: 4px solid #c0392b;
+        color: #5f5a5a;
+        padding: 10px;
+        margin-top: 5px;
+        font-size: 0.9rem;
+        border-radius: 4px;
+    }
+
+    .motivo-note strong{
+        font-weight: 600;
     }
 </style>
 {% endblock extra_css %}
@@ -54,7 +54,7 @@
         </div>
 
         <div class="block-text-tag">
-            <span class="text-tag-day" style="color: #c0392b;">Cancelados</span>
+            <span class="text-tag-day">Cancelados</span>
 
             <a href="{% url 'prestador-finalizados' %}" class="filtro-toggle">
                 <span>Ver Concluídos ></span>
