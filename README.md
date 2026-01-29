@@ -1,5 +1,7 @@
 #  💜 Wonder – Plataforma de Serviços de Beleza (Em Desenvolvimento)
 
+## **Link do site:** [Wonder](http://136.113.181.247/auth/login/) 👈
+
 O **Wonder** é um sistema web em desenvolvimento que busca conectar **clientes** e **prestadores de serviços de beleza** de forma prática, organizada e segura.  
 Nosso objetivo é criar uma plataforma onde pessoas possam **encontrar, agendar e pagar** por serviços como cabelo, unhas, sobrancelhas, maquiagem, barba e massagem — tudo em um só lugar.  
 
